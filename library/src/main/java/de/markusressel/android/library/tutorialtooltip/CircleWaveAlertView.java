@@ -93,18 +93,19 @@ public class CircleWaveAlertView extends View {
         try {
             int defaultColor = getAccentColor(context);
 
-            startDiameter = a.getDimensionPixelSize(R.styleable.CircleWaveAlertView_startDiameter,
+            startDiameter = a.getDimensionPixelSize(R.styleable.CircleWaveAlertView_cwav_startDiameter,
                     0);
-            targetDiameter = a.getDimensionPixelSize(R.styleable.CircleWaveAlertView_targetDiameter,
+            targetDiameter = a.getDimensionPixelSize(R.styleable.CircleWaveAlertView_cwav_targetDiameter,
                     -1);
-            color = a.getColor(R.styleable.CircleWaveAlertView_color, defaultColor);
-            strokeWidth = a.getColor(R.styleable.CircleWaveAlertView_strokeWidth,
+            color = a.getColor(R.styleable.CircleWaveAlertView_cwav_color, defaultColor);
+            strokeWidth = a.getColor(R.styleable.CircleWaveAlertView_cwav_strokeWidth,
                     DEFAULT_STROKE_WIDTH);
-            duration = a.getInt(R.styleable.CircleWaveAlertView_durationMilliseconds,
+            duration = a.getInt(R.styleable.CircleWaveAlertView_cwav_durationMilliseconds,
                     DEFAULT_DURATION_MILLISECONDS);
-            delayBetweenWaves = a.getInt(R.styleable.CircleWaveAlertView_delayMillisecondsBetweenWaves,
+            delayBetweenWaves = a.getInt(R.styleable.CircleWaveAlertView_cwav_delayMillisecondsBetweenWaves,
                     -1);
-            waveCount = a.getInt(R.styleable.CircleWaveAlertView_waveCount, DEFAULT_WAVE_COUNT);
+            waveCount = a.getInt(R.styleable.CircleWaveAlertView_cwav_waveCount,
+                    DEFAULT_WAVE_COUNT);
         } finally {
             a.recycle();
         }

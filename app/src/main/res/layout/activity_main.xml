@@ -16,18 +16,18 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView
         android:id="@+id/circleWaveAlertView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:color="@color/colorAccent"
-        app:delayMillisecondsBetweenWaves="100"
-        app:durationMilliseconds="5000"
-        app:strokeWidth="3"
-        app:waveCount="10" />
+        app:cwav_color="@color/colorAccent"
+        app:cwav_delayMillisecondsBetweenWaves="300"
+        app:cwav_durationMilliseconds="3000"
+        app:cwav_strokeWidth="3"
+        app:cwav_waveCount="3"/>
 
 </LinearLayout>
