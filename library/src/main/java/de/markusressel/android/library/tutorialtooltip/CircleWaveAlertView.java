@@ -16,7 +16,6 @@
 
 package de.markusressel.android.library.tutorialtooltip;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;

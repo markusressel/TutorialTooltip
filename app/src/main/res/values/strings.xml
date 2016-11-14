@@ -16,4 +16,17 @@
 
 <resources>
     <string name="app_name">TutorialTooltip</string>
+
+    <string name="settings">Settings</string>
+
+    <string name="key_startColor">startColor</string>
+    <string name="title_startColor">Start color</string>
+    <color name="default_value_startColor">#f00</color>
+
+    <string name="key_startDiameter">startDiameter</string>
+    <string name="title_startDiameter">Start diameter</string>
+
+    <string name="key_targetDiameter">targetDiameter</string>
+    <string name="title_targetDiameter">Target diameter</string>
+
 </resources>
