@@ -80,30 +80,35 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private void initPreferences() {
-
         startColor = (ColorPreference) findPreference(getString(R.string.key_startColor));
-        startColor.setSummary(colorToHex(startColor.getColor()));
-
         endColor = (ColorPreference) findPreference(getString(R.string.key_endColor));
-        endColor.setSummary(colorToHex(endColor.getColor()));
 
         startDiameter = (EditTextPreference) findPreference(getString(R.string.key_startDiameter));
-        startDiameter.setSummary(getString(R.string.summary_dp_value, startDiameter.getText()));
-
         targetDiameter = (EditTextPreference) findPreference(getString(R.string.key_targetDiameter));
-        targetDiameter.setSummary(getString(R.string.summary_dp_value, targetDiameter.getText()));
 
         strokeWidth = (EditTextPreference) findPreference(getString(R.string.key_strokeWidth));
-        strokeWidth.setSummary(getString(R.string.summary_dp_value, strokeWidth.getText()));
 
         delayBetweenWaves = (EditTextPreference) findPreference(getString(R.string.key_delayBetweenWaves));
-        delayBetweenWaves.setSummary(getString(R.string.summary_ms_value,
-                delayBetweenWaves.getText()));
-
         duration = (EditTextPreference) findPreference(getString(R.string.key_duration));
-        duration.setSummary(getString(R.string.summary_ms_value, duration.getText()));
 
         waveCount = (EditTextPreference) findPreference(getString(R.string.key_waveCount));
+
+        updateSummaries();
+    }
+
+    private void updateSummaries() {
+        startColor.setSummary(colorToHex(startColor.getColor()));
+        endColor.setSummary(colorToHex(endColor.getColor()));
+
+        startDiameter.setSummary(getString(R.string.summary_dp_value, startDiameter.getText()));
+        targetDiameter.setSummary(getString(R.string.summary_dp_value, targetDiameter.getText()));
+
+        strokeWidth.setSummary(getString(R.string.summary_dp_value, strokeWidth.getText()));
+
+        delayBetweenWaves.setSummary(getString(R.string.summary_ms_value,
+                delayBetweenWaves.getText()));
+        duration.setSummary(getString(R.string.summary_ms_value, duration.getText()));
+
         waveCount.setSummary(waveCount.getText());
     }
 
@@ -116,6 +121,8 @@ public class SettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        updateSummaries();
+
         notifyPreferenceChanged(getActivity(), key);
     }
 

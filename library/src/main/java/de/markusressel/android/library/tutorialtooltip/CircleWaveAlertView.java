@@ -138,7 +138,7 @@ public class CircleWaveAlertView extends View {
         return color;
     }
 
-    private void init() {
+    synchronized private void init() {
         cancelAnimators();
 
         currentDiameters = new float[waveCount];
@@ -208,7 +208,9 @@ public class CircleWaveAlertView extends View {
     private void cancelAnimators() {
         if (isInitialized) {
             for (int i = 0; i < sizeAnimators.length; i++) {
+                sizeAnimators[i].removeAllUpdateListeners();
                 sizeAnimators[i].cancel();
+                colorAnimators[i].removeAllUpdateListeners();
                 colorAnimators[i].cancel();
             }
         }
@@ -467,8 +469,6 @@ public class CircleWaveAlertView extends View {
      * @param waveCount amount of waves
      */
     public void setWaveCount(int waveCount) {
-        cancelAnimators();
-
         this.waveCount = waveCount;
 
         init();
