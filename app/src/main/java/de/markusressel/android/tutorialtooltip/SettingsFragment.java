@@ -76,6 +76,7 @@ public class SettingsFragment extends PreferenceFragment implements
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
+        // get references and update summaries
         initPreferences();
     }
 
