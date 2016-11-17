@@ -25,17 +25,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * Base TutorialTooltip class
+ * <p>
+ * Contains Builder and basic construction methods
+ * <p>
  * Created by Markus on 17.11.2016.
  */
 public class TutorialTooltip {
 
     /**
-     * @param context
-     * @param builder
-     * @return
+     * Create the TutorialTooltip
+     *
+     * @param context activity context
+     * @param builder TutorialTooltip.Builder
+     * @return view
      */
     public static TutorialTooltipView make(Context context, Builder builder) {
         return new TutorialTooltipView(context, builder);
+    }
+
+    /**
+     * Create a TutorialTooltip and show it right away
+     *
+     * @param context activity context
+     * @param builder TutorialTooltip.Builder
+     */
+    public static void show(Context context, Builder builder) {
+        make(context, builder).show();
     }
 
     /**

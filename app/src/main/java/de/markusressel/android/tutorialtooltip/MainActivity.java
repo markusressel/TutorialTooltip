@@ -25,16 +25,12 @@ import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
 
 import de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView;
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 
 public class MainActivity extends AppCompatActivity {
 
     private CircleWaveAlertView circleWaveAlertView;
-
-    private FrameLayout preferenceFrame;
 
     private BroadcastReceiver broadcastReceiver;
 
@@ -59,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         // load settings
         initFromPreferenceValues();
 
-        new TutorialTooltip.Builder().build();
+        //        TutorialTooltip.show(this,
+        //                new TutorialTooltip.Builder().withText(R.string.tutorial_message_1).build());
 
         // this receiver will update the view if a preference has changed
         broadcastReceiver = new BroadcastReceiver() {

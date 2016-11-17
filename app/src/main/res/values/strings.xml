@@ -54,4 +54,6 @@
     <string name="summary_dp_value">%1$sdp</string>
     <string name="summary_ms_value">%1$sms</string>
 
+    <string name="tutorial_message_1">Tutorial Message 1</string>
+
 </resources>

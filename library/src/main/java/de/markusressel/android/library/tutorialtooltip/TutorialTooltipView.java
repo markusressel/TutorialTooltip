@@ -16,23 +16,33 @@
 
 package de.markusressel.android.library.tutorialtooltip;
 
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
-import android.util.AttributeSet;
+import android.text.Html;
+import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
+ * TutorialTooltip View class
+ * <p>
  * Created by Markus on 17.11.2016.
  */
-class TutorialTooltipView extends LinearLayout {
-
+public class TutorialTooltipView extends LinearLayout {
 
     private int tooltipId;
     private CharSequence text;
 
     public TutorialTooltipView(Context context) {
         super(context);
-        //        this(context, null);
     }
 
     public TutorialTooltipView(Context context, TutorialTooltip.Builder builder) {
@@ -40,20 +50,34 @@ class TutorialTooltipView extends LinearLayout {
 
         tooltipId = builder.id;
         text = context.getString(builder.textRes);
-    }
 
-    public TutorialTooltipView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
+        LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        View messageView = LayoutInflater.from(getContext())
+                .inflate(R.layout.layout_tutorial_text, this, false);
+        messageView.setLayoutParams(params);
 
-    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+        TextView mTextView = (TextView) messageView.findViewById(R.id.textView);
+        mTextView.setText(Html.fromHtml((String) this.text));
 
-    @TargetApi(21)
-    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+
+        View indicatorView = LayoutInflater.from(getContext())
+                .inflate(R.layout.layout_indicator, this, false);
+        indicatorView.setLayoutParams(params);
+
+        CircleWaveAlertView circleWaveAlertView = (CircleWaveAlertView) indicatorView.findViewById(R.id.indicator);
+        float targetDiameter = 200;
+        circleWaveAlertView.setTargetDiameter(targetDiameter);
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+
+        indicatorView.setX(display.getWidth() / 2 - (targetDiameter / 2));
+        indicatorView.setY(display.getHeight() / 2 - (targetDiameter / 2));
+
+        addView(messageView);
+        addView(indicatorView);
+
+        setOrientation(VERTICAL);
     }
 
     /**
@@ -66,9 +90,32 @@ class TutorialTooltipView extends LinearLayout {
     }
 
     /**
+     * Show this view
+     */
+    public void show() {
+        if (getParent() == null) {
+            final Activity activity = ViewHelper.getActivity(getContext());
+            LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            if (activity != null) {
+                ViewGroup rootView;
+                rootView = (ViewGroup) (activity.getWindow().getDecorView());
+                rootView.addView(this, params);
+            }
+        }
+    }
+
+    /**
      * Remove this view
      */
     public void remove() {
         // TODO:
+        ViewParent parent = getParent();
+
+        if (null != parent) {
+            ((ViewGroup) parent).removeView(TutorialTooltipView.this);
+            //            if (null != mShowAnimation && mShowAnimation.isStarted()) {
+            //                mShowAnimation.cancel();
+            //            }
+        }
     }
 }
