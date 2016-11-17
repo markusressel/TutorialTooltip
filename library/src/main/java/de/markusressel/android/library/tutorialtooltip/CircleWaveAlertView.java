@@ -26,10 +26,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 /**
@@ -49,17 +49,25 @@ public class CircleWaveAlertView extends View {
 
     private float startDiameter;
     private float targetDiameter;
-    private int color;
+
+    @ColorInt
+    private int startColor;
+    @ColorInt
+    private int endColor;
+
     private int strokeWidth;
     private int duration;
     private int delayBetweenWaves;
     private int waveCount;
+
+    private Interpolator customInterpolator = new FastOutSlowInInterpolator();
 
     private float[] currentDiameters;
     private Paint[] paints;
 
     private ValueAnimator[] colorAnimators;
     private ValueAnimator[] sizeAnimators;
+    private boolean isInitialized;
 
 
     public CircleWaveAlertView(Context context) {
@@ -96,7 +104,15 @@ public class CircleWaveAlertView extends View {
                     0);
             targetDiameter = a.getDimensionPixelSize(R.styleable.CircleWaveAlertView_cwav_targetDiameter,
                     -1);
-            color = a.getColor(R.styleable.CircleWaveAlertView_cwav_color, defaultColor);
+            startColor = a.getColor(R.styleable.CircleWaveAlertView_cwav_startColor, defaultColor);
+
+            @ColorInt
+            int defaultEndColor = Color.argb(0,
+                    Color.red(startColor),
+                    Color.green(startColor),
+                    Color.blue(startColor));
+            endColor = a.getColor(R.styleable.CircleWaveAlertView_cwav_endColor, defaultEndColor);
+
             strokeWidth = a.getColor(R.styleable.CircleWaveAlertView_cwav_strokeWidth,
                     DEFAULT_STROKE_WIDTH);
             duration = a.getInt(R.styleable.CircleWaveAlertView_cwav_durationMilliseconds,
@@ -128,11 +144,9 @@ public class CircleWaveAlertView extends View {
         colorAnimators = new ValueAnimator[waveCount];
         sizeAnimators = new ValueAnimator[waveCount];
 
-        Interpolator interpolator = new DecelerateInterpolator();
-
         for (int i = 0; i < waveCount; i++) {
             paints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paints[i].setColor(color);
+            paints[i].setColor(startColor);
             paints[i].setStyle(Paint.Style.STROKE);
             paints[i].setStrokeWidth(strokeWidth);
 
@@ -140,7 +154,7 @@ public class CircleWaveAlertView extends View {
             sizeAnimators[i].setDuration(duration);
             sizeAnimators[i].setRepeatCount(ValueAnimator.INFINITE);
             sizeAnimators[i].setRepeatMode(ValueAnimator.RESTART);
-            sizeAnimators[i].setInterpolator(interpolator);
+            sizeAnimators[i].setInterpolator(customInterpolator);
             final int index = i;
             sizeAnimators[i].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -154,13 +168,11 @@ public class CircleWaveAlertView extends View {
                 }
             });
 
-            colorAnimators[i] = ValueAnimator.ofObject(new ArgbEvaluator(),
-                    color,
-                    Color.argb(0, Color.red(color), Color.green(color), Color.blue(color)));
+            colorAnimators[i] = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, endColor);
             colorAnimators[i].setDuration(duration);
             colorAnimators[i].setRepeatCount(ObjectAnimator.INFINITE);
             colorAnimators[i].setRepeatMode(ValueAnimator.RESTART);
-            colorAnimators[i].setInterpolator(interpolator);
+            colorAnimators[i].setInterpolator(customInterpolator);
             colorAnimators[i].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -187,6 +199,8 @@ public class CircleWaveAlertView extends View {
                 }
             }
         });
+
+        isInitialized = true;
     }
 
     @Override
@@ -251,26 +265,52 @@ public class CircleWaveAlertView extends View {
 
 
     /**
-     * Get the current wave color
+     * Get the current wave start color
      *
      * @return color as int
      */
     @ColorInt
-    public int getColor() {
-        return color;
+    public int getStartColor() {
+        return startColor;
     }
 
     /**
-     * Set the color of the waves
+     * Set the start color of the waves
      *
-     * @param newColor new color value
+     * @param newStartColor new color value
      */
-    public void setColor(int newColor) {
-        this.color = newColor;
+    public void setStartColor(int newStartColor) {
+        this.startColor = newStartColor;
 
-        for (int i = 0; i < waveCount; i++) {
-            colorAnimators[i].setObjectValues(color,
-                    Color.argb(0, Color.red(color), Color.green(color), Color.blue(color)));
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                colorAnimators[i].setObjectValues(startColor, endColor);
+            }
+        }
+    }
+
+    /**
+     * Get the current wave end color
+     *
+     * @return color as int
+     */
+    @ColorInt
+    public int getEndColor() {
+        return endColor;
+    }
+
+    /**
+     * Set the end color of the waves
+     *
+     * @param newEndColor new color value
+     */
+    public void setEndColor(int newEndColor) {
+        this.endColor = newEndColor;
+
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                colorAnimators[i].setObjectValues(startColor, endColor);
+            }
         }
     }
 
@@ -292,8 +332,10 @@ public class CircleWaveAlertView extends View {
     public void setStartDiameter(@Dimension float newStartDiameter) {
         this.startDiameter = newStartDiameter;
 
-        for (int i = 0; i < waveCount; i++) {
-            sizeAnimators[i].setFloatValues(startDiameter, targetDiameter);
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                sizeAnimators[i].setFloatValues(startDiameter, targetDiameter);
+            }
         }
     }
 
@@ -315,8 +357,10 @@ public class CircleWaveAlertView extends View {
     public void setTargetDiameter(@Dimension float newTargetDiameter) {
         this.targetDiameter = newTargetDiameter;
 
-        for (int i = 0; i < waveCount; i++) {
-            sizeAnimators[i].setFloatValues(startDiameter, targetDiameter);
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                sizeAnimators[i].setFloatValues(startDiameter, targetDiameter);
+            }
         }
     }
 
@@ -337,8 +381,10 @@ public class CircleWaveAlertView extends View {
     public void setStrokeWidth(int newStrokeWidth) {
         this.strokeWidth = newStrokeWidth;
 
-        for (int i = 0; i < waveCount; i++) {
-            paints[i].setStrokeWidth(strokeWidth);
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                paints[i].setStrokeWidth(strokeWidth);
+            }
         }
     }
 
@@ -359,9 +405,11 @@ public class CircleWaveAlertView extends View {
     public void setDuration(int newDuration) {
         this.duration = newDuration;
 
-        for (int i = 0; i < waveCount; i++) {
-            colorAnimators[i].setDuration(duration);
-            sizeAnimators[i].setDuration(duration);
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                colorAnimators[i].setDuration(duration);
+                sizeAnimators[i].setDuration(duration);
+            }
         }
     }
 
@@ -409,5 +457,28 @@ public class CircleWaveAlertView extends View {
         this.waveCount = waveCount;
 
         init();
+    }
+
+    /**
+     * Get the currently set interpolator
+     *
+     * @return interpolator
+     */
+    public Interpolator getCustomInterpolator() {
+        return customInterpolator;
+    }
+
+    /**
+     * Set a custom interpolator
+     *
+     * @param customInterpolator interpolator
+     */
+    public void setCustomInterpolator(Interpolator customInterpolator) {
+        this.customInterpolator = customInterpolator;
+
+        if (isInitialized) {
+            // reinitialize
+            init();
+        }
     }
 }

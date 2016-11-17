@@ -18,13 +18,14 @@
 <resources>
 
     <declare-styleable name="CircleWaveAlertView">
-        <attr name="cwav_startDiameter" format="dimension" />
-        <attr name="cwav_targetDiameter" format="dimension" />
-        <attr name="cwav_color" format="color" />
-        <attr name="cwav_delayMillisecondsBetweenWaves" format="integer" />
-        <attr name="cwav_strokeWidth" format="integer" />
-        <attr name="cwav_durationMilliseconds" format="integer" />
-        <attr name="cwav_waveCount" format="integer" />
+        <attr name="cwav_startDiameter" format="dimension"/>
+        <attr name="cwav_targetDiameter" format="dimension"/>
+        <attr name="cwav_startColor" format="color"/>
+        <attr name="cwav_endColor" format="color"/>
+        <attr name="cwav_delayMillisecondsBetweenWaves" format="integer"/>
+        <attr name="cwav_strokeWidth" format="integer"/>
+        <attr name="cwav_durationMilliseconds" format="integer"/>
+        <attr name="cwav_waveCount" format="integer"/>
     </declare-styleable>
 
 </resources>

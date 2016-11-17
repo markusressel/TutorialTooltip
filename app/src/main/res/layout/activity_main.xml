@@ -15,19 +15,36 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView
         android:id="@+id/circleWaveAlertView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cwav_color="@color/colorAccent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:cwav_delayMillisecondsBetweenWaves="300"
         app:cwav_durationMilliseconds="3000"
+        app:cwav_endColor="#0000FFFF"
+        app:cwav_startColor="@color/colorAccent"
+        app:cwav_startDiameter="0dp"
         app:cwav_strokeWidth="3"
+        app:cwav_targetDiameter="100dp"
         app:cwav_waveCount="3"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray600"/>
+
+    <FrameLayout
+        android:id="@+id/preferenceFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>
