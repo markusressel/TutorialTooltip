@@ -29,21 +29,27 @@
 
     <string name="key_startDiameter">startDiameter</string>
     <string name="title_startDiameter">Start diameter</string>
+    <dimen name="default_value_startDiameter">0dp</dimen>
 
     <string name="key_targetDiameter">targetDiameter</string>
     <string name="title_targetDiameter">Target diameter</string>
+    <dimen name="default_value_targetDiameter">50dp</dimen>
 
     <string name="key_strokeWidth">strokeWidth</string>
     <string name="title_strokeWidth">Stroke width</string>
+    <dimen name="default_value_strokeWidth">3dp</dimen>
 
     <string name="key_delayBetweenWaves">delayBetweenWaves</string>
     <string name="title_delayBetweenWaves">Delay between waves</string>
+    <integer name="default_value_delayBetweenWaves">300</integer>
 
     <string name="key_duration">duration</string>
     <string name="title_duration">Duration</string>
+    <integer name="default_value_duration">3000</integer>
 
     <string name="key_waveCount">waveCount</string>
     <string name="title_waveCount">Wave count</string>
+    <integer name="default_value_waveCount">3</integer>
 
     <string name="summary_dp_value">%1$sdp</string>
     <string name="summary_ms_value">%1$sms</string>

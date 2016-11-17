@@ -55,7 +55,7 @@ public class CircleWaveAlertView extends View {
     @ColorInt
     private int endColor;
 
-    private int strokeWidth;
+    private float strokeWidth;
     private int duration;
     private int delayBetweenWaves;
     private int waveCount;
@@ -207,8 +207,10 @@ public class CircleWaveAlertView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int viewWidth = (int) targetDiameter + (strokeWidth / 2) + this.getPaddingLeft() + this.getPaddingRight();
-        int viewHeight = (int) targetDiameter + (strokeWidth / 2) + this.getPaddingTop() + this.getPaddingBottom();
+        int viewWidth = (int) targetDiameter + (int) (strokeWidth / 2) + this.getPaddingLeft() + this
+                .getPaddingRight();
+        int viewHeight = (int) targetDiameter + (int) (strokeWidth / 2) + this.getPaddingTop() + this
+                .getPaddingBottom();
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -369,7 +371,7 @@ public class CircleWaveAlertView extends View {
      *
      * @return stroke width
      */
-    public int getStrokeWidth() {
+    public float getStrokeWidth() {
         return strokeWidth;
     }
 
@@ -378,7 +380,7 @@ public class CircleWaveAlertView extends View {
      *
      * @param newStrokeWidth width
      */
-    public void setStrokeWidth(int newStrokeWidth) {
+    public void setStrokeWidth(float newStrokeWidth) {
         this.strokeWidth = newStrokeWidth;
 
         if (isInitialized) {

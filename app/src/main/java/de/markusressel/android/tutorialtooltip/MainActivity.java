@@ -20,8 +20,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout preferenceFrame;
 
     private BroadcastReceiver broadcastReceiver;
+
+    private static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (SettingsFragment.INTENT_ACTION_PREFERENCE_CHANGED.equals(intent.getAction())) {
                     String key = intent.getStringExtra(SettingsFragment.KEY_PREFERENCE_KEY);
+
+                    initFromPreferenceValues();
 
                     //                    if (getString(R.string.key_activeIndicatorFillColor).equals(key)) {
                     //                        @ColorInt int activeIndicatorColorFill = PreferencesHelper.getColor(getApplicationContext(), R.string.key_activeIndicatorFillColor, getResources().getColor(R.color.default_value_activeIndicatorFillColor));
@@ -103,25 +109,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFromPreferenceValues() {
-        circleWaveAlertView.setStartDiameter(0);
-        circleWaveAlertView.setTargetDiameter(600);
-
-        circleWaveAlertView.setStrokeWidth(3);
-
-        circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
-        circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
-
-        circleWaveAlertView.setDelayBetweenWaves(300);
-        circleWaveAlertView.setDuration(3000);
-
-        circleWaveAlertView.setWaveCount(3);
 
         circleWaveAlertView.setCustomInterpolator(new FastOutSlowInInterpolator());
 
-        //        @ColorInt int activeIndicatorColorFill =
-        //                circleWaveAlertView.setColor(PreferencesHelper.getColor(getApplicationContext(),
-        //                        R.string.key_activeIndicatorFillColor,
-        //                        getResources().getColor(R.color.default_value_activeIndicatorFillColor)););
+        @ColorInt int startColor = PreferencesHelper.getColor(getApplicationContext(),
+                R.string.key_startColor,
+                getResources().getColor(R.color.default_value_startColor));
+
+        @ColorInt int endColor = PreferencesHelper.getColor(getApplicationContext(),
+                R.string.key_endColor,
+                getResources().getColor(R.color.default_value_endColor));
+
+        float startDiameter = PreferencesHelper.getDimen(getApplicationContext(),
+                R.string.key_startDiameter,
+                R.dimen.default_value_startDiameter);
+        float targetDiameter = PreferencesHelper.getDimen(getApplicationContext(),
+                R.string.key_targetDiameter,
+                R.dimen.default_value_targetDiameter);
+
+        float strokeWidth = PreferencesHelper.getDimen(getApplicationContext(),
+                R.string.key_strokeWidth,
+                R.dimen.default_value_strokeWidth);
+
+        int delayBetweenWaves = PreferencesHelper.getInteger(getApplicationContext(),
+                R.string.key_delayBetweenWaves,
+                R.integer.default_value_delayBetweenWaves);
+
+        int duration = PreferencesHelper.getInteger(getApplicationContext(),
+                R.string.key_duration,
+                R.integer.default_value_duration);
+
+        int waveCount = PreferencesHelper.getInteger(getApplicationContext(),
+                R.string.key_waveCount,
+                R.integer.default_value_waveCount);
+
+        circleWaveAlertView.setStartColor(startColor);
+        circleWaveAlertView.setEndColor(endColor);
+
+        circleWaveAlertView.setStartDiameter(pxFromDp(this, startDiameter));
+        circleWaveAlertView.setTargetDiameter(pxFromDp(this, targetDiameter));
+
+        circleWaveAlertView.setStrokeWidth(pxFromDp(this, strokeWidth));
+
+        circleWaveAlertView.setDelayBetweenWaves(delayBetweenWaves);
+        circleWaveAlertView.setDuration(duration);
+
+        circleWaveAlertView.setWaveCount(waveCount);
     }
 
     @Override
