@@ -24,6 +24,11 @@
             android:key="@string/key_startColor"
             android:title="@string/title_startColor"/>
 
+        <com.rarepebble.colorpicker.ColorPreference
+            android:defaultValue="@color/default_value_endColor"
+            android:key="@string/key_endColor"
+            android:title="@string/title_endColor"/>
+
         <EditTextPreference
             android:defaultValue="0"
             android:dialogTitle="@string/title_startDiameter"
@@ -37,6 +42,34 @@
             android:inputType="number"
             android:key="@string/key_targetDiameter"
             android:title="@string/title_targetDiameter"/>
+
+        <EditTextPreference
+            android:defaultValue="3"
+            android:dialogTitle="@string/title_strokeWidth"
+            android:inputType="number"
+            android:key="@string/key_strokeWidth"
+            android:title="@string/title_strokeWidth"/>
+
+        <EditTextPreference
+            android:defaultValue="300"
+            android:dialogTitle="@string/title_delayBetweenWaves"
+            android:inputType="number"
+            android:key="@string/key_delayBetweenWaves"
+            android:title="@string/title_delayBetweenWaves"/>
+
+        <EditTextPreference
+            android:defaultValue="3000"
+            android:dialogTitle="@string/title_duration"
+            android:inputType="number"
+            android:key="@string/key_duration"
+            android:title="@string/title_duration"/>
+
+        <EditTextPreference
+            android:defaultValue="3"
+            android:dialogTitle="@string/title_waveCount"
+            android:inputType="number"
+            android:key="@string/key_waveCount"
+            android:title="@string/title_waveCount"/>
 
     </PreferenceCategory>
 

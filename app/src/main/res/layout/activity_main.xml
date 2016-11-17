@@ -30,7 +30,7 @@
         app:cwav_delayMillisecondsBetweenWaves="300"
         app:cwav_durationMilliseconds="3000"
         app:cwav_endColor="#0000FFFF"
-        app:cwav_startColor="@color/colorAccent"
+        app:cwav_startColor="?attr/colorAccent"
         app:cwav_startDiameter="0dp"
         app:cwav_strokeWidth="3"
         app:cwav_targetDiameter="100dp"

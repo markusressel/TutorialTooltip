@@ -21,12 +21,31 @@
 
     <string name="key_startColor">startColor</string>
     <string name="title_startColor">Start color</string>
-    <color name="default_value_startColor">#f00</color>
+    <color name="default_value_startColor">#ff00</color>
+
+    <string name="key_endColor">endColor</string>
+    <string name="title_endColor">End color</string>
+    <color name="default_value_endColor">#0f00</color>
 
     <string name="key_startDiameter">startDiameter</string>
     <string name="title_startDiameter">Start diameter</string>
 
     <string name="key_targetDiameter">targetDiameter</string>
     <string name="title_targetDiameter">Target diameter</string>
+
+    <string name="key_strokeWidth">strokeWidth</string>
+    <string name="title_strokeWidth">Stroke width</string>
+
+    <string name="key_delayBetweenWaves">delayBetweenWaves</string>
+    <string name="title_delayBetweenWaves">Delay between waves</string>
+
+    <string name="key_duration">duration</string>
+    <string name="title_duration">Duration</string>
+
+    <string name="key_waveCount">waveCount</string>
+    <string name="title_waveCount">Wave count</string>
+
+    <string name="summary_dp_value">%1$sdp</string>
+    <string name="summary_ms_value">%1$sms</string>
 
 </resources>
