@@ -14,16 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content">
-
-    <de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView
-        android:id="@+id/indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-    </de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView>
-
-</FrameLayout>
+<de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/indicator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>

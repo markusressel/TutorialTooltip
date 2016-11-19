@@ -20,9 +20,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.annotation.StringRes;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+
+import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView.Gravity;
 
 /**
  * Base TutorialTooltip class

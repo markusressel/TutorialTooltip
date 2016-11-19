@@ -21,25 +21,34 @@ import android.content.Context;
 import android.text.Html;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * TutorialTooltip View class
  * <p>
  * Created by Markus on 17.11.2016.
  */
-public class TutorialTooltipView extends LinearLayout {
+public class TutorialTooltipView extends RelativeLayout {
 
     private int tooltipId;
     private CharSequence text;
+    private Gravity gravity = Gravity.CENTER;
+    private TextView mTextView;
+    private CircleWaveAlertView circleWaveAlertView;
+
+    enum Gravity {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        CENTER
+    }
 
     public TutorialTooltipView(Context context) {
         super(context);
@@ -48,36 +57,86 @@ public class TutorialTooltipView extends LinearLayout {
     public TutorialTooltipView(Context context, TutorialTooltip.Builder builder) {
         this(context);
 
+        getBuilderValues(builder);
+
+        initializeViews();
+
+        updateValues();
+
+        updatePositions();
+    }
+
+    //    public TutorialTooltipView(Context context, AttributeSet attrs) {
+    //        this(context, attrs, 0);
+    //    }
+    //
+    //    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr) {
+    //        super(context, attrs, defStyleAttr);
+    //    }
+    //
+    //    @TargetApi(21)
+    //    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr,
+    //            int defStyleRes) {
+    //        super(context, attrs, defStyleAttr, defStyleRes);
+    //    }
+
+    private void getBuilderValues(TutorialTooltip.Builder builder) {
         tooltipId = builder.id;
-        text = context.getString(builder.textRes);
+        text = getContext().getString(builder.textRes);
+        gravity = builder.gravity;
+    }
 
-        LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        View messageView = LayoutInflater.from(getContext())
-                .inflate(R.layout.layout_tutorial_text, this, false);
-        messageView.setLayoutParams(params);
+    private void initializeViews() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        TextView mTextView = (TextView) messageView.findViewById(R.id.textView);
-        mTextView.setText(Html.fromHtml((String) this.text));
+        mTextView = (TextView) inflater.inflate(R.layout.layout_tutorial_text, this, false);
 
+        circleWaveAlertView = (CircleWaveAlertView) inflater.inflate(R.layout.layout_indicator,
+                this,
+                false);
 
-        View indicatorView = LayoutInflater.from(getContext())
-                .inflate(R.layout.layout_indicator, this, false);
-        indicatorView.setLayoutParams(params);
+        // center views in layout
+        //        setGravity(android.view.Gravity.CENTER);
+        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        CircleWaveAlertView circleWaveAlertView = (CircleWaveAlertView) indicatorView.findViewById(R.id.indicator);
+        RelativeLayout.LayoutParams paramsIndicator = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsText.addRule(RelativeLayout.BELOW, R.id.indicator);
+
+        addView(circleWaveAlertView, paramsIndicator);
+        addView(mTextView, paramsText);
+    }
+
+    private void updateValues() {
+        setTutorialMessage(Html.fromHtml((String) text));
+
         float targetDiameter = 200;
         circleWaveAlertView.setTargetDiameter(targetDiameter);
+    }
 
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    private void updatePositions() {
+        // TODO: Update view positions when layout changed
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
 
-        indicatorView.setX(display.getWidth() / 2 - (targetDiameter / 2));
-        indicatorView.setY(display.getHeight() / 2 - (targetDiameter / 2));
+        float targetDiameter = circleWaveAlertView.getTargetDiameter();
 
-        addView(messageView);
-        addView(indicatorView);
+        //        setX(display.getWidth() / 2 - (targetDiameter / 2));
+        //        setY(display.getHeight() / 2 - (targetDiameter / 2));
 
-        setOrientation(VERTICAL);
+        //        float messagePositionX = indicatorView.getX() - indicatorView.getWidth() / 2;
+        //        float messagePositionY = indicatorView.getY() + indicatorView.getHeight() / 2;
+        //        messageView.setX(messagePositionX);
+        //        messageView.setY(messagePositionY);
+
+    }
+
+    private void setTutorialMessage(CharSequence charSequence) {
+        mTextView.setText(charSequence);
     }
 
     /**
