@@ -157,7 +157,8 @@ public class TutorialTooltipView extends RelativeLayout {
             View view = anchorView.get();
 
             if (view != null) {
-                //                circleWaveAlertView.setTargetDiameter(Math.max(view.getWidth(), view.getHeight()));
+                int[] position = new int[2];
+                view.getLocationInWindow(position);
 
                 float x = 0;
                 float y = 0;
@@ -172,31 +173,21 @@ public class TutorialTooltipView extends RelativeLayout {
                     case RIGHT:
                         break;
                     case CENTER:
-                        x = view.getX() + view.getWidth() / 2 - indicatorView.getWidth() / 2;
-                        y = view.getY() + view.getHeight() - indicatorView.getHeight() / 2;
+                        x = position[0] + view.getWidth() / 2 - indicatorView.getWidth() / 2;
+                        y = position[1] + view.getHeight() / 2 - indicatorView.getHeight() / 2;
                         break;
                 }
 
                 indicatorView.setX(x);
                 indicatorView.setY(y);
 
-
-                float messageX = view.getX() + view.getWidth() / 2 - messageView.getWidth() / 2;
+                float messageX = position[0] + view.getWidth() / 2 - messageView.getWidth() / 2;
                 float messageY = y + indicatorView.getHeight();
 
                 messageView.setX(messageX);
                 messageView.setY(messageY);
             }
         }
-
-        //        setX(display.getWidth() / 2 - (targetDiameter / 2));
-        //        setY(display.getHeight() / 2 - (targetDiameter / 2));
-
-        //        float messagePositionX = indicatorView.getX() - indicatorView.getWidth() / 2;
-        //        float messagePositionY = indicatorView.getY() + indicatorView.getHeight() / 2;
-        //        messageView.setX(messagePositionX);
-        //        messageView.setY(messagePositionY);
-
     }
 
     private void setTutorialMessage(CharSequence charSequence) {
