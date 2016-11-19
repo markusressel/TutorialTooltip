@@ -39,4 +39,8 @@ public class ViewHelper {
         }
         return null;
     }
+
+    static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
 }

@@ -18,14 +18,19 @@ package de.markusressel.android.library.tutorialtooltip;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.text.Html;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.lang.ref.WeakReference;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -39,10 +44,23 @@ public class TutorialTooltipView extends RelativeLayout {
     private int tooltipId;
     private CharSequence text;
     private Gravity gravity = Gravity.CENTER;
+    private WeakReference<View> anchorView;
+    private Point anchorPoint;
+
     private TextView mTextView;
     private CircleWaveAlertView circleWaveAlertView;
+    private View indicatorView;
+    private View messageView;
 
-    enum Gravity {
+    private final ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener =
+            new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    updatePositions();
+                }
+            };
+
+    public enum Gravity {
         TOP,
         BOTTOM,
         LEFT,
@@ -82,33 +100,43 @@ public class TutorialTooltipView extends RelativeLayout {
 
     private void getBuilderValues(TutorialTooltip.Builder builder) {
         tooltipId = builder.id;
-        text = getContext().getString(builder.textRes);
+        text = builder.text;
         gravity = builder.gravity;
+        anchorView = new WeakReference<>(builder.anchorView);
+        anchorPoint = builder.anchorPoint;
     }
 
     private void initializeViews() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        mTextView = (TextView) inflater.inflate(R.layout.layout_tutorial_text, this, false);
+        messageView = inflater.inflate(R.layout.layout_tutorial_text, this, false);
+        mTextView = (TextView) messageView.findViewById(R.id.textView);
 
-        circleWaveAlertView = (CircleWaveAlertView) inflater.inflate(R.layout.layout_indicator,
-                this,
-                false);
+        indicatorView = inflater.inflate(R.layout.layout_indicator, this, false);
+        circleWaveAlertView = (CircleWaveAlertView) indicatorView.findViewById(R.id.indicator);
 
         // center views in layout
-        //        setGravity(android.view.Gravity.CENTER);
-        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        //        setGravity(android.anchorView.Gravity.CENTER);
+        setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        RelativeLayout.LayoutParams paramsIndicator = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams paramsIndicator = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
 
-        RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams paramsText = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
         paramsText.addRule(RelativeLayout.BELOW, R.id.indicator);
 
-        addView(circleWaveAlertView, paramsIndicator);
-        addView(mTextView, paramsText);
+        addView(indicatorView, paramsIndicator);
+        addView(messageView, paramsText);
+
+        if (anchorView != null) {
+            anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+            //            float size = Math.max(anchorView.getWidth(), anchorView.getHeight());
+            //            circleWaveAlertView.setTargetDiameter(size);
+        } else {
+            //            circleWaveAlertView.setTargetDiameter(ViewHelper.pxFromDp(getContext(), 50));
+        }
     }
 
     private void updateValues() {
@@ -124,6 +152,42 @@ public class TutorialTooltipView extends RelativeLayout {
         Display display = wm.getDefaultDisplay();
 
         float targetDiameter = circleWaveAlertView.getTargetDiameter();
+
+        if (anchorView != null) {
+            View view = anchorView.get();
+
+            if (view != null) {
+                //                circleWaveAlertView.setTargetDiameter(Math.max(view.getWidth(), view.getHeight()));
+
+                float x = 0;
+                float y = 0;
+
+                switch (gravity) {
+                    case TOP:
+                        break;
+                    case BOTTOM:
+                        break;
+                    case LEFT:
+                        break;
+                    case RIGHT:
+                        break;
+                    case CENTER:
+                        x = view.getX() + view.getWidth() / 2 - indicatorView.getWidth() / 2;
+                        y = view.getY() + view.getHeight() - indicatorView.getHeight() / 2;
+                        break;
+                }
+
+                indicatorView.setX(x);
+                indicatorView.setY(y);
+
+
+                float messageX = view.getX() + view.getWidth() / 2 - messageView.getWidth() / 2;
+                float messageY = y + indicatorView.getHeight();
+
+                messageView.setX(messageX);
+                messageView.setY(messageY);
+            }
+        }
 
         //        setX(display.getWidth() / 2 - (targetDiameter / 2));
         //        setY(display.getHeight() / 2 - (targetDiameter / 2));

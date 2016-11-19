@@ -19,7 +19,6 @@ package de.markusressel.android.library.tutorialtooltip;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -90,14 +89,13 @@ public class TutorialTooltip {
 
         int id;
 
-        @StringRes
-        int textRes;
+        String text;
 
-        View view;
+        View anchorView;
 
         Gravity gravity;
 
-        Point point;
+        Point anchorPoint;
 
         private boolean completed;
 
@@ -109,34 +107,34 @@ public class TutorialTooltip {
             this.id = lastId++;
         }
 
-        /**
-         * Set the tutorial text
-         *
-         * @param textRes
-         * @return
-         */
-        public Builder withText(@StringRes int textRes) {
-            isCompleted();
-            this.textRes = textRes;
-            return this;
-        }
-
-
         public Builder anchor(View view, Gravity gravity) {
             isCompleted();
-            this.point = null;
-            this.view = view;
+            this.anchorPoint = null;
+            this.anchorView = view;
             this.gravity = gravity;
             return this;
         }
 
         public Builder anchor(final Point point, final Gravity gravity) {
             isCompleted();
-            this.view = null;
-            this.point = new Point(point);
+            this.anchorView = null;
+            this.anchorPoint = new Point(point);
             this.gravity = gravity;
             return this;
         }
+
+        /**
+         * Set the tutorial text
+         *
+         * @param text
+         * @return
+         */
+        public Builder text(String text) {
+            isCompleted();
+            this.text = text;
+            return this;
+        }
+
 
         private void isCompleted() {
             if (completed) {
