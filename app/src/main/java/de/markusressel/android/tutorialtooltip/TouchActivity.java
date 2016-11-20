@@ -16,12 +16,14 @@
 
 package de.markusressel.android.tutorialtooltip;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 
 import de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView;
@@ -46,11 +48,24 @@ public class TouchActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.button);
 
-        TutorialTooltip.show(this,
+        CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(this);
+        circleWaveAlertView.setStrokeWidth(10);
+        circleWaveAlertView.setTargetDiameter(200);
+
+        final int tutorialId = TutorialTooltip.show(this,
                 new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1))
                         .anchor(button,
                                 TutorialTooltipView.Gravity.CENTER)
+                        .indicator(circleWaveAlertView)
                         .build());
+
+        final Activity activity = this;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TutorialTooltip.remove(activity, tutorialId);
+            }
+        });
     }
 
     @Override

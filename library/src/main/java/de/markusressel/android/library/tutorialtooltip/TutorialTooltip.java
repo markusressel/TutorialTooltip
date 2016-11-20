@@ -47,17 +47,19 @@ public class TutorialTooltip {
     /**
      * Create a TutorialTooltip and show it right away
      *
-     * @param context activity context
+     * @param context activity context that the TutorialTooltip will be added to. Application context will not suffice!
      * @param builder TutorialTooltip.Builder
      */
-    public static void show(Context context, Builder builder) {
-        make(context, builder).show();
+    public static int show(Context context, Builder builder) {
+        TutorialTooltipView tutorialTooltipView = make(context, builder);
+        tutorialTooltipView.show();
+        return tutorialTooltipView.getTutorialTooltipId();
     }
 
     /**
      * Remove an existing TutorialTooltip
      *
-     * @param context activity context
+     * @param context activity context the specified tooltip was added to, application context will not work!
      * @param id      id of TutorialTooltip
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
@@ -97,6 +99,8 @@ public class TutorialTooltip {
 
         Point anchorPoint;
 
+        View indicatorView;
+
         private boolean completed;
 
         public Builder(int id) {
@@ -135,6 +139,17 @@ public class TutorialTooltip {
             return this;
         }
 
+        /**
+         * Set a custom indicator view
+         *
+         * @param view indicator view
+         * @return
+         */
+        public Builder indicator(View view) {
+            isCompleted();
+            this.indicatorView = view;
+            return this;
+        }
 
         private void isCompleted() {
             if (completed) {
@@ -150,7 +165,7 @@ public class TutorialTooltip {
         public Builder build() {
             isCompleted();
 
-            completed = true;
+            this.completed = true;
             return this;
         }
     }
