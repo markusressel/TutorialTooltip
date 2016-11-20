@@ -16,7 +16,6 @@
 
 package de.markusressel.android.tutorialtooltip;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.graphics.Color;
@@ -24,7 +23,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 
 import de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView;
@@ -55,22 +53,35 @@ public class TouchActivity extends AppCompatActivity {
         circleWaveAlertView.setStrokeWidth(pxFromDp(this, 5));
         circleWaveAlertView.setTargetDiameter(pxFromDp(this, 200));
 
-        final int tutorialId = TutorialTooltip.show(this,
+        //        final int tutorialId = TutorialTooltip.show(this,
+        //                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
+        //                        TutorialTooltipView.Gravity.RIGHT)
+        //                        .anchor(button,
+        //                                TutorialTooltipView.Gravity.CENTER
+        //                        )
+        //                        .indicator(circleWaveAlertView)
+        //                        .build());
+        //
+        //        final Activity activity = this;
+        //        button.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View view) {
+        //                TutorialTooltip.remove(activity, tutorialId);
+        //            }
+        //        });
+
+        TutorialTooltip.show(this,
                 new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
                         TutorialTooltipView.Gravity.RIGHT)
-                        .anchor(button,
-                                TutorialTooltipView.Gravity.CENTER
-                        )
-                        .indicator(circleWaveAlertView)
+                        .anchor(new Point(300, 500))
+                        //                        .indicator(circleWaveAlertView)
                         .build());
 
-        final Activity activity = this;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TutorialTooltip.remove(activity, tutorialId);
-            }
-        });
+        TutorialTooltip.show(this,
+                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
+                        TutorialTooltipView.Gravity.RIGHT)
+                        .anchor(new Point(0, 500))
+                        .build());
     }
 
     @Override

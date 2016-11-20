@@ -87,7 +87,7 @@ public class TutorialTooltipView extends RelativeLayout {
 
         updateValues();
 
-        updatePositions();
+        getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 
     //    public TutorialTooltipView(Context context, AttributeSet attrs) {
@@ -132,21 +132,7 @@ public class TutorialTooltipView extends RelativeLayout {
             circleWaveAlertView = (CircleWaveAlertView) indicatorLayout.findViewById(R.id.indicator);
         }
 
-        // center views in layout
-        //        setGravity(android.anchorView.Gravity.CENTER);
-        //        setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-        //                RelativeLayout.LayoutParams.WRAP_CONTENT));
-        //
-        //        LayoutParams paramsIndicator = new LayoutParams(LayoutParams.WRAP_CONTENT,
-        //                LayoutParams.WRAP_CONTENT);
-        //
-        //        LayoutParams paramsText = new LayoutParams(LayoutParams.WRAP_CONTENT,
-        //                LayoutParams.WRAP_CONTENT);
-        //        paramsText.addRule(RelativeLayout.BELOW, R.id.indicator);
-
-        //        addView(indicatorLayout, paramsIndicator);
         addView(indicatorLayout);
-        //        addView(messageLayout, paramsText);
         addView(messageLayout);
 
         if (anchorView != null && anchorView.get() != null) {
@@ -167,8 +153,6 @@ public class TutorialTooltipView extends RelativeLayout {
     }
 
     private void updatePositions() {
-        // TODO: Update view positions when layout changed
-
         float x = 0;
         float y = 0;
 
@@ -247,6 +231,8 @@ public class TutorialTooltipView extends RelativeLayout {
             x = anchorPoint.x - indicatorLayout.getWidth() / 2;
             y = anchorPoint.y - indicatorLayout.getHeight() / 2;
 
+            //            indicatorLayout.setMinimumWidth(20);
+            //            indicatorLayout.setMinimumHeight(20);
             indicatorLayout.setX(x);
             indicatorLayout.setY(y);
 
@@ -255,24 +241,13 @@ public class TutorialTooltipView extends RelativeLayout {
 
             switch (messageGravity) {
                 case TOP:
-                    messageX = x - messageLayout.getWidth() / 2;
-                    messageY = y - messageLayout.getHeight();
-                    break;
                 case BOTTOM:
-                    messageX = x - messageLayout.getWidth() / 2;
-                    messageY = y + indicatorLayout.getHeight();
-                    break;
                 case LEFT:
-                    messageX = x - messageLayout.getWidth();
-                    messageY = y + indicatorLayout.getHeight() / 2;
-                    break;
                 case RIGHT:
-                    messageX = x + messageLayout.getWidth();
-                    messageY = y + indicatorLayout.getHeight() / 2;
-                    break;
                 case CENTER:
-                    messageX = x + -messageLayout.getWidth() / 2;
-                    messageY = y + indicatorLayout.getHeight();
+                default:
+                    messageX = anchorPoint.x - messageLayout.getWidth() / 2;
+                    messageY = anchorPoint.y + indicatorLayout.getHeight() / 2;
                     break;
             }
 

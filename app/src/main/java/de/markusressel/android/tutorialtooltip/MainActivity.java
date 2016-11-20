@@ -27,8 +27,6 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 
 import de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView;
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,13 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         // load settings
         initFromPreferenceValues();
-
-        TutorialTooltip.show(this,
-                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
-                        TutorialTooltipView.Gravity.BOTTOM)
-                        .anchor(circleWaveAlertView,
-                                TutorialTooltipView.Gravity.CENTER)
-                        .build());
 
         // this receiver will update the view if a preference has changed
         broadcastReceiver = new BroadcastReceiver() {
