@@ -56,9 +56,11 @@ public class TouchActivity extends AppCompatActivity {
         circleWaveAlertView.setTargetDiameter(pxFromDp(this, 200));
 
         final int tutorialId = TutorialTooltip.show(this,
-                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1))
+                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
+                        TutorialTooltipView.Gravity.RIGHT)
                         .anchor(button,
-                                TutorialTooltipView.Gravity.CENTER)
+                                TutorialTooltipView.Gravity.CENTER
+                        )
                         .indicator(circleWaveAlertView)
                         .build());
 
@@ -90,8 +92,7 @@ public class TouchActivity extends AppCompatActivity {
 
     private void createTutorialTooltip(float x, float y) {
         TutorialTooltip.show(this,
-                new TutorialTooltip.Builder().anchor(new Point((int) x, (int) y),
-                        TutorialTooltipView.Gravity.CENTER)
-                        .text("Test Tutorial Message"));
+                new TutorialTooltip.Builder().anchor(new Point((int) x, (int) y))
+                        .text("Test Tutorial Message", TutorialTooltipView.Gravity.BOTTOM));
     }
 }

@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         initFromPreferenceValues();
 
         TutorialTooltip.show(this,
-                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1))
+                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
+                        TutorialTooltipView.Gravity.BOTTOM)
                         .anchor(circleWaveAlertView,
                                 TutorialTooltipView.Gravity.CENTER)
                         .build());

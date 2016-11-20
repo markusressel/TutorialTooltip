@@ -95,7 +95,9 @@ public class TutorialTooltip {
 
         View anchorView;
 
-        Gravity gravity;
+        Gravity anchorGravity;
+
+        Gravity messageGravity;
 
         Point anchorPoint;
 
@@ -115,15 +117,14 @@ public class TutorialTooltip {
             isCompleted();
             this.anchorPoint = null;
             this.anchorView = view;
-            this.gravity = gravity;
+            this.anchorGravity = gravity;
             return this;
         }
 
-        public Builder anchor(final Point point, final Gravity gravity) {
+        public Builder anchor(final Point point) {
             isCompleted();
             this.anchorView = null;
-            this.anchorPoint = new Point(point);
-            this.gravity = gravity;
+            this.anchorPoint = point;
             return this;
         }
 
@@ -133,9 +134,10 @@ public class TutorialTooltip {
          * @param text
          * @return
          */
-        public Builder text(String text) {
+        public Builder text(String text, final Gravity gravity) {
             isCompleted();
             this.text = text;
+            this.messageGravity = gravity;
             return this;
         }
 

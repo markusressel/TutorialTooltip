@@ -20,13 +20,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.text.Html;
-import android.view.Display;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,15 +42,19 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  */
 public class TutorialTooltipView extends RelativeLayout {
 
+    private static final String TAG = "TutorialTooltipView";
+
     private int tooltipId;
     private CharSequence text;
-    private Gravity gravity = Gravity.CENTER;
+    private Gravity anchorGravity = Gravity.CENTER;
     private WeakReference<View> anchorView;
     private Point anchorPoint;
 
     private TextView mTextView;
     private CircleWaveAlertView circleWaveAlertView;
     private View customIndicatorView;
+
+    private Gravity messageGravity = Gravity.BOTTOM;
     private FrameLayout indicatorLayout;
     private FrameLayout messageLayout;
 
@@ -104,10 +107,13 @@ public class TutorialTooltipView extends RelativeLayout {
     private void getBuilderValues(TutorialTooltip.Builder builder) {
         tooltipId = builder.id;
         text = builder.text;
-        gravity = builder.gravity;
-        anchorView = new WeakReference<>(builder.anchorView);
+        anchorGravity = builder.anchorGravity;
+        if (builder.anchorView != null) {
+            anchorView = new WeakReference<>(builder.anchorView);
+        }
         anchorPoint = builder.anchorPoint;
         customIndicatorView = builder.indicatorView;
+        messageGravity = builder.messageGravity;
     }
 
     private void initializeViews() {
@@ -143,12 +149,13 @@ public class TutorialTooltipView extends RelativeLayout {
         //        addView(messageLayout, paramsText);
         addView(messageLayout);
 
-        if (anchorView != null) {
+        if (anchorView != null && anchorView.get() != null) {
             anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
-            //            float size = Math.max(anchorView.getWidth(), anchorView.getHeight());
-            //            circleWaveAlertView.setTargetDiameter(size);
+        } else if (anchorPoint != null) {
+
         } else {
-            //            circleWaveAlertView.setTargetDiameter(ViewHelper.pxFromDp(getContext(), 50));
+            Log.e(TAG,
+                    "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
     }
 
@@ -161,17 +168,9 @@ public class TutorialTooltipView extends RelativeLayout {
 
     private void updatePositions() {
         // TODO: Update view positions when layout changed
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
 
-        float targetDiameter = 0;
-
-        if (customIndicatorView == null) {
-            targetDiameter = circleWaveAlertView.getTargetDiameter();
-        } else {
-            targetDiameter = Math.max(customIndicatorView.getWidth(),
-                    customIndicatorView.getHeight());
-        }
+        float x = 0;
+        float y = 0;
 
         if (anchorView != null) {
             View view = anchorView.get();
@@ -180,33 +179,108 @@ public class TutorialTooltipView extends RelativeLayout {
                 int[] position = new int[2];
                 view.getLocationInWindow(position);
 
-                float x = 0;
-                float y = 0;
-
-                switch (gravity) {
+                switch (anchorGravity) {
                     case TOP:
+                        x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
+                        y = position[1] - indicatorLayout.getHeight() / 2;
+
                         break;
                     case BOTTOM:
+                        x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
+                        y = position[1] + view.getHeight() - indicatorLayout.getHeight() / 2;
+
+
                         break;
                     case LEFT:
+                        x = position[0] - indicatorLayout.getWidth() / 2;
+                        y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+
+
                         break;
                     case RIGHT:
+                        x = position[0] + view.getWidth() - indicatorLayout.getWidth() / 2;
+                        y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+
+
                         break;
                     case CENTER:
                         x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
                         y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+
+
                         break;
                 }
 
                 indicatorLayout.setX(x);
                 indicatorLayout.setY(y);
 
-                float messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
-                float messageY = y + indicatorLayout.getHeight();
+                float messageX = 0;
+                float messageY = 0;
+
+                switch (messageGravity) {
+                    case TOP:
+                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageY = y - messageLayout.getHeight();
+                        break;
+                    case BOTTOM:
+                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageY = y + indicatorLayout.getHeight() / 2;
+                        break;
+                    case LEFT:
+                        messageX = position[0] - indicatorLayout.getWidth() - messageLayout.getWidth() / 2;
+                        messageY = y + indicatorLayout.getHeight() / 2;
+                        break;
+                    case RIGHT:
+                        messageX = position[0] + view.getWidth() - messageLayout.getWidth() / 2;
+                        messageY = y + indicatorLayout.getHeight();
+                        break;
+                    case CENTER:
+                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageY = y + indicatorLayout.getHeight();
+                        break;
+                }
 
                 messageLayout.setX(messageX);
                 messageLayout.setY(messageY);
             }
+        } else if (anchorPoint != null) {
+            x = anchorPoint.x - indicatorLayout.getWidth() / 2;
+            y = anchorPoint.y - indicatorLayout.getHeight() / 2;
+
+            indicatorLayout.setX(x);
+            indicatorLayout.setY(y);
+
+            float messageX = 0;
+            float messageY = 0;
+
+            switch (messageGravity) {
+                case TOP:
+                    messageX = x - messageLayout.getWidth() / 2;
+                    messageY = y - messageLayout.getHeight();
+                    break;
+                case BOTTOM:
+                    messageX = x - messageLayout.getWidth() / 2;
+                    messageY = y + indicatorLayout.getHeight();
+                    break;
+                case LEFT:
+                    messageX = x - messageLayout.getWidth();
+                    messageY = y + indicatorLayout.getHeight() / 2;
+                    break;
+                case RIGHT:
+                    messageX = x + messageLayout.getWidth();
+                    messageY = y + indicatorLayout.getHeight() / 2;
+                    break;
+                case CENTER:
+                    messageX = x + -messageLayout.getWidth() / 2;
+                    messageY = y + indicatorLayout.getHeight();
+                    break;
+            }
+
+            messageLayout.setX(messageX);
+            messageLayout.setY(messageY);
+        } else {
+            Log.e(TAG,
+                    "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
     }
 
@@ -242,14 +316,10 @@ public class TutorialTooltipView extends RelativeLayout {
      * Remove this view
      */
     public void remove() {
-        // TODO:
         ViewParent parent = getParent();
 
         if (null != parent) {
             ((ViewGroup) parent).removeView(TutorialTooltipView.this);
-            //            if (null != mShowAnimation && mShowAnimation.isStarted()) {
-            //                mShowAnimation.cancel();
-            //            }
         }
     }
 }
