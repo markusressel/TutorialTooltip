@@ -57,6 +57,30 @@ public class TutorialTooltip {
     }
 
     /**
+     * Searches through the view tree for instances of TutorialTooltipView
+     *
+     * @param context activity context
+     * @param id      id of TutorialTooltip
+     * @return true if a TutorialTooltip with the given id exists, false otherwise
+     */
+    public static boolean exists(Context context, int id) {
+        final Activity act = ViewHelper.getActivity(context);
+        if (act != null) {
+            ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
+            for (int i = 0; i < rootView.getChildCount(); i++) {
+                final View child = rootView.getChildAt(i);
+                if (child instanceof TutorialTooltipView) {
+                    TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
+                    if (tutorialTooltipView.getTutorialTooltipId() == id) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Remove an existing TutorialTooltip
      *
      * @param context activity context the specified tooltip was added to, application context will not work!
@@ -66,8 +90,7 @@ public class TutorialTooltip {
     public static boolean remove(Context context, int id) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
-            ViewGroup rootView;
-            rootView = (ViewGroup) (act.getWindow().getDecorView());
+            ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
             for (int i = 0; i < rootView.getChildCount(); i++) {
                 final View child = rootView.getChildAt(i);
                 if (child instanceof TutorialTooltipView) {
@@ -81,6 +104,29 @@ public class TutorialTooltip {
             }
         }
         return false;
+    }
+
+    /**
+     * Remove all existing TutorialTooltips from view
+     *
+     * @param context activity context the specified tooltip was added to, application context will not work!
+     */
+    public static void removeAll(Context context) {
+        final Activity act = ViewHelper.getActivity(context);
+        if (act != null) {
+            ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
+            for (int i = 0; i < rootView.getChildCount(); i++) {
+                final View child = rootView.getChildAt(i);
+                if (child instanceof TutorialTooltipView) {
+                    TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
+                    tutorialTooltipView.remove();
+
+                    // a view was removed fron the parent so the child list is now one element smaller
+                    // to prevent skipping one element in the list the index is kept the same for the next loop (decremented and incremented)
+                    i--;
+                }
+            }
+        }
     }
 
     /**
@@ -147,7 +193,7 @@ public class TutorialTooltip {
          * @param view indicator view
          * @return
          */
-        public Builder indicator(View view) {
+        public Builder customIndicator(View view) {
             isCompleted();
             this.indicatorView = view;
             return this;

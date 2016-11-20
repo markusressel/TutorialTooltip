@@ -22,6 +22,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +37,11 @@ public class TouchActivity extends AppCompatActivity {
     private CircleWaveAlertView circleWaveAlertView;
 
     private BroadcastReceiver broadcastReceiver;
+    private int tutorialId1;
+    private Button button1;
+    private Button button2;
+    private FloatingActionButton fab;
+    private Button button3;
 
     private static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -47,28 +53,40 @@ public class TouchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_test);
 
-        Button button = (Button) findViewById(R.id.button);
-
-        CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(this);
-        circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
-        circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
-        circleWaveAlertView.setStrokeWidth(pxFromDp(this, 5));
-        circleWaveAlertView.setTargetDiameter(pxFromDp(this, 50));
-
-        final int tutorialId = TutorialTooltip.show(this,
-                new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
-                        TutorialTooltipView.Gravity.BOTTOM)
-                        .anchor(button,
-                                TutorialTooltipView.Gravity.CENTER
-                        )
-                        .indicator(circleWaveAlertView)
-                        .build());
+        button1 = (Button) findViewById(R.id.button1);
+        button2 = (Button) findViewById(R.id.button2);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        button3 = (Button) findViewById(R.id.button3);
 
         final Activity activity = this;
-        button.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TutorialTooltip.remove(activity, tutorialId);
+                if (TutorialTooltip.exists(activity, tutorialId1)) {
+                    TutorialTooltip.remove(activity, tutorialId1);
+                } else {
+                    CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(activity);
+                    circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
+                    circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
+                    circleWaveAlertView.setStrokeWidth(pxFromDp(activity, 5));
+                    circleWaveAlertView.setTargetDiameter(pxFromDp(activity, 50));
+
+                    tutorialId1 = TutorialTooltip.show(activity,
+                            new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
+                                    TutorialTooltipView.Gravity.TOP)
+                                    .anchor(button1,
+                                            TutorialTooltipView.Gravity.TOP
+                                    )
+                                    .customIndicator(circleWaveAlertView)
+                                    .build());
+                }
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TutorialTooltip.removeAll(activity);
             }
         });
     }
@@ -93,6 +111,6 @@ public class TouchActivity extends AppCompatActivity {
     private void createTutorialTooltip(float x, float y) {
         TutorialTooltip.show(this,
                 new TutorialTooltip.Builder().anchor(new Point((int) x, (int) y))
-                        .text("Test Tutorial Message", TutorialTooltipView.Gravity.TOP));
+                        .text("Test Tutorial Message", TutorialTooltipView.Gravity.TOP).build());
     }
 }
