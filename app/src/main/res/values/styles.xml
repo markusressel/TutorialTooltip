@@ -23,8 +23,16 @@
         <item name="colorPrimaryDark">#455A64</item>
         <item name="colorAccent">#FF5722</item>
 
+
         <!-- Preferences -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#607D8B</item>
+        <item name="colorPrimaryDark">#455A64</item>
+        <item name="colorAccent">#FF5722</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

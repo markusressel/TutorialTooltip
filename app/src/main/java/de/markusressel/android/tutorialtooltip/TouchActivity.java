@@ -45,6 +45,7 @@ public class TouchActivity extends AppCompatActivity {
     private Button button2;
     private FloatingActionButton fab;
     private Button button3;
+    private int tutorialId3;
 
     private static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -94,6 +95,29 @@ public class TouchActivity extends AppCompatActivity {
                             new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_2),
                                     TutorialTooltipView.Gravity.BOTTOM)
                                     .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
+                                    .build());
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TutorialTooltip.exists(activity, tutorialId3)) {
+                    TutorialTooltip.remove(activity, tutorialId3);
+                } else {
+                    CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(activity);
+                    circleWaveAlertView.setStartColor(Color.argb(255, 255, 255, 255));
+                    circleWaveAlertView.setEndColor(Color.argb(0, 255, 255, 255));
+                    circleWaveAlertView.setStrokeWidth(pxFromDp(activity, 5));
+                    circleWaveAlertView.setTargetDiameter(pxFromDp(activity, 50));
+
+
+                    tutorialId3 = TutorialTooltip.show(activity,
+                            new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_fab),
+                                    TutorialTooltipView.Gravity.BOTTOM)
+                                    .anchor(fab, TutorialTooltipView.Gravity.CENTER)
+                                    .customIndicator(circleWaveAlertView)
                                     .build());
                 }
             }
