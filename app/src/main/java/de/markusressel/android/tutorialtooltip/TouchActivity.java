@@ -40,12 +40,12 @@ public class TouchActivity extends AppCompatActivity {
 
     private int tutorialId1;
     private int tutorialId2;
+    private int tutorialId3;
 
     private Button button1;
     private Button button2;
     private FloatingActionButton fab;
     private Button button3;
-    private int tutorialId3;
 
     private static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;

@@ -156,7 +156,7 @@ public class TutorialTooltip {
         }
 
         public Builder() {
-            this.id = lastId++;
+            this.id = ++lastId;
         }
 
         public Builder anchor(View view, Gravity gravity) {
