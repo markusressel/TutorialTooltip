@@ -316,6 +316,9 @@ public class CircleWaveAlertView extends View {
 
     /**
      * Set the end color of the waves
+     * <p>
+     * Hint: Keep mind that this color should contain the same values as start color except alpha value
+     * if you want correctly animated colors for a fadeout. You can always choose differently though if you want some kind of color shift.
      *
      * @param newEndColor new color value
      */

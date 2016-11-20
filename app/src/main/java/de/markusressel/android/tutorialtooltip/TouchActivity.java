@@ -19,6 +19,7 @@ package de.markusressel.android.tutorialtooltip;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,8 +50,10 @@ public class TouchActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.button);
 
         CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(this);
-        circleWaveAlertView.setStrokeWidth(10);
-        circleWaveAlertView.setTargetDiameter(200);
+        circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
+        circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
+        circleWaveAlertView.setStrokeWidth(pxFromDp(this, 5));
+        circleWaveAlertView.setTargetDiameter(pxFromDp(this, 200));
 
         final int tutorialId = TutorialTooltip.show(this,
                 new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1))
