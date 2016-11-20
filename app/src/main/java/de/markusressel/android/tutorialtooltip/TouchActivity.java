@@ -37,7 +37,10 @@ public class TouchActivity extends AppCompatActivity {
     private CircleWaveAlertView circleWaveAlertView;
 
     private BroadcastReceiver broadcastReceiver;
+
     private int tutorialId1;
+    private int tutorialId2;
+
     private Button button1;
     private Button button2;
     private FloatingActionButton fab;
@@ -74,10 +77,23 @@ public class TouchActivity extends AppCompatActivity {
                     tutorialId1 = TutorialTooltip.show(activity,
                             new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
                                     TutorialTooltipView.Gravity.TOP)
-                                    .anchor(button1,
-                                            TutorialTooltipView.Gravity.TOP
-                                    )
+                                    .anchor(button1, TutorialTooltipView.Gravity.TOP)
                                     .customIndicator(circleWaveAlertView)
+                                    .build());
+                }
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TutorialTooltip.exists(activity, tutorialId2)) {
+                    TutorialTooltip.remove(activity, tutorialId2);
+                } else {
+                    tutorialId2 = TutorialTooltip.show(activity,
+                            new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_2),
+                                    TutorialTooltipView.Gravity.BOTTOM)
+                                    .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
                                     .build());
                 }
             }
