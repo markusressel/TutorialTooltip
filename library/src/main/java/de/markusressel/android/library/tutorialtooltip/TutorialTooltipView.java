@@ -153,101 +153,100 @@ public class TutorialTooltipView extends RelativeLayout {
     }
 
     private void updatePositions() {
-        float x = 0;
-        float y = 0;
-
         if (anchorView != null) {
-            View view = anchorView.get();
-
-            if (view != null) {
-                int[] position = new int[2];
-                view.getLocationInWindow(position);
-
-                switch (anchorGravity) {
-                    case TOP:
-                        x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
-                        y = position[1] - indicatorLayout.getHeight() / 2;
-                        break;
-                    case BOTTOM:
-                        x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
-                        y = position[1] + view.getHeight() - indicatorLayout.getHeight() / 2;
-                        break;
-                    case LEFT:
-                        x = position[0] - indicatorLayout.getWidth() / 2;
-                        y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-                        break;
-                    case RIGHT:
-                        x = position[0] + view.getWidth() - indicatorLayout.getWidth() / 2;
-                        y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-                        break;
-                    case CENTER:
-                    default:
-                        x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
-                        y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-                        break;
-                }
-
-                indicatorLayout.setX(x);
-                indicatorLayout.setY(y);
-
-                float messageX = 0;
-                float messageY = 0;
-
-                switch (messageGravity) {
-                    case TOP:
-                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                        messageY = y - messageLayout.getHeight();
-                        break;
-                    case LEFT:
-                        messageX = x - messageLayout.getWidth();
-                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
-                        break;
-                    case RIGHT:
-                        messageX = x + indicatorLayout.getWidth();
-                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
-                        break;
-                    case CENTER:
-                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
-                        break;
-                    case BOTTOM:
-                    default:
-                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                        messageY = y + indicatorLayout.getHeight();
-                        break;
-                }
-
-                messageLayout.setX(messageX);
-                messageLayout.setY(messageY);
-            }
+            updateIndicatorPosition(anchorView);
         } else if (anchorPoint != null) {
-            x = anchorPoint.x - indicatorLayout.getWidth() / 2;
-            y = anchorPoint.y - indicatorLayout.getHeight() / 2;
-
-            indicatorLayout.setX(x);
-            indicatorLayout.setY(y);
-
-            float messageX = 0;
-            float messageY = 0;
-
-            switch (messageGravity) {
-                case TOP:
-                case BOTTOM:
-                case LEFT:
-                case RIGHT:
-                case CENTER:
-                default:
-                    messageX = anchorPoint.x - messageLayout.getWidth() / 2;
-                    messageY = anchorPoint.y + indicatorLayout.getHeight() / 2;
-                    break;
-            }
-
-            messageLayout.setX(messageX);
-            messageLayout.setY(messageY);
+            updateIndicatorPosition(anchorPoint);
         } else {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
+    }
+
+    private void updateIndicatorPosition(WeakReference<View> anchorView) {
+        float x;
+        float y;
+
+        View view = anchorView.get();
+
+        if (view != null) {
+            int[] position = new int[2];
+            view.getLocationInWindow(position);
+
+            switch (anchorGravity) {
+                case TOP:
+                    x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
+                    y = position[1] - indicatorLayout.getHeight() / 2;
+                    break;
+                case BOTTOM:
+                    x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
+                    y = position[1] + view.getHeight() - indicatorLayout.getHeight() / 2;
+                    break;
+                case LEFT:
+                    x = position[0] - indicatorLayout.getWidth() / 2;
+                    y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+                    break;
+                case RIGHT:
+                    x = position[0] + view.getWidth() - indicatorLayout.getWidth() / 2;
+                    y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+                    break;
+                case CENTER:
+                default:
+                    x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
+                    y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
+                    break;
+            }
+
+            indicatorLayout.setX(x);
+            indicatorLayout.setY(y);
+
+            updateMessagePosition(x, y);
+        }
+    }
+
+    private void updateIndicatorPosition(Point anchorPoint) {
+        float x;
+        float y;
+
+        x = anchorPoint.x - indicatorLayout.getWidth() / 2;
+        y = anchorPoint.y - indicatorLayout.getHeight() / 2;
+
+        indicatorLayout.setX(x);
+        indicatorLayout.setY(y);
+
+        updateMessagePosition(x, y);
+    }
+
+    private void updateMessagePosition(float x, float y) {
+        float messageX;
+        float messageY;
+
+        switch (messageGravity) {
+            case TOP:
+                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = y - messageLayout.getHeight();
+                break;
+            case LEFT:
+                messageX = x - messageLayout.getWidth();
+                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                break;
+            case RIGHT:
+                messageX = x + indicatorLayout.getWidth();
+                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                break;
+            case CENTER:
+                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                break;
+            case BOTTOM:
+            default:
+                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = y + indicatorLayout.getHeight();
+                break;
+        }
+
+        messageLayout.setX(messageX);
+        messageLayout.setY(messageY);
     }
 
     private void setTutorialMessage(CharSequence charSequence) {
