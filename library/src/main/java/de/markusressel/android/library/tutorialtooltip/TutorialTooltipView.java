@@ -167,31 +167,23 @@ public class TutorialTooltipView extends RelativeLayout {
                     case TOP:
                         x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
                         y = position[1] - indicatorLayout.getHeight() / 2;
-
                         break;
                     case BOTTOM:
                         x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
                         y = position[1] + view.getHeight() - indicatorLayout.getHeight() / 2;
-
-
                         break;
                     case LEFT:
                         x = position[0] - indicatorLayout.getWidth() / 2;
                         y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-
-
                         break;
                     case RIGHT:
                         x = position[0] + view.getWidth() - indicatorLayout.getWidth() / 2;
                         y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-
-
                         break;
                     case CENTER:
+                    default:
                         x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
                         y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
-
-
                         break;
                 }
 
@@ -206,19 +198,20 @@ public class TutorialTooltipView extends RelativeLayout {
                         messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
                         messageY = y - messageLayout.getHeight();
                         break;
-                    case BOTTOM:
-                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
-                        messageY = y + indicatorLayout.getHeight() / 2;
-                        break;
                     case LEFT:
-                        messageX = position[0] - indicatorLayout.getWidth() - messageLayout.getWidth() / 2;
-                        messageY = y + indicatorLayout.getHeight() / 2;
+                        messageX = x - messageLayout.getWidth();
+                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                         break;
                     case RIGHT:
-                        messageX = position[0] + view.getWidth() - messageLayout.getWidth() / 2;
-                        messageY = y + indicatorLayout.getHeight();
+                        messageX = x + indicatorLayout.getWidth();
+                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                         break;
                     case CENTER:
+                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                        break;
+                    case BOTTOM:
+                    default:
                         messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
                         messageY = y + indicatorLayout.getHeight();
                         break;
@@ -231,8 +224,6 @@ public class TutorialTooltipView extends RelativeLayout {
             x = anchorPoint.x - indicatorLayout.getWidth() / 2;
             y = anchorPoint.y - indicatorLayout.getHeight() / 2;
 
-            //            indicatorLayout.setMinimumWidth(20);
-            //            indicatorLayout.setMinimumHeight(20);
             indicatorLayout.setX(x);
             indicatorLayout.setY(y);
 
