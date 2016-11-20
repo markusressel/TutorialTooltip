@@ -53,11 +53,11 @@ public class TouchActivity extends AppCompatActivity {
         circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
         circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
         circleWaveAlertView.setStrokeWidth(pxFromDp(this, 5));
-        circleWaveAlertView.setTargetDiameter(pxFromDp(this, 200));
+        circleWaveAlertView.setTargetDiameter(pxFromDp(this, 50));
 
         final int tutorialId = TutorialTooltip.show(this,
                 new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
-                        TutorialTooltipView.Gravity.CENTER)
+                        TutorialTooltipView.Gravity.BOTTOM)
                         .anchor(button,
                                 TutorialTooltipView.Gravity.CENTER
                         )

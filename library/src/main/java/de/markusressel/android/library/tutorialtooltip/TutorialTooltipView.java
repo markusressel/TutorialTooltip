@@ -195,7 +195,7 @@ public class TutorialTooltipView extends RelativeLayout {
 
                 switch (messageGravity) {
                     case TOP:
-                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
                         messageY = y - messageLayout.getHeight();
                         break;
                     case LEFT:
@@ -207,12 +207,12 @@ public class TutorialTooltipView extends RelativeLayout {
                         messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                         break;
                     case CENTER:
-                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
                         messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                         break;
                     case BOTTOM:
                     default:
-                        messageX = position[0] + view.getWidth() / 2 - messageLayout.getWidth() / 2;
+                        messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
                         messageY = y + indicatorLayout.getHeight();
                         break;
                 }
