@@ -31,6 +31,7 @@ import android.widget.Button;
 import de.markusressel.android.library.tutorialtooltip.CircleWaveAlertView;
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.WaveIndicatorView;
 
 public class TouchActivity extends AppCompatActivity {
 
@@ -69,17 +70,17 @@ public class TouchActivity extends AppCompatActivity {
                 if (TutorialTooltip.exists(activity, tutorialId1)) {
                     TutorialTooltip.remove(activity, tutorialId1);
                 } else {
-                    CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(activity);
-                    circleWaveAlertView.setStartColor(Color.argb(255, 255, 0, 0));
-                    circleWaveAlertView.setEndColor(Color.argb(0, 255, 0, 0));
-                    circleWaveAlertView.setStrokeWidth(pxFromDp(activity, 5));
-                    circleWaveAlertView.setTargetDiameter(pxFromDp(activity, 50));
+                    WaveIndicatorView waveIndicatorView = new WaveIndicatorView(activity);
+                    waveIndicatorView.setStartColor(Color.argb(255, 255, 0, 0));
+                    waveIndicatorView.setEndColor(Color.argb(0, 255, 0, 0));
+                    waveIndicatorView.setStrokeWidth(pxFromDp(activity, 5));
+                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
                     tutorialId1 = TutorialTooltip.show(activity,
                             new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_1),
                                     TutorialTooltipView.Gravity.TOP)
                                     .anchor(button1, TutorialTooltipView.Gravity.TOP)
-                                    .customIndicator(circleWaveAlertView)
+                                    .customIndicator(waveIndicatorView)
                                     .build());
                 }
             }
@@ -106,18 +107,18 @@ public class TouchActivity extends AppCompatActivity {
                 if (TutorialTooltip.exists(activity, tutorialId3)) {
                     TutorialTooltip.remove(activity, tutorialId3);
                 } else {
-                    CircleWaveAlertView circleWaveAlertView = new CircleWaveAlertView(activity);
-                    circleWaveAlertView.setStartColor(Color.argb(255, 255, 255, 255));
-                    circleWaveAlertView.setEndColor(Color.argb(0, 255, 255, 255));
-                    circleWaveAlertView.setStrokeWidth(pxFromDp(activity, 5));
-                    circleWaveAlertView.setTargetDiameter(pxFromDp(activity, 50));
+                    WaveIndicatorView waveIndicatorView = new WaveIndicatorView(activity);
+                    waveIndicatorView.setStartColor(Color.argb(255, 255, 255, 255));
+                    waveIndicatorView.setEndColor(Color.argb(0, 255, 255, 255));
+                    waveIndicatorView.setStrokeWidth(pxFromDp(activity, 5));
+                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
 
                     tutorialId3 = TutorialTooltip.show(activity,
                             new TutorialTooltip.Builder().text(getString(R.string.tutorial_message_fab),
                                     TutorialTooltipView.Gravity.BOTTOM)
                                     .anchor(fab, TutorialTooltipView.Gravity.CENTER)
-                                    .customIndicator(circleWaveAlertView)
+                                    .customIndicator(waveIndicatorView)
                                     .build());
                 }
             }

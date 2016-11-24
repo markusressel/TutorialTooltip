@@ -151,9 +151,9 @@ public class TutorialTooltip {
 
         private boolean completed;
 
-        public Builder(int id) {
-            this.id = id;
-        }
+//        public Builder(int id) {
+//            this.id = id;
+//        }
 
         public Builder() {
             this.id = ++lastId;
@@ -189,11 +189,13 @@ public class TutorialTooltip {
 
         /**
          * Set a custom indicator view
+         * <p>
+         * To build your own indicator view, just create a new class and extend <code>TutorialTooltipIndicator</code>
          *
          * @param view indicator view
          * @return
          */
-        public Builder customIndicator(View view) {
+        public <T extends View & TutorialTooltipIndicator> Builder customIndicator(T view) {
             isCompleted();
             this.indicatorView = view;
             return this;
