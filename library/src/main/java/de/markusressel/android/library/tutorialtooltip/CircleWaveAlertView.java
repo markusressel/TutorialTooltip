@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -195,14 +196,42 @@ public class CircleWaveAlertView extends View {
                     }
                     sizeAnimators[i].setStartDelay(delay);
                     colorAnimators[i].setStartDelay(delay);
-
-                    sizeAnimators[i].start();
-                    colorAnimators[i].start();
                 }
+
+                startAnimators();
             }
         });
 
         isInitialized = true;
+    }
+
+    private void startAnimators() {
+        if (isInitialized) {
+            for (int i = 0; i < waveCount; i++) {
+                sizeAnimators[i].start();
+                colorAnimators[i].start();
+            }
+        }
+    }
+
+    @TargetApi(19)
+    private void pauseAnimators() {
+        if (isInitialized) {
+            for (int i = 0; i < sizeAnimators.length; i++) {
+                sizeAnimators[i].pause();
+                colorAnimators[i].pause();
+            }
+        }
+    }
+
+    @TargetApi(19)
+    private void resumeAnimators() {
+        if (isInitialized) {
+            for (int i = 0; i < sizeAnimators.length; i++) {
+                sizeAnimators[i].resume();
+                colorAnimators[i].resume();
+            }
+        }
     }
 
     private void cancelAnimators() {
@@ -213,6 +242,15 @@ public class CircleWaveAlertView extends View {
                 colorAnimators[i].removeAllUpdateListeners();
                 colorAnimators[i].cancel();
             }
+        }
+    }
+
+    private void cleanupAnimators() {
+        cancelAnimators();
+
+        for (int i = 0; i < waveCount; i++) {
+            sizeAnimators[i] = null;
+            colorAnimators[i] = null;
         }
     }
 
@@ -498,5 +536,29 @@ public class CircleWaveAlertView extends View {
             // reinitialize
             init();
         }
+    }
+
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                resumeAnimators();
+            } else {
+                startAnimators();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                pauseAnimators();
+            } else {
+                cancelAnimators();
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        cleanupAnimators();
     }
 }
