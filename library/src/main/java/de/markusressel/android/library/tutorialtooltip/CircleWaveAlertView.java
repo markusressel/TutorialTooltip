@@ -139,9 +139,13 @@ public class CircleWaveAlertView extends View {
         return color;
     }
 
-    synchronized private void init() {
-        cancelAnimators();
+    synchronized private void reinitialize() {
+        cleanupAnimators();
+        init();
+        startAnimators();
+    }
 
+    synchronized private void init() {
         currentDiameters = new float[waveCount];
         paints = new Paint[waveCount];
         colorAnimators = new ValueAnimator[waveCount];
@@ -184,23 +188,16 @@ public class CircleWaveAlertView extends View {
             });
         }
 
-        post(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < waveCount; i++) {
-                    int delay;
-                    if (delayBetweenWaves == -1) {
-                        delay = i * (duration / waveCount);
-                    } else {
-                        delay = i * delayBetweenWaves;
-                    }
-                    sizeAnimators[i].setStartDelay(delay);
-                    colorAnimators[i].setStartDelay(delay);
-                }
-
-                startAnimators();
+        for (int i = 0; i < waveCount; i++) {
+            int delay;
+            if (delayBetweenWaves == -1) {
+                delay = i * (duration / waveCount);
+            } else {
+                delay = i * delayBetweenWaves;
             }
-        });
+            sizeAnimators[i].setStartDelay(delay);
+            colorAnimators[i].setStartDelay(delay);
+        }
 
         isInitialized = true;
     }
@@ -246,11 +243,13 @@ public class CircleWaveAlertView extends View {
     }
 
     private void cleanupAnimators() {
-        cancelAnimators();
+        if (isInitialized) {
+            cancelAnimators();
 
-        for (int i = 0; i < waveCount; i++) {
-            sizeAnimators[i] = null;
-            colorAnimators[i] = null;
+            for (int i = 0; i < waveCount; i++) {
+                sizeAnimators[i] = null;
+                colorAnimators[i] = null;
+            }
         }
     }
 
@@ -301,7 +300,7 @@ public class CircleWaveAlertView extends View {
             targetDiameter = Math.min(width, height);
         }
 
-        init();
+        reinitialize();
     }
 
     @Override
@@ -489,7 +488,7 @@ public class CircleWaveAlertView extends View {
     public void setDelayBetweenWaves(int delayBetweenWaves) {
         this.delayBetweenWaves = delayBetweenWaves;
 
-        init();
+        reinitialize();
     }
 
     /**
@@ -512,7 +511,7 @@ public class CircleWaveAlertView extends View {
     public void setWaveCount(int waveCount) {
         this.waveCount = waveCount;
 
-        init();
+        reinitialize();
     }
 
     /**
@@ -533,8 +532,7 @@ public class CircleWaveAlertView extends View {
         this.customInterpolator = customInterpolator;
 
         if (isInitialized) {
-            // reinitialize
-            init();
+            reinitialize();
         }
     }
 
@@ -554,6 +552,11 @@ public class CircleWaveAlertView extends View {
                 cancelAnimators();
             }
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
     }
 
     @Override
