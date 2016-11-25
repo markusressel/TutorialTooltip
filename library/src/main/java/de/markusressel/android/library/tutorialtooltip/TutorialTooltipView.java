@@ -18,14 +18,18 @@ package de.markusressel.android.library.tutorialtooltip;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +49,8 @@ public class TutorialTooltipView extends RelativeLayout {
     private static final String TAG = "TutorialTooltipView";
 
     private int tooltipId;
+    private boolean attachToWindow;
+
     private CharSequence text;
     private Gravity anchorGravity = Gravity.CENTER;
     private WeakReference<View> anchorView;
@@ -74,12 +80,12 @@ public class TutorialTooltipView extends RelativeLayout {
         CENTER
     }
 
-    public TutorialTooltipView(Context context) {
+    protected TutorialTooltipView(Context context) {
         super(context);
     }
 
-    public TutorialTooltipView(Context context, TutorialTooltip.Builder builder) {
-        this(context);
+    public TutorialTooltipView(TutorialTooltip.Builder builder) {
+        this(builder.context);
 
         getBuilderValues(builder);
 
@@ -90,22 +96,10 @@ public class TutorialTooltipView extends RelativeLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 
-    //    public TutorialTooltipView(Context context, AttributeSet attrs) {
-    //        this(context, attrs, 0);
-    //    }
-    //
-    //    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr) {
-    //        super(context, attrs, defStyleAttr);
-    //    }
-    //
-    //    @TargetApi(21)
-    //    public TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr,
-    //            int defStyleRes) {
-    //        super(context, attrs, defStyleAttr, defStyleRes);
-    //    }
-
     private void getBuilderValues(TutorialTooltip.Builder builder) {
         tooltipId = builder.id;
+        attachToWindow = builder.attachToWindow;
+
         text = builder.text;
         anchorGravity = builder.anchorGravity;
         if (builder.anchorView != null) {
@@ -133,7 +127,7 @@ public class TutorialTooltipView extends RelativeLayout {
         }
 
         addView(indicatorLayout);
-        addView(messageLayout);
+        addView(messageLayout, WRAP_CONTENT, WRAP_CONTENT);
 
         if (anchorView != null && anchorView.get() != null) {
             anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
@@ -143,6 +137,14 @@ public class TutorialTooltipView extends RelativeLayout {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
+
+
+        //        setOnClickListener(new OnClickListener() {
+        //            @Override
+        //            public void onClick(View view) {
+        //                remove();
+        //            }
+        //        });
     }
 
     private void updateValues() {
@@ -217,36 +219,59 @@ public class TutorialTooltipView extends RelativeLayout {
         updateMessagePosition(x, y);
     }
 
-    private void updateMessagePosition(float x, float y) {
+    private void updateMessagePosition(float indicatorX, float indicatorY) {
         float messageX;
         float messageY;
 
         switch (messageGravity) {
             case TOP:
-                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                messageY = y - messageLayout.getHeight();
+                messageX = indicatorX + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = indicatorY - messageLayout.getHeight();
                 break;
             case LEFT:
-                messageX = x - messageLayout.getWidth();
-                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                messageX = indicatorX - messageLayout.getWidth();
+                messageY = indicatorY + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                 break;
             case RIGHT:
-                messageX = x + indicatorLayout.getWidth();
-                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                messageX = indicatorX + indicatorLayout.getWidth();
+                messageY = indicatorY + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                 break;
             case CENTER:
-                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                messageY = y + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
+                messageX = indicatorX + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = indicatorY + indicatorLayout.getHeight() / 2 - messageLayout.getHeight() / 2;
                 break;
             case BOTTOM:
             default:
-                messageX = x + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
-                messageY = y + indicatorLayout.getHeight();
+                messageX = indicatorX + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
+                messageY = indicatorY + indicatorLayout.getHeight();
                 break;
         }
 
         messageLayout.setX(messageX);
         messageLayout.setY(messageY);
+
+        updateMessageSize(messageX, messageY);
+    }
+
+    private void updateMessageSize(float messageX, float messageY) {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+
+        if (messageX + messageLayout.getWidth() > metrics.widthPixels) {
+            messageLayout.getLayoutParams().width = metrics.widthPixels - (int) messageX;
+        } else if (messageX < 0) {
+            messageLayout.setX(0);
+            messageLayout.getLayoutParams().width = messageLayout.getWidth() + (int) messageX;
+        }
+
+        messageLayout.requestLayout();
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //        onTouchEvent(ev);
+        return false;
     }
 
     private void setTutorialMessage(CharSequence charSequence) {
@@ -270,9 +295,29 @@ public class TutorialTooltipView extends RelativeLayout {
             final Activity activity = ViewHelper.getActivity(getContext());
             LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
             if (activity != null) {
-                ViewGroup rootView;
-                rootView = (ViewGroup) (activity.getWindow().getDecorView());
-                rootView.addView(this, params);
+
+                if (attachToWindow) {
+                    final WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+                    final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.MATCH_PARENT);
+                    mParams.format = PixelFormat.TRANSLUCENT;
+                    mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
+                    mParams.packageName = getContext().getPackageName();
+                    mParams.setTitle("TutorialTooltip");
+                    mParams.flags =
+                            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                    | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    ;
+                    wm.addView(this, mParams);
+                } else {
+                    ViewGroup rootView;
+                    rootView = (ViewGroup) (activity.getWindow().getDecorView());
+                    rootView.addView(this, params);
+                }
             }
         }
     }
@@ -283,8 +328,15 @@ public class TutorialTooltipView extends RelativeLayout {
     public void remove() {
         ViewParent parent = getParent();
 
-        if (null != parent) {
-            ((ViewGroup) parent).removeView(TutorialTooltipView.this);
+        if (attachToWindow) {
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            if (null != parent) {
+                wm.removeView(this);
+            }
+        } else {
+            if (parent instanceof ViewGroup) {
+                ((ViewGroup) parent).removeView(TutorialTooltipView.this);
+            }
         }
     }
 }

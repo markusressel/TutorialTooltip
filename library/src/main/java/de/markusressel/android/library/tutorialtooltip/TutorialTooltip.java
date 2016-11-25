@@ -33,31 +33,42 @@ import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView.Gravi
  */
 public class TutorialTooltip {
 
+    private static final String TAG = "TutorialTooltip";
+
     /**
      * Create the TutorialTooltip
      *
-     * @param context activity context
      * @param builder TutorialTooltip.Builder
      * @return view
      */
-    public static TutorialTooltipView make(Context context, Builder builder) {
-        return new TutorialTooltipView(context, builder);
+    public static TutorialTooltipView make(Builder builder) {
+        return new TutorialTooltipView(builder);
     }
 
     /**
      * Create a TutorialTooltip and show it right away
      *
-     * @param context activity context that the TutorialTooltip will be added to. Application context will not suffice!
      * @param builder TutorialTooltip.Builder
      */
-    public static int show(Context context, Builder builder) {
-        TutorialTooltipView tutorialTooltipView = make(context, builder);
+    public static int show(Builder builder) {
+        TutorialTooltipView tutorialTooltipView = make(builder);
+        return show(tutorialTooltipView);
+    }
+
+    /**
+     * Create a TutorialTooltip and show it right away
+     *
+     * @param tutorialTooltipView TutorialTooltipView
+     */
+    public static int show(TutorialTooltipView tutorialTooltipView) {
         tutorialTooltipView.show();
         return tutorialTooltipView.getTutorialTooltipId();
     }
 
     /**
      * Searches through the view tree for instances of TutorialTooltipView
+     * <p>
+     * This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
      *
      * @param context activity context
      * @param id      id of TutorialTooltip
@@ -81,7 +92,9 @@ public class TutorialTooltip {
     }
 
     /**
-     * Remove an existing TutorialTooltip
+     * Remove an existing TutorialTooltip via its ID
+     * <p>
+     * This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
      *
      * @param context activity context the specified tooltip was added to, application context will not work!
      * @param id      id of TutorialTooltip
@@ -103,11 +116,23 @@ public class TutorialTooltip {
                 }
             }
         }
+
         return false;
     }
 
     /**
-     * Remove all existing TutorialTooltips from view
+     * Remove an existing TutorialTooltip
+     *
+     * @param tutorialTooltipView TutorialTooltipView to remove
+     */
+    public static void remove(TutorialTooltipView tutorialTooltipView) {
+        tutorialTooltipView.remove();
+    }
+
+    /**
+     * Remove all existing TutorialTooltips from activity
+     * <p>
+     * This does not remove TutorialTooltips that are attached to the window!
      *
      * @param context activity context the specified tooltip was added to, application context will not work!
      */
@@ -133,6 +158,9 @@ public class TutorialTooltip {
      * Use this Builder to create a TutorialTooltip
      */
     public static final class Builder {
+
+        Context context;
+
         private static int lastId = 0;
 
         int id;
@@ -149,16 +177,46 @@ public class TutorialTooltip {
 
         View indicatorView;
 
+        boolean attachToWindow;
+
         private boolean completed;
 
 //        public Builder(int id) {
 //            this.id = id;
 //        }
 
-        public Builder() {
+        /**
+         * Constructor for the builder.
+         * Chain methods and call ".build()" as your last step to make this object immutable.
+         *
+         * @param context activity context that the TutorialTooltip will be added to. Application context will not suffice!
+         */
+        public Builder(Context context) {
+            this.context = context;
             this.id = ++lastId;
         }
 
+        /**
+         * Specify whether the TutorialTooltip should be attached to the Window or the activity.
+         * <p>
+         * This can be handy if you want to show TutorialTooltips in FragmentDialogs.
+         *
+         * @param attachToWindow true, if attached to the Window,
+         *                       false, if attached to the activity
+         * @return Builder
+         */
+        public Builder attachToWindow(boolean attachToWindow) {
+            this.attachToWindow = attachToWindow;
+            return this;
+        }
+
+        /**
+         * Set the anchor for the TutorialTooltip
+         *
+         * @param view    view which will be used as an anchor
+         * @param gravity position relative to the anchor view which the indicator will point to
+         * @return Builder
+         */
         public Builder anchor(View view, Gravity gravity) {
             isCompleted();
             this.anchorPoint = null;
@@ -167,6 +225,12 @@ public class TutorialTooltip {
             return this;
         }
 
+        /**
+         * Set the anchor point for the TutorialTooltip
+         *
+         * @param point position where the indicator will be located at
+         * @return Builder
+         */
         public Builder anchor(final Point point) {
             isCompleted();
             this.anchorView = null;
@@ -177,8 +241,9 @@ public class TutorialTooltip {
         /**
          * Set the tutorial text
          *
-         * @param text
-         * @return
+         * @param text    message
+         * @param gravity positioning of the text relative to the indicator view
+         * @return Builder
          */
         public Builder text(String text, final Gravity gravity) {
             isCompleted();
@@ -193,7 +258,7 @@ public class TutorialTooltip {
          * To build your own indicator view, just create a new class and extend <code>TutorialTooltipIndicator</code>
          *
          * @param view indicator view
-         * @return
+         * @return Builder
          */
         public <T extends View & TutorialTooltipIndicator> Builder customIndicator(T view) {
             isCompleted();
@@ -201,6 +266,9 @@ public class TutorialTooltip {
             return this;
         }
 
+        /**
+         * Checks if this Builder was already build and therefore cant be modified anymore
+         */
         private void isCompleted() {
             if (completed) {
                 throw new IllegalStateException("Builder was already build!");
@@ -210,7 +278,7 @@ public class TutorialTooltip {
         /**
          * Complete the build process
          *
-         * @return
+         * @return Builder
          */
         public Builder build() {
             isCompleted();

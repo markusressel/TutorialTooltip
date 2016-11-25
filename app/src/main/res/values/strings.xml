@@ -57,5 +57,6 @@
     <string name="tutorial_message_1">This TutorialTooltip is aligned to the top of the anchor view, and the message is displayed above the indicator.</string>
     <string name="tutorial_message_2">This TutorialTooltip is aligned to the bottom of the anchor view, and the message is displayed below the indicator.</string>
     <string name="tutorial_message_fab">This TutorialTooltip is attached at the center of the FAB and its message is displayed below it.</string>
+    <string name="tutorial_message_3">This TutorialTooltip is attached to the CENTER of the anchor View, with its message to the right.</string>
 
 </resources>
