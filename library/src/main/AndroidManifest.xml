@@ -14,7 +14,11 @@
   ~ limitations under the License.
   -->
 
-<manifest package="de.markusressel.android.library.tutorialtooltip">
+<manifest
+    xmlns:tools="http://schemas.android.com/tools"
+    package="de.markusressel.android.library.tutorialtooltip">
+
+    <uses-sdk tools:overrideLibrary="de.markusressel.android.library.circlewaveview"/>
 
     <application>
 

@@ -36,6 +36,8 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
+import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 

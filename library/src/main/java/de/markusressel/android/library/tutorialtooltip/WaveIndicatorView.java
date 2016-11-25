@@ -22,6 +22,8 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 
+import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
+
 /**
  * Created by Markus on 24.11.2016.
  */
