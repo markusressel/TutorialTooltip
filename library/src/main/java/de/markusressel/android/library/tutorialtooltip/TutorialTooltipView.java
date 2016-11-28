@@ -138,26 +138,31 @@ public class TutorialTooltipView extends RelativeLayout {
             indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
         }
 
+        // Set onClick listeners
         if (onTutorialTooltipClickedListener != null) {
-            indicatorView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onTutorialTooltipClickedListener != null) {
-                        onTutorialTooltipClickedListener.onIndicatorClicked(getTutorialTooltipId(),
-                                indicatorView, (View) indicatorView);
+            if (onTutorialTooltipClickedListener.indicatorIsClickable()) {
+                indicatorView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (onTutorialTooltipClickedListener != null) {
+                            onTutorialTooltipClickedListener.onIndicatorClicked(getTutorialTooltipId(),
+                                    indicatorView, (View) indicatorView);
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            messageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onTutorialTooltipClickedListener != null) {
-                        onTutorialTooltipClickedListener.onMessageClicked(getTutorialTooltipId(),
-                                messageView, (View) messageView);
+            if (onTutorialTooltipClickedListener.messageIsClickable()) {
+                messageView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (onTutorialTooltipClickedListener != null) {
+                            onTutorialTooltipClickedListener.onMessageClicked(getTutorialTooltipId(),
+                                    messageView, (View) messageView);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         addView(indicatorLayout);

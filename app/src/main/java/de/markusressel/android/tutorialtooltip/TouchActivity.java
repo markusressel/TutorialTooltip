@@ -84,6 +84,12 @@ public class TouchActivity extends AppCompatActivity {
                             .anchor(button1, TutorialTooltipView.Gravity.TOP)
                             .customIndicator(waveIndicatorView)
                             .onClickListener(new OnTutorialTooltipClickedListener() {
+
+                                @Override
+                                public boolean indicatorIsClickable() {
+                                    return false;
+                                }
+
 //                                @Override
 //                                public void onIndicatorClicked(int id,
 //                                        TutorialTooltipIndicator indicator, View indicatorView) {
@@ -91,6 +97,11 @@ public class TouchActivity extends AppCompatActivity {
 //                                            "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
 //                                            Toast.LENGTH_SHORT).show();
 //                                }
+
+                                @Override
+                                public boolean messageIsClickable() {
+                                    return true;
+                                }
 
                                 @Override
                                 public void onMessageClicked(int id,

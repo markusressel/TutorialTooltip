@@ -21,9 +21,19 @@ import android.view.View;
 /**
  * OnClick listener for a TutorialTooltip
  * <p>
+ * If you override any of the on*Clicked methods remember to return <code>true</code>
+ * in the corresponding is*Clickable() methods.
+ * <p>
  * Created by Markus on 28.11.2016.
  */
 public abstract class OnTutorialTooltipClickedListener {
+
+    /**
+     * Specify whether the indicator should react to touch or pass touch events to its parent
+     * <p>
+     * Remember return true here if you override <code>onIndicatorClicked()</code>!
+     */
+    public abstract boolean indicatorIsClickable();
 
     /**
      * This method is called when the indicator view is clicked
@@ -33,14 +43,15 @@ public abstract class OnTutorialTooltipClickedListener {
      * @param indicatorView indicator view
      */
     public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
-        if (indicatorView.isClickable()) {
-            // disable listening for click events to pass them to the parent view
-            indicatorView.setClickable(false);
-            // perform click again on parent
-            // doesnt work yet :(
-            ((View) indicatorView.getParent()).performClick();
-        }
+        // override and implement this
     }
+
+    /**
+     * Specify whether the message should react to touch or pass touch events to its parent
+     * <p>
+     * Remember return true here if you override <code>onMessageClicked()</code>!
+     */
+    public abstract boolean messageIsClickable();
 
     /**
      * This method is called when the message view is clicked
@@ -50,13 +61,7 @@ public abstract class OnTutorialTooltipClickedListener {
      * @param messageView message view
      */
     public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
-        if (messageView.isClickable()) {
-            // disable listening for click events to pass them to the parent view
-            messageView.setClickable(false);
-            // perform click again on parent
-            // doesnt work yet :(
-            ((View) messageView.getParent()).performClick();
-        }
+        // override and implement this
     }
 
 }
