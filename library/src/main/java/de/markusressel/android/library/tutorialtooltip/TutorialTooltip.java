@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView.Gravity;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 
 /**
  * Base TutorialTooltip class
@@ -177,6 +179,8 @@ public class TutorialTooltip {
 
         View indicatorView;
 
+        OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
+
         boolean attachToWindow;
 
         private boolean completed;
@@ -199,7 +203,7 @@ public class TutorialTooltip {
         /**
          * Specify whether the TutorialTooltip should be attached to the Window or the activity.
          * <p>
-         * This can be handy if you want to show TutorialTooltips in FragmentDialogs.
+         * This can be handy if you want to show TutorialTooltips above all other content, like in FragmentDialogs.
          *
          * @param attachToWindow true, if attached to the Window,
          *                       false, if attached to the activity
@@ -263,6 +267,19 @@ public class TutorialTooltip {
         public <T extends View & TutorialTooltipIndicator> Builder customIndicator(T view) {
             isCompleted();
             this.indicatorView = view;
+            return this;
+        }
+
+        /**
+         * Set an OnClick listener for the TutorialTooltip
+         *
+         * @param onTutorialTooltipClickedListener
+         * @return Builder
+         */
+        public Builder onClickListener(
+                OnTutorialTooltipClickedListener onTutorialTooltipClickedListener) {
+            isCompleted();
+            this.onTutorialTooltipClickedListener = onTutorialTooltipClickedListener;
             return this;
         }
 

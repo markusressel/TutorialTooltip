@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip;
+package de.markusressel.android.library.tutorialtooltip.interfaces;
 
 import android.support.annotation.ColorInt;
+import android.view.View;
 
 /**
- * Interface that defines methods a custom implementation for TutorialTooltipMessage must implement
+ * Interface that defines methods a custom implementation for TutorialTooltipIndicator must implement
  * <p>
  * Created by Markus on 24.11.2016.
  */
-public interface TutorialTooltipMessage {
+public interface TutorialTooltipIndicator {
 
     /**
-     * Set the background color for this message
+     * Set the main color for this indicator
      *
      * @param color color as integer
      */
-    void setBackgroundColor(@ColorInt int color);
+    void setColor(@ColorInt int color);
 
     /**
-     * Set the text color for this message
+     * Set an onClick listener for this indicator
      *
-     * @param color color as integer
+     * @param listener
      */
-    void setTextColor(@ColorInt int color);
+    void setOnClickListener(View.OnClickListener listener);
 
 }

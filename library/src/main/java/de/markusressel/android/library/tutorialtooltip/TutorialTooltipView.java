@@ -32,11 +32,12 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -58,13 +59,14 @@ public class TutorialTooltipView extends RelativeLayout {
     private WeakReference<View> anchorView;
     private Point anchorPoint;
 
-    private TextView mTextView;
-    private CircleWaveAlertView circleWaveAlertView;
-    private View customIndicatorView;
+    private TutorialTooltipIndicator indicatorView;
+    private TutorialTooltipMessage messageView;
 
     private Gravity messageGravity = Gravity.BOTTOM;
     private FrameLayout indicatorLayout;
     private FrameLayout messageLayout;
+
+    private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
 
     private final ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener =
             new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -108,24 +110,54 @@ public class TutorialTooltipView extends RelativeLayout {
             anchorView = new WeakReference<>(builder.anchorView);
         }
         anchorPoint = builder.anchorPoint;
-        customIndicatorView = builder.indicatorView;
+        indicatorView = (TutorialTooltipIndicator) builder.indicatorView;
         messageGravity = builder.messageGravity;
+
+        onTutorialTooltipClickedListener = builder.onTutorialTooltipClickedListener;
     }
 
     private void initializeViews() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         messageLayout = (FrameLayout) inflater.inflate(R.layout.layout_tutorial_text, this, false);
-        mTextView = (TextView) messageLayout.findViewById(R.id.textView);
+
+        if (messageView != null) {
+            messageLayout.removeAllViews();
+            messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
+        } else {
+            messageView = (BasicMessageView) messageLayout.findViewById(R.id.messageView);
+        }
 
         indicatorLayout = (FrameLayout) inflater.inflate(R.layout.layout_indicator,
                 this,
                 false);
-        if (customIndicatorView != null) {
+        if (indicatorView != null) {
             indicatorLayout.removeAllViews();
-            indicatorLayout.addView(customIndicatorView, WRAP_CONTENT, WRAP_CONTENT);
+            indicatorLayout.addView((View) indicatorView, WRAP_CONTENT, WRAP_CONTENT);
         } else {
-            circleWaveAlertView = (CircleWaveAlertView) indicatorLayout.findViewById(R.id.indicator);
+            indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
+        }
+
+        if (onTutorialTooltipClickedListener != null) {
+            indicatorView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onTutorialTooltipClickedListener != null) {
+                        onTutorialTooltipClickedListener.onIndicatorClicked(getTutorialTooltipId(),
+                                indicatorView, (View) indicatorView);
+                    }
+                }
+            });
+
+            messageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onTutorialTooltipClickedListener != null) {
+                        onTutorialTooltipClickedListener.onMessageClicked(getTutorialTooltipId(),
+                                messageView, (View) messageView);
+                    }
+                }
+            });
         }
 
         addView(indicatorLayout);
@@ -139,14 +171,6 @@ public class TutorialTooltipView extends RelativeLayout {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
-
-
-        //        setOnClickListener(new OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                remove();
-        //            }
-        //        });
     }
 
     private void updateValues() {
@@ -272,12 +296,14 @@ public class TutorialTooltipView extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        //        onTouchEvent(ev);
+        onTouchEvent(ev);
+
+        // ignore touch outside of indicator or message view
         return false;
     }
 
     private void setTutorialMessage(CharSequence charSequence) {
-        mTextView.setText(charSequence);
+        messageView.setText(charSequence);
     }
 
     /**

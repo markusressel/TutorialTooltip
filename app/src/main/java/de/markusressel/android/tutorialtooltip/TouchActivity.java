@@ -26,10 +26,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.WaveIndicatorView;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
 public class TouchActivity extends AppCompatActivity {
 
@@ -80,6 +83,23 @@ public class TouchActivity extends AppCompatActivity {
                             TutorialTooltipView.Gravity.TOP)
                             .anchor(button1, TutorialTooltipView.Gravity.TOP)
                             .customIndicator(waveIndicatorView)
+                            .onClickListener(new OnTutorialTooltipClickedListener() {
+//                                @Override
+//                                public void onIndicatorClicked(int id,
+//                                        TutorialTooltipIndicator indicator, View indicatorView) {
+//                                    Toast.makeText(getApplicationContext(),
+//                                            "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
+//                                            Toast.LENGTH_SHORT).show();
+//                                }
+
+                                @Override
+                                public void onMessageClicked(int id,
+                                        TutorialTooltipMessage indicator, View messageView) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Message " + id + " " + messageView.getWidth() + " clicked!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            })
                             .build());
                 }
             }

@@ -20,7 +20,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <de.markusressel.android.library.circlewaveview.CircleWaveAlertView
+    <de.markusressel.android.library.tutorialtooltip.WaveIndicatorView
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
