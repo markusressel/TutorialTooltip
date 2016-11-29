@@ -16,7 +16,7 @@ To use this library just include it in your depencencies using
 in your project build.gradle file and
 
     dependencies {
-        compile 'com.github.markusressel:TutorialTooltip:v0.1'
+        compile 'com.github.markusressel:TutorialTooltip:v0.9.0'
     }
     
 in your desired module build.gradle file.
