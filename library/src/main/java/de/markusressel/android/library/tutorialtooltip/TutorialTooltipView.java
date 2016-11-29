@@ -17,6 +17,7 @@
 package de.markusressel.android.library.tutorialtooltip;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -52,12 +53,15 @@ public class TutorialTooltipView extends RelativeLayout {
     private static final String TAG = "TutorialTooltipView";
 
     private int tooltipId;
-    private boolean attachToWindow;
+
+    private Dialog dialog;
 
     private CharSequence text;
     private Gravity anchorGravity = Gravity.CENTER;
     private WeakReference<View> anchorView;
     private Point anchorPoint;
+    private int offsetX;
+    private int offsetY;
 
     private TutorialTooltipIndicator indicatorView;
     private TutorialTooltipMessage messageView;
@@ -75,6 +79,8 @@ public class TutorialTooltipView extends RelativeLayout {
                     updatePositions();
                 }
             };
+
+    private TutorialTooltip.Builder.AttachMode attachMode;
 
     public enum Gravity {
         TOP,
@@ -102,13 +108,17 @@ public class TutorialTooltipView extends RelativeLayout {
 
     private void getBuilderValues(TutorialTooltip.Builder builder) {
         tooltipId = builder.id;
-        attachToWindow = builder.attachToWindow;
+
+        attachMode = builder.attachMode;
+        dialog = builder.dialog;
 
         text = builder.text;
         anchorGravity = builder.anchorGravity;
         if (builder.anchorView != null) {
             anchorView = new WeakReference<>(builder.anchorView);
         }
+        offsetX = builder.offsetX;
+        offsetY = builder.offsetY;
         anchorPoint = builder.anchorPoint;
         indicatorView = (TutorialTooltipIndicator) builder.indicatorView;
         messageGravity = builder.messageGravity;
@@ -206,6 +216,11 @@ public class TutorialTooltipView extends RelativeLayout {
             int[] position = new int[2];
             view.getLocationInWindow(position);
 
+            //rootView.setBackgroundColor(Color.parseColor("#ff0000"));
+            View rootView = view.getRootView();
+            position[0] -= rootView.getPaddingLeft();
+            position[1] -= rootView.getPaddingTop();
+
             switch (anchorGravity) {
                 case TOP:
                     x = position[0] + view.getWidth() / 2 - indicatorLayout.getWidth() / 2;
@@ -229,6 +244,9 @@ public class TutorialTooltipView extends RelativeLayout {
                     y = position[1] + view.getHeight() / 2 - indicatorLayout.getHeight() / 2;
                     break;
             }
+
+            x += offsetX;
+            y += offsetY;
 
             indicatorLayout.setX(x);
             indicatorLayout.setY(y);
@@ -327,10 +345,10 @@ public class TutorialTooltipView extends RelativeLayout {
         if (getParent() == null) {
             final Activity activity = ViewHelper.getActivity(getContext());
             LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-            if (activity != null) {
 
-                if (attachToWindow) {
-                    final WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+            switch (attachMode) {
+                case Window:
+                    final WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
                     final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams(
                             WindowManager.LayoutParams.MATCH_PARENT,
                             WindowManager.LayoutParams.MATCH_PARENT);
@@ -340,17 +358,28 @@ public class TutorialTooltipView extends RelativeLayout {
                     mParams.setTitle("TutorialTooltip");
                     mParams.flags =
                             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
-                                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                    | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                                     | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
                                     | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                     ;
+
+                    if (onTutorialTooltipClickedListener == null) {
+                        mParams.flags = mParams.flags | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+                    }
                     wm.addView(this, mParams);
-                } else {
+                    break;
+                case Dialog:
+                    ViewGroup dialogRootView;
+                    dialogRootView = (ViewGroup) (dialog.getWindow().getDecorView());
+                    dialogRootView.addView(this, params);
+                    break;
+                case Activity:
+                default:
                     ViewGroup rootView;
                     rootView = (ViewGroup) (activity.getWindow().getDecorView());
                     rootView.addView(this, params);
-                }
+                    break;
             }
         }
     }
@@ -361,15 +390,20 @@ public class TutorialTooltipView extends RelativeLayout {
     public void remove() {
         ViewParent parent = getParent();
 
-        if (attachToWindow) {
-            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-            if (null != parent) {
-                wm.removeView(this);
-            }
-        } else {
-            if (parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeView(TutorialTooltipView.this);
-            }
+        switch (attachMode) {
+            case Window:
+                WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                if (null != parent) {
+                    wm.removeView(this);
+                }
+                break;
+            case Activity:
+            case Dialog:
+            default:
+                if (parent instanceof ViewGroup) {
+                    ((ViewGroup) parent).removeView(TutorialTooltipView.this);
+                }
+                break;
         }
     }
 }
