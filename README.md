@@ -27,7 +27,7 @@ I needed a better way to create step by step tutorials for my app(s) and even th
 
 # Attributions
 
-I want to give a big shoutout to Alessandro Crugnola (sephiroth74) who has built his great android-target-tooltip library (https://github.com/sephiroth74/android-target-tooltip) that adresses the same issue. His work greatly impacted the way I am building this library and really helped me figure out how to things right.
+I want to give a big shoutout to Alessandro Crugnola (sephiroth74) who has built his great [android-target-tooltip](https://github.com/sephiroth74/android-target-tooltip "android-target-tooltip on GitHub") library that adresses the same issue. His work greatly impacted the way I am building this library and really helped me figure out how to do things right.
 
 
 # License
