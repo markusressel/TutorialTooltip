@@ -14,36 +14,44 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip;
+package de.markusressel.android.library.tutorialtooltip.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 
 /**
  * Created by Markus on 24.11.2016.
  */
-public class BasicMessageView extends TextView implements TutorialTooltipMessage {
+public class WaveIndicatorView extends CircleWaveAlertView implements TutorialTooltipIndicator {
 
-    public BasicMessageView(Context context) {
+    public WaveIndicatorView(Context context) {
         super(context);
     }
 
-    public BasicMessageView(Context context, AttributeSet attrs) {
+    public WaveIndicatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public WaveIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(21)
-    public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr,
+    public WaveIndicatorView(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public void setColor(@ColorInt int color) {
+        setStartColor(color);
+        setEndColor(Color.argb(0, Color.red(color), Color.green(color), Color.blue(color)));
     }
 
 }

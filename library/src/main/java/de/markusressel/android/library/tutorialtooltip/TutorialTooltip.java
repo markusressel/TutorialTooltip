@@ -17,15 +17,13 @@
 package de.markusressel.android.library.tutorialtooltip;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView.Gravity;
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
-import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
+import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.view.ViewHelper;
 
 /**
  * Base TutorialTooltip class
@@ -41,10 +39,10 @@ public class TutorialTooltip {
     /**
      * Create the TutorialTooltip
      *
-     * @param builder TutorialTooltip.Builder
+     * @param builder TutorialTooltipBuilder
      * @return TutorialTooltipView
      */
-    public static TutorialTooltipView make(Builder builder) {
+    public static TutorialTooltipView make(TutorialTooltipBuilder builder) {
         if (!builder.isCompleted()) {
             throw new IllegalStateException("Builder is not complete! Did you call build()?");
         }
@@ -54,10 +52,10 @@ public class TutorialTooltip {
     /**
      * Create a TutorialTooltip and show it right away
      *
-     * @param builder TutorialTooltip.Builder
+     * @param builder TutorialTooltipBuilder
      * @return ID of TutorialTooltip
      */
-    public static int show(Builder builder) {
+    public static int show(TutorialTooltipBuilder builder) {
         TutorialTooltipView tutorialTooltipView = make(builder);
         return show(tutorialTooltipView);
     }
@@ -159,255 +157,6 @@ public class TutorialTooltip {
                     i--;
                 }
             }
-        }
-    }
-
-    /**
-     * Use this Builder to create a TutorialTooltip
-     */
-    public static final class Builder {
-
-        enum AttachMode {
-            Window,
-            Activity,
-            Dialog
-        }
-
-        /**
-         * Activity context
-         */
-        Context context;
-
-        /**
-         * AttachMode used to distinguish between activity, dialog and window scope
-         */
-        AttachMode attachMode;
-
-        /**
-         * Dialog the TutorialTooltip will be attached to (if AttachMode is Dialog)
-         */
-        Dialog dialog;
-
-        /**
-         * last used ID value, used to determine the next valid and unused ID
-         */
-        private static int lastId = 0;
-
-        /**
-         * ID the TutorialTooltip will get
-         */
-        int id;
-
-        /**
-         * Message text
-         */
-        String text;
-
-        /**
-         * Anchor view
-         * This view is used to position the indicator view
-         */
-        View anchorView;
-
-        /**
-         * Indicator x axis offset from anchor position
-         */
-        int offsetX;
-
-        /**
-         * Indicator y axis offset from anchor position
-         */
-        int offsetY;
-
-        /**
-         * Anchor gravity used to position the indicator using the anchorView borders (or center)
-         */
-        Gravity anchorGravity;
-
-        /**
-         * Message gravity used to position the message view relative to indicator view borders (or center)
-         */
-        Gravity messageGravity;
-
-        /**
-         * Exact coordinates the indicator should be positioned
-         */
-        Point anchorPoint;
-
-        /**
-         * Custom indicator view
-         */
-        View indicatorView;
-
-        /**
-         * OnClick listener for the indicator and message view
-         */
-        OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
-
-        private boolean completed;
-
-        /**
-         * Constructor for the builder.
-         * Chain methods and call ".build()" as your last step to make this object immutable.
-         *
-         * @param context activity context that the TutorialTooltip will be added to.
-         *                Application context will not suffice!
-         */
-        public Builder(Context context) {
-            this.context = context;
-            attachMode = AttachMode.Activity;
-            this.id = ++lastId;
-        }
-
-        /**
-         * Specify whether the TutorialTooltip should be attached to the Window or the activity.
-         * <p>
-         * This can be handy if you want to show TutorialTooltips above all other content, like in FragmentDialogs.
-         *
-         * @return Builder
-         */
-        public Builder attachToWindow() {
-            throwIfCompleted();
-            attachMode = AttachMode.Window;
-            return this;
-        }
-
-        /**
-         * Specify the activity this TutorialTooltip should be attached to.
-         * <p>
-         *
-         * @param dialog dialog to attach this view to
-         * @return Builder
-         */
-        public Builder attachToDialog(Dialog dialog) {
-            throwIfCompleted();
-            attachMode = AttachMode.Dialog;
-            this.dialog = dialog;
-            return this;
-        }
-
-        /**
-         * Set the anchor for the TutorialTooltip
-         *
-         * @param view view which will be used as an anchor
-         * @return Builder
-         */
-        public Builder anchor(View view) {
-            return anchor(view, Gravity.CENTER, 0, 0);
-        }
-
-        /**
-         * Set the anchor for the TutorialTooltip
-         *
-         * @param view    view which will be used as an anchor
-         * @param gravity position relative to the anchor view which the indicator will point to
-         * @return Builder
-         */
-        public Builder anchor(View view, Gravity gravity) {
-            return anchor(view, gravity, 0, 0);
-        }
-
-        /**
-         * Set the anchor for the TutorialTooltip
-         *
-         * @param view    view which will be used as an anchor
-         * @param gravity position relative to the anchor view which the indicator will point to
-         * @param offsetX positioning offset on x axis in pixel
-         * @param offsetY positioning offset on y axis in pixel
-         * @return Builder
-         */
-        public Builder anchor(View view, Gravity gravity, int offsetX, int offsetY) {
-            throwIfCompleted();
-            this.anchorPoint = null;
-            this.anchorView = view;
-            this.anchorGravity = gravity;
-            this.offsetX = offsetX;
-            this.offsetY = offsetY;
-            return this;
-        }
-
-        /**
-         * Set the anchor point for the TutorialTooltip
-         *
-         * @param point position where the indicator will be located at
-         * @return Builder
-         */
-        public Builder anchor(final Point point) {
-            throwIfCompleted();
-            this.anchorView = null;
-            this.anchorPoint = point;
-            return this;
-        }
-
-        /**
-         * Set the tutorial text
-         *
-         * @param text    message
-         * @param gravity positioning of the text relative to the indicator view
-         * @return Builder
-         */
-        public Builder text(String text, final Gravity gravity) {
-            throwIfCompleted();
-            this.text = text;
-            this.messageGravity = gravity;
-            return this;
-        }
-
-        /**
-         * Set a custom indicator view
-         * <p>
-         * To build your own indicator view, just create a new class and extend <code>TutorialTooltipIndicator</code>
-         *
-         * @param view indicator view
-         * @return Builder
-         */
-        public <T extends View & TutorialTooltipIndicator> Builder customIndicator(T view) {
-            throwIfCompleted();
-            this.indicatorView = view;
-            return this;
-        }
-
-        /**
-         * Set an OnClick listener for the TutorialTooltip
-         *
-         * @param onTutorialTooltipClickedListener
-         * @return Builder
-         */
-        public Builder onClickListener(
-                OnTutorialTooltipClickedListener onTutorialTooltipClickedListener) {
-            throwIfCompleted();
-            this.onTutorialTooltipClickedListener = onTutorialTooltipClickedListener;
-            return this;
-        }
-
-        /**
-         * Checks if this Builder was already build and therefore cant be modified anymore
-         */
-        private void throwIfCompleted() {
-            if (completed) {
-                throw new IllegalStateException("Builder was already built!");
-            }
-        }
-
-        /**
-         * Checks if this Builder is already complete
-         *
-         * @return true if completed, false otherwise
-         */
-        public boolean isCompleted() {
-            return completed;
-        }
-
-        /**
-         * Complete the build process
-         *
-         * @return Builder
-         */
-        public Builder build() {
-            throwIfCompleted();
-
-            this.completed = true;
-            return this;
         }
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip;
+package de.markusressel.android.library.tutorialtooltip.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,7 +29,7 @@ import android.support.annotation.Nullable;
 public class ViewHelper {
 
     @Nullable
-    static Activity getActivity(@Nullable Context context) {
+    public static Activity getActivity(@Nullable Context context) {
         if (context == null) {
             return null;
         } else if (context instanceof Activity) {

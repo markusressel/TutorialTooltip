@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip;
+package de.markusressel.android.library.tutorialtooltip.view;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -36,6 +36,10 @@ import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
 
+import de.markusressel.android.library.tutorialtooltip.R;
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
@@ -80,7 +84,7 @@ public class TutorialTooltipView extends RelativeLayout {
                 }
             };
 
-    private TutorialTooltip.Builder.AttachMode attachMode;
+    private TutorialTooltipBuilder.AttachMode attachMode;
 
     public enum Gravity {
         TOP,
@@ -94,10 +98,10 @@ public class TutorialTooltipView extends RelativeLayout {
         super(context);
     }
 
-    public TutorialTooltipView(TutorialTooltip.Builder builder) {
-        this(builder.context);
+    public TutorialTooltipView(TutorialTooltipBuilder tutorialTooltipBuilder) {
+        this(tutorialTooltipBuilder.getContext());
 
-        getBuilderValues(builder);
+        getBuilderValues(tutorialTooltipBuilder);
 
         initializeViews();
 
@@ -106,24 +110,36 @@ public class TutorialTooltipView extends RelativeLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 
-    private void getBuilderValues(TutorialTooltip.Builder builder) {
-        tooltipId = builder.id;
+    private void getBuilderValues(TutorialTooltipBuilder tutorialTooltipBuilder) {
+        tooltipId = tutorialTooltipBuilder.getId();
 
-        attachMode = builder.attachMode;
-        dialog = builder.dialog;
+        attachMode = tutorialTooltipBuilder.getAttachMode();
+        dialog = tutorialTooltipBuilder.getDialog();
 
-        text = builder.text;
-        anchorGravity = builder.anchorGravity;
-        if (builder.anchorView != null) {
-            anchorView = new WeakReference<>(builder.anchorView);
+        anchorGravity = tutorialTooltipBuilder.getAnchorGravity();
+        if (tutorialTooltipBuilder.getAnchorView() != null) {
+            anchorView = new WeakReference<>(tutorialTooltipBuilder.getAnchorView());
         }
-        offsetX = builder.offsetX;
-        offsetY = builder.offsetY;
-        anchorPoint = builder.anchorPoint;
-        indicatorView = (TutorialTooltipIndicator) builder.indicatorView;
-        messageGravity = builder.messageGravity;
+        offsetX = tutorialTooltipBuilder.getOffsetX();
+        offsetY = tutorialTooltipBuilder.getOffsetY();
+        anchorPoint = tutorialTooltipBuilder.getAnchorPoint();
 
-        onTutorialTooltipClickedListener = builder.onTutorialTooltipClickedListener;
+        IndicatorBuilder indicatorBuilder = tutorialTooltipBuilder.getIndicatorBuilder();
+        switch (indicatorBuilder.type) {
+            case Custom:
+                indicatorView = (TutorialTooltipIndicator) indicatorBuilder.customView;
+                break;
+            case Default:
+            default:
+
+                break;
+        }
+
+        MessageBuilder messageBuilder = tutorialTooltipBuilder.getMessageBuilder();
+        text = messageBuilder.getText();
+        messageGravity = messageBuilder.getGravity();
+
+        onTutorialTooltipClickedListener = tutorialTooltipBuilder.getOnTutorialTooltipClickedListener();
     }
 
     private void initializeViews() {

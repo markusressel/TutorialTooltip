@@ -29,11 +29,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView;
-import de.markusressel.android.library.tutorialtooltip.WaveIndicatorView;
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView;
 
 public class TouchActivity extends AppCompatActivity {
 
@@ -112,13 +115,18 @@ public class TouchActivity extends AppCompatActivity {
                     waveIndicatorView.setStrokeWidth(pxFromDp(activity, 5));
                     waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
-                    tutorialId1 = TutorialTooltip.show(new TutorialTooltip.Builder(activity).text(
-                            getString(R.string.tutorial_message_1),
-                            TutorialTooltipView.Gravity.TOP)
-                            .anchor(button1, TutorialTooltipView.Gravity.TOP)
-                            .customIndicator(waveIndicatorView)
-                            .onClickListener(onTutorialTooltipClickedListener)
-                            .build());
+                    tutorialId1 = TutorialTooltip.show(
+                            new TutorialTooltipBuilder(activity)
+                                    .anchor(button1, TutorialTooltipView.Gravity.TOP)
+                                    .indicator(new IndicatorBuilder(activity)
+                                            .customView(waveIndicatorView)
+                                            .build())
+                                    .message(new MessageBuilder(activity)
+                                            .text(getString(R.string.tutorial_message_1))
+                                            .gravity(TutorialTooltipView.Gravity.TOP)
+                                            .build())
+                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .build());
                 }
             }
         });
@@ -129,12 +137,15 @@ public class TouchActivity extends AppCompatActivity {
                 if (TutorialTooltip.exists(activity, tutorialId4)) {
                     TutorialTooltip.remove(activity, tutorialId4);
                 } else {
-                    tutorialId4 = TutorialTooltip.show(new TutorialTooltip.Builder(activity).text(
-                            getString(R.string.tutorial_message_3),
-                            TutorialTooltipView.Gravity.LEFT)
-                            .anchor(button4)
-                            .onClickListener(onTutorialTooltipClickedListener)
-                            .build());
+                    tutorialId4 = TutorialTooltip.show(
+                            new TutorialTooltipBuilder(activity)
+                                    .message(new MessageBuilder(activity)
+                                            .text(getString(R.string.tutorial_message_3))
+                                            .gravity(TutorialTooltipView.Gravity.LEFT)
+                                            .build())
+                                    .anchor(button4)
+                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .build());
                 }
             }
         });
@@ -145,12 +156,15 @@ public class TouchActivity extends AppCompatActivity {
                 if (TutorialTooltip.exists(activity, tutorialId2)) {
                     TutorialTooltip.remove(activity, tutorialId2);
                 } else {
-                    tutorialId2 = TutorialTooltip.show(new TutorialTooltip.Builder(activity).text(
-                            getString(R.string.tutorial_message_2),
-                            TutorialTooltipView.Gravity.BOTTOM)
-                            .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
-                            .onClickListener(onTutorialTooltipClickedListener)
-                            .build());
+                    tutorialId2 = TutorialTooltip.show(
+                            new TutorialTooltipBuilder(activity)
+                                    .message(new MessageBuilder(activity)
+                                            .text(getString(R.string.tutorial_message_2))
+                                            .gravity(TutorialTooltipView.Gravity.BOTTOM)
+                                            .build())
+                                    .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
+                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .build());
                 }
             }
         });
@@ -167,15 +181,19 @@ public class TouchActivity extends AppCompatActivity {
                     waveIndicatorView.setStrokeWidth(pxFromDp(activity, 5));
                     waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
-                    tutorialTooltipView = TutorialTooltip.make(new TutorialTooltip.Builder(
-                            activity).text(
-                            getString(R.string.tutorial_message_fab),
-                            TutorialTooltipView.Gravity.BOTTOM)
-                            .anchor(fab)
-                            .attachToWindow()
-                            .customIndicator(waveIndicatorView)
+                    tutorialTooltipView = TutorialTooltip.make(
+                            new TutorialTooltipBuilder(activity)
+                                    .indicator(new IndicatorBuilder(activity)
+                                            .customView(waveIndicatorView)
+                                            .build())
+                                    .message(new MessageBuilder(activity)
+                                            .text(getString(R.string.tutorial_message_fab))
+                                            .gravity(TutorialTooltipView.Gravity.BOTTOM)
+                                            .build())
+                                    .anchor(fab)
+                                    .attachToWindow()
 //                            .onClickListener(onTutorialTooltipClickedListener)
-                            .build());
+                                    .build());
 
                     tutorialId3 = TutorialTooltip.show(tutorialTooltipView);
                 }
@@ -216,8 +234,11 @@ public class TouchActivity extends AppCompatActivity {
     }
 
     private void createTutorialTooltip(float x, float y) {
-        TutorialTooltip.show(new TutorialTooltip.Builder(this).anchor(new Point((int) x, (int) y))
-                .text("Test Tutorial Message", TutorialTooltipView.Gravity.TOP)
+        TutorialTooltip.show(new TutorialTooltipBuilder(this).anchor(new Point((int) x, (int) y))
+                .message(new MessageBuilder(this)
+                        .text("Test Tutorial Message")
+                        .gravity(TutorialTooltipView.Gravity.TOP)
+                        .build())
                 .onClickListener(onTutorialTooltipClickedListener).build());
     }
 }

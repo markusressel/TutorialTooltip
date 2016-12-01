@@ -28,7 +28,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
-import de.markusressel.android.library.tutorialtooltip.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
  * Created by Markus on 28.11.2016.
@@ -49,8 +51,11 @@ public class DialogFragmentTest extends DialogFragment {
 
         Button button = (Button) rootView.findViewById(R.id.testbutton);
 
-        TutorialTooltip.show(new TutorialTooltip.Builder(getActivity())
-                .text("This is a dialog test message!", TutorialTooltipView.Gravity.TOP)
+        TutorialTooltip.show(new TutorialTooltipBuilder(getActivity())
+                .message(new MessageBuilder(getActivity())
+                        .text("This is a dialog test message!")
+                        .gravity(TutorialTooltipView.Gravity.TOP)
+                        .build())
                 .anchor(button)
                 .attachToDialog(getDialog())
                 .build()
