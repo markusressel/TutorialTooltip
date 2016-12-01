@@ -31,7 +31,6 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  */
 public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder> {
 
-
     /**
      * Determines how the TutorialTooltip is attached to the parent view
      * This is used only internally
@@ -39,14 +38,14 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     public enum AttachMode {
         Window,
         Activity,
-        Dialog;
-
+        Dialog
     }
 
     /**
      * Activity context
      */
     private Context context;
+
     /**
      * AttachMode used to distinguish between activity, dialog and window scope
      */
@@ -97,8 +96,6 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * OnClick listener for the indicator and message view
      */
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
-
-    private boolean completed;
 
     /**
      * Constructor for the builder.
@@ -255,5 +252,13 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
     public OnTutorialTooltipClickedListener getOnTutorialTooltipClickedListener() {
         return onTutorialTooltipClickedListener;
+    }
+
+    @Override
+    public TutorialTooltipBuilder build() {
+        indicatorBuilder.throwIfCompleted();
+        messageBuilder.throwIfCompleted();
+
+        return super.build();
     }
 }
