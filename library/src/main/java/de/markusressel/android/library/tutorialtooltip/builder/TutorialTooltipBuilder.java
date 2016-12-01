@@ -19,6 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.View;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
@@ -30,6 +31,8 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  * Created by Markus on 01.12.2016.
  */
 public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder> {
+
+    private static final String TAG = "TutorialTooltipBuilder";
 
     /**
      * Determines how the TutorialTooltip is attached to the parent view
@@ -261,6 +264,11 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         }
         if (!messageBuilder.isCompleted()) {
             throw new IllegalStateException("MessageBuilder was not built!");
+        }
+
+        if (anchorView == null && anchorPoint == null) {
+            Log.w(TAG,
+                    "You did not specify an anchor or anchor position! The view will be positioned at [0,0].");
         }
 
         return super.build();

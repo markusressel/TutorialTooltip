@@ -32,12 +32,12 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     /**
      * Message text
      */
-    private String text;
+    private String text = "Your Tutorial Message is shown right here.";
 
     /**
      * Message gravity
      */
-    private TutorialTooltipView.Gravity gravity;
+    private TutorialTooltipView.Gravity gravity = TutorialTooltipView.Gravity.TOP;
 
     public MessageBuilder(Context context) {
         this.context = context;

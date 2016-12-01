@@ -235,11 +235,10 @@ public class TouchActivity extends AppCompatActivity {
     }
 
     private void createTutorialTooltip(float x, float y) {
-        TutorialTooltip.show(new TutorialTooltipBuilder(this).anchor(new Point((int) x, (int) y))
-                .message(new MessageBuilder(this)
-                        .text("Test Tutorial Message")
-                        .gravity(TutorialTooltipView.Gravity.TOP)
-                        .build())
-                .onClickListener(onTutorialTooltipClickedListener).build());
+        TutorialTooltip.show(
+                new TutorialTooltipBuilder(this)
+                        .anchor(new Point((int) x, (int) y))
+                        .onClickListener(onTutorialTooltipClickedListener)
+                        .build());
     }
 }

@@ -35,6 +35,9 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     private Context context;
 
+    /**
+     * Specifies if a custom view is used
+     */
     private Type type = Type.Default;
 
     /**
@@ -45,12 +48,12 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     /**
      * Indicator x axis offset from anchor position
      */
-    private int offsetX;
+    private int offsetX = 0;
 
     /**
      * Indicator y axis offset from anchor position
      */
-    private int offsetY;
+    private int offsetY = 0;
 
     /**
      * Constructor for the builder.
