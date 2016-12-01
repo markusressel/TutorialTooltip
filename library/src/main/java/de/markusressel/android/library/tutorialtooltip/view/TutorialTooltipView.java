@@ -194,7 +194,7 @@ public class TutorialTooltipView extends RelativeLayout {
         if (anchorView != null && anchorView.get() != null) {
             anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
         } else if (anchorPoint != null) {
-
+            anchorView = null;
         } else {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
