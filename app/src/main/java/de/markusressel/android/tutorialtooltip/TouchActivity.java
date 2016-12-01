@@ -120,6 +120,7 @@ public class TouchActivity extends AppCompatActivity {
                                     .anchor(button1, TutorialTooltipView.Gravity.TOP)
                                     .indicator(new IndicatorBuilder(activity)
                                             .customView(waveIndicatorView)
+                                            .offset(50, 50)
                                             .build())
                                     .message(new MessageBuilder(activity)
                                             .text(getString(R.string.tutorial_message_1))

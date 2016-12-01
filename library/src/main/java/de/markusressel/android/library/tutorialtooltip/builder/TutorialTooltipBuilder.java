@@ -74,16 +74,6 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     private View anchorView;
 
     /**
-     * Indicator x axis offset from anchor position
-     */
-    private int offsetX;
-
-    /**
-     * Indicator y axis offset from anchor position
-     */
-    private int offsetY;
-
-    /**
      * Anchor gravity used to position the indicator using the anchorView borders (or center)
      */
     private TutorialTooltipView.Gravity anchorGravity;
@@ -162,7 +152,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     public TutorialTooltipBuilder anchor(View view) {
-        return anchor(view, TutorialTooltipView.Gravity.CENTER, 0, 0);
+        return anchor(view, TutorialTooltipView.Gravity.CENTER);
     }
 
     /**
@@ -173,27 +163,10 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     public TutorialTooltipBuilder anchor(View view, TutorialTooltipView.Gravity gravity) {
-        return anchor(view, gravity, 0, 0);
-    }
-
-    /**
-     * Set the anchor for the TutorialTooltip
-     *
-     * @param view    view which will be used as an anchor
-     * @param gravity position relative to the anchor view which the indicator will point to
-     * @param offsetX positioning offset on x axis in pixel
-     * @param offsetY positioning offset on y axis in pixel
-     * @return TutorialTooltipBuilder
-     */
-    public TutorialTooltipBuilder anchor(View view, TutorialTooltipView.Gravity gravity,
-            int offsetX,
-            int offsetY) {
         throwIfCompleted();
         this.anchorPoint = null;
         this.anchorView = view;
         this.anchorGravity = gravity;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
         return this;
     }
 
@@ -256,6 +229,18 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         return dialog;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public Point getAnchorPoint() {
+        return anchorPoint;
+    }
+
+    public View getAnchorView() {
+        return anchorView;
+    }
+
     public TutorialTooltipView.Gravity getAnchorGravity() {
         return anchorGravity;
     }
@@ -268,27 +253,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         return messageBuilder;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    public int getOffsetY() {
-        return offsetY;
-    }
-
     public OnTutorialTooltipClickedListener getOnTutorialTooltipClickedListener() {
         return onTutorialTooltipClickedListener;
-    }
-
-    public Point getAnchorPoint() {
-        return anchorPoint;
-    }
-
-    public View getAnchorView() {
-        return anchorView;
     }
 }

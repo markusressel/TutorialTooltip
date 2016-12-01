@@ -33,11 +33,24 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
         Custom
     }
 
-    public Context context;
+    private Context context;
 
-    public Type type = Type.Default;
+    private Type type = Type.Default;
 
-    public View customView;
+    /**
+     * Custom indicator view
+     */
+    private View customView;
+
+    /**
+     * Indicator x axis offset from anchor position
+     */
+    private int offsetX;
+
+    /**
+     * Indicator y axis offset from anchor position
+     */
+    private int offsetY;
 
     /**
      * Constructor for the builder.
@@ -65,4 +78,38 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
         return this;
     }
 
+    /**
+     * Set an offset for the indicator view
+     *
+     * @param offsetX x-axis offset in pixel (positive is right, negative is left)
+     * @param offsetY y-axis offset in pixel (positive is down, negative is up)
+     * @return IndicatorBuilder
+     */
+    public IndicatorBuilder offset(int offsetX, int offsetY) {
+        throwIfCompleted();
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        return this;
+    }
+
+
+    public Context getContext() {
+        return context;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public View getCustomView() {
+        return customView;
+    }
 }

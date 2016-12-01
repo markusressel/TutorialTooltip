@@ -60,12 +60,12 @@ public class TutorialTooltipView extends RelativeLayout {
 
     private Dialog dialog;
 
-    private CharSequence text;
+    private IndicatorBuilder indicatorBuilder;
+    private MessageBuilder messageBuilder;
+
     private Gravity anchorGravity = Gravity.CENTER;
     private WeakReference<View> anchorView;
     private Point anchorPoint;
-    private int offsetX;
-    private int offsetY;
 
     private TutorialTooltipIndicator indicatorView;
     private TutorialTooltipMessage messageView;
@@ -120,14 +120,12 @@ public class TutorialTooltipView extends RelativeLayout {
         if (tutorialTooltipBuilder.getAnchorView() != null) {
             anchorView = new WeakReference<>(tutorialTooltipBuilder.getAnchorView());
         }
-        offsetX = tutorialTooltipBuilder.getOffsetX();
-        offsetY = tutorialTooltipBuilder.getOffsetY();
         anchorPoint = tutorialTooltipBuilder.getAnchorPoint();
 
-        IndicatorBuilder indicatorBuilder = tutorialTooltipBuilder.getIndicatorBuilder();
-        switch (indicatorBuilder.type) {
+        indicatorBuilder = tutorialTooltipBuilder.getIndicatorBuilder();
+        switch (indicatorBuilder.getType()) {
             case Custom:
-                indicatorView = (TutorialTooltipIndicator) indicatorBuilder.customView;
+                indicatorView = (TutorialTooltipIndicator) indicatorBuilder.getCustomView();
                 break;
             case Default:
             default:
@@ -135,8 +133,7 @@ public class TutorialTooltipView extends RelativeLayout {
                 break;
         }
 
-        MessageBuilder messageBuilder = tutorialTooltipBuilder.getMessageBuilder();
-        text = messageBuilder.getText();
+        messageBuilder = tutorialTooltipBuilder.getMessageBuilder();
         messageGravity = messageBuilder.getGravity();
 
         onTutorialTooltipClickedListener = tutorialTooltipBuilder.getOnTutorialTooltipClickedListener();
@@ -205,7 +202,7 @@ public class TutorialTooltipView extends RelativeLayout {
     }
 
     private void updateValues() {
-        setTutorialMessage(Html.fromHtml((String) text));
+        setTutorialMessage(Html.fromHtml(messageBuilder.getText()));
 
         //        float targetDiameter = 200;
         //        circleWaveAlertView.setTargetDiameter(targetDiameter);
@@ -261,8 +258,8 @@ public class TutorialTooltipView extends RelativeLayout {
                     break;
             }
 
-            x += offsetX;
-            y += offsetY;
+            x += indicatorBuilder.getOffsetX();
+            y += indicatorBuilder.getOffsetY();
 
             indicatorLayout.setX(x);
             indicatorLayout.setY(y);
