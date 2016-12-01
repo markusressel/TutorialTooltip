@@ -256,8 +256,12 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
     @Override
     public TutorialTooltipBuilder build() {
-        indicatorBuilder.throwIfCompleted();
-        messageBuilder.throwIfCompleted();
+        if (!indicatorBuilder.isCompleted()) {
+            throw new IllegalStateException("IndicatorBuilder was not built!");
+        }
+        if (!messageBuilder.isCompleted()) {
+            throw new IllegalStateException("MessageBuilder was not built!");
+        }
 
         return super.build();
     }
