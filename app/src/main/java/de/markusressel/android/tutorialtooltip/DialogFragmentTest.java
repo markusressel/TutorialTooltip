@@ -30,6 +30,7 @@ import android.widget.Button;
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -37,8 +38,11 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  */
 public class DialogFragmentTest extends DialogFragment {
 
+    private Button button;
+
     public static DialogFragmentTest newInstance() {
         DialogFragmentTest fragment = new DialogFragmentTest();
+        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme);
 //        fragment.setTargetFragment(targetFragment, 0);
         return fragment;
     }
@@ -48,20 +52,36 @@ public class DialogFragmentTest extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dialog_test, container);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme);
 
-        Button button = (Button) rootView.findViewById(R.id.testbutton);
+        button = (Button) rootView.findViewById(R.id.testbutton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialTooltip();
+            }
+        });
 
+        return rootView;
+    }
+
+    private void showTutorialTooltip() {
         TutorialTooltip.show(new TutorialTooltipBuilder(getActivity())
                 .message(new MessageBuilder(getActivity())
-                        .text("This is a dialog test message!")
+                        .text("This is a dialog test message!\nhttp://power-switch.eu")
                         .gravity(TutorialTooltipView.Gravity.TOP)
                         .build())
                 .anchor(button)
                 .attachToDialog(getDialog())
+                .onClick(new OnTutorialTooltipClickedListener() {
+                    @Override
+                    public void onTutorialTooltipClicked(int id,
+                            TutorialTooltipView tutorialTooltipView) {
+                        tutorialTooltipView.remove();
+                    }
+                })
                 .build()
         );
-
-        return rootView;
     }
 
     @NonNull
@@ -75,12 +95,12 @@ public class DialogFragmentTest extends DialogFragment {
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
                         WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+////        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+////        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        dialog.show();
+//        dialog.getWindow().setAttributes(lp);
 
         dialog.show();
 

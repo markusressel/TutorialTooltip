@@ -96,7 +96,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     private MessageBuilder messageBuilder;
 
     /**
-     * OnClick listener for the indicator and message view
+     * OnClick listener for the whole TutorialTooltipView
      */
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
 
@@ -210,7 +210,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param onTutorialTooltipClickedListener onClick listener
      * @return TutorialTooltipBuilder
      */
-    public TutorialTooltipBuilder onClickListener(
+    public TutorialTooltipBuilder onClick(
             OnTutorialTooltipClickedListener onTutorialTooltipClickedListener) {
         throwIfCompleted();
         this.onTutorialTooltipClickedListener = onTutorialTooltipClickedListener;

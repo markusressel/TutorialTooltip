@@ -20,12 +20,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical|center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Hello, this is a demo text.\n\nTo make this dialog look bigger than it would just with a single button this text is here.\n\nThis should make it look more realistic."/>
 
     <Button
         android:id="@+id/testbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="Testbutton"/>
 
 </LinearLayout>

@@ -24,6 +24,7 @@ import android.graphics.Point;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,7 +33,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -40,7 +41,6 @@ import de.markusressel.android.library.tutorialtooltip.R;
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
@@ -52,7 +52,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * <p>
  * Created by Markus on 17.11.2016.
  */
-public class TutorialTooltipView extends RelativeLayout {
+public class TutorialTooltipView extends LinearLayout {
 
     private static final String TAG = "TutorialTooltipView";
 
@@ -60,6 +60,7 @@ public class TutorialTooltipView extends RelativeLayout {
 
     private Dialog dialog;
 
+    private TutorialTooltipBuilder tutorialTooltipBuilder;
     private IndicatorBuilder indicatorBuilder;
     private MessageBuilder messageBuilder;
 
@@ -67,14 +68,11 @@ public class TutorialTooltipView extends RelativeLayout {
     private WeakReference<View> anchorView;
     private Point anchorPoint;
 
-    private TutorialTooltipIndicator indicatorView;
-    private TutorialTooltipMessage messageView;
-
-    private Gravity messageGravity = Gravity.BOTTOM;
     private FrameLayout indicatorLayout;
     private FrameLayout messageLayout;
 
-    private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
+    private TutorialTooltipIndicator indicatorView;
+    private TutorialTooltipMessage messageView;
 
     private final ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener =
             new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -111,6 +109,8 @@ public class TutorialTooltipView extends RelativeLayout {
     }
 
     private void getBuilderValues(TutorialTooltipBuilder tutorialTooltipBuilder) {
+        this.tutorialTooltipBuilder = tutorialTooltipBuilder;
+
         tooltipId = tutorialTooltipBuilder.getId();
 
         attachMode = tutorialTooltipBuilder.getAttachMode();
@@ -129,63 +129,82 @@ public class TutorialTooltipView extends RelativeLayout {
                 break;
             case Default:
             default:
-
                 break;
         }
 
         messageBuilder = tutorialTooltipBuilder.getMessageBuilder();
-        messageGravity = messageBuilder.getGravity();
+        switch (messageBuilder.getType()) {
+            case Custom:
+                messageView = (TutorialTooltipMessage) messageBuilder.getCustomView();
+                break;
+            case Default:
+            default:
+                break;
+        }
 
-        onTutorialTooltipClickedListener = tutorialTooltipBuilder.getOnTutorialTooltipClickedListener();
     }
 
     private void initializeViews() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        messageLayout = (FrameLayout) inflater.inflate(R.layout.layout_tutorial_text, this, false);
-
-        if (messageView != null) {
-            messageLayout.removeAllViews();
-            messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
-        } else {
-            messageView = (BasicMessageView) messageLayout.findViewById(R.id.messageView);
+        if (tutorialTooltipBuilder.getOnTutorialTooltipClickedListener() != null) {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tutorialTooltipBuilder.getOnTutorialTooltipClickedListener() != null) {
+                        tutorialTooltipBuilder.getOnTutorialTooltipClickedListener()
+                                .onTutorialTooltipClicked(getTutorialTooltipId(),
+                                        getTutorialTooltipView());
+                    }
+                }
+            });
         }
 
         indicatorLayout = (FrameLayout) inflater.inflate(R.layout.layout_indicator,
                 this,
                 false);
-        if (indicatorView != null) {
+        if (indicatorView == null) {
+            indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
+        } else {
             indicatorLayout.removeAllViews();
             indicatorLayout.addView((View) indicatorView, WRAP_CONTENT, WRAP_CONTENT);
-        } else {
-            indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
         }
 
         // Set onClick listeners
-        if (onTutorialTooltipClickedListener != null) {
-            if (onTutorialTooltipClickedListener.indicatorIsClickable()) {
-                indicatorView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onTutorialTooltipClickedListener != null) {
-                            onTutorialTooltipClickedListener.onIndicatorClicked(getTutorialTooltipId(),
-                                    indicatorView, (View) indicatorView);
-                        }
-                    }
-                });
-            }
+        if (indicatorBuilder.getOnIndicatorClickedListener() != null) {
 
-            if (onTutorialTooltipClickedListener.messageIsClickable()) {
-                messageView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onTutorialTooltipClickedListener != null) {
-                            onTutorialTooltipClickedListener.onMessageClicked(getTutorialTooltipId(),
-                                    messageView, (View) messageView);
-                        }
+            indicatorLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (indicatorBuilder.getOnIndicatorClickedListener() != null) {
+                        indicatorBuilder.getOnIndicatorClickedListener()
+                                .onIndicatorClicked(getTutorialTooltipId(),
+                                        indicatorView, (View) indicatorView);
                     }
-                });
-            }
+                }
+            });
+        }
+
+        messageLayout = (FrameLayout) inflater.inflate(R.layout.layout_tutorial_text, this, false);
+
+        if (messageView == null) {
+            messageView = (BasicMessageView) messageLayout.findViewById(R.id.messageView);
+        } else {
+            messageLayout.removeAllViews();
+            messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
+        }
+
+        if (messageBuilder.getOnMessageClickedListener() != null) {
+            messageLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (messageBuilder.getOnMessageClickedListener() != null) {
+                        messageBuilder.getOnMessageClickedListener()
+                                .onMessageClicked(getTutorialTooltipId(),
+                                        messageView, (View) messageView);
+                    }
+                }
+            });
         }
 
         addView(indicatorLayout);
@@ -285,7 +304,7 @@ public class TutorialTooltipView extends RelativeLayout {
         float messageX;
         float messageY;
 
-        switch (messageGravity) {
+        switch (messageBuilder.getGravity()) {
             case TOP:
                 messageX = indicatorX + indicatorLayout.getWidth() / 2 - messageLayout.getWidth() / 2;
                 messageY = indicatorY - messageLayout.getHeight();
@@ -312,7 +331,7 @@ public class TutorialTooltipView extends RelativeLayout {
         messageLayout.setX(messageX);
         messageLayout.setY(messageY);
 
-        updateMessageSize(messageX, messageY);
+//        updateMessageSize(messageX, messageY);
     }
 
     private void updateMessageSize(float messageX, float messageY) {
@@ -331,15 +350,46 @@ public class TutorialTooltipView extends RelativeLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        onTouchEvent(ev);
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean onTouchEvent = super.onTouchEvent(event);
 
-        // ignore touch outside of indicator or message view
-        return false;
+//        Toast.makeText(getContext(),
+//                "onTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
+//                .show();
+
+        Log.d(TAG, "onTouchEvent: " + event.getX() + "," + event.getY());
+
+        return onTouchEvent;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+//        Toast.makeText(getContext(),
+//                "onInterceptTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
+//                .show();
+
+        Log.d(TAG, "onInterceptTouchEvent: " + event.getX() + "," + event.getY());
+
+        boolean onInterceptTouchEvent = super.onInterceptTouchEvent(event);
+        return onInterceptTouchEvent;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            remove();
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     private void setTutorialMessage(CharSequence charSequence) {
         messageView.setText(charSequence);
+    }
+
+    private TutorialTooltipView getTutorialTooltipView() {
+        return this;
     }
 
     /**
@@ -376,8 +426,9 @@ public class TutorialTooltipView extends RelativeLayout {
                                     | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                     ;
 
-                    if (onTutorialTooltipClickedListener == null) {
-                        mParams.flags = mParams.flags | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    if (tutorialTooltipBuilder.getOnTutorialTooltipClickedListener() == null) {
+                        mParams.flags = mParams.flags
+                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                     }
                     wm.addView(this, mParams);

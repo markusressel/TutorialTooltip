@@ -16,23 +16,25 @@
 
 package de.markusressel.android.library.tutorialtooltip.interfaces;
 
-import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import android.view.View;
 
 /**
  * OnClick listener for a TutorialTooltip
  * <p>
+ * If you override any of the on*Clicked methods remember to return <code>true</code>
+ * in the corresponding is*Clickable() methods.
+ * <p>
  * Created by Markus on 28.11.2016.
  */
-public interface OnTutorialTooltipClickedListener {
+public interface OnMessageClickedListener {
 
     /**
-     * This method is called when the TutorialTooltip Overlay is clicked
-     * <p>
-     * If your indicator or message also have an onClick listener, they will called instead of this listener.
+     * This method is called when the message view is clicked
      *
-     * @param id                  ID of the TutorialTooltip
-     * @param tutorialTooltipView TutorialTooltipView
+     * @param id          ID of the TutorialTooltip
+     * @param message     message
+     * @param messageView the same object as the message, but cast to View
      */
-    void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView);
+    void onMessageClicked(int id, TutorialTooltipMessage message, View messageView);
 
 }

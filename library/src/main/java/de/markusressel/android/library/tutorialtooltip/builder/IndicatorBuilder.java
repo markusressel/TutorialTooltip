@@ -19,6 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 import android.content.Context;
 import android.view.View;
 
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 
 /**
@@ -54,6 +55,11 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * Indicator y axis offset from anchor position
      */
     private int offsetY = 0;
+
+    /**
+     * OnClick listener
+     */
+    private OnIndicatorClickedListener onIndicatorClickedListener;
 
     /**
      * Constructor for the builder.
@@ -95,6 +101,17 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
         return this;
     }
 
+    /**
+     * Set an onClick listener for the indicator
+     *
+     * @param onIndicatorClickedListener onClick listener
+     * @return IndicatorBuilder
+     */
+    public IndicatorBuilder onClick(OnIndicatorClickedListener onIndicatorClickedListener) {
+        this.onIndicatorClickedListener = onIndicatorClickedListener;
+        return this;
+    }
+
 
     public Context getContext() {
         return context;
@@ -114,5 +131,9 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     public View getCustomView() {
         return customView;
+    }
+
+    public OnIndicatorClickedListener getOnIndicatorClickedListener() {
+        return onIndicatorClickedListener;
     }
 }

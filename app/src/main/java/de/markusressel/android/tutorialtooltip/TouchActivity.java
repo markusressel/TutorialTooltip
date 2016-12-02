@@ -32,6 +32,8 @@ import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
@@ -52,8 +54,8 @@ public class TouchActivity extends AppCompatActivity {
 
     private TutorialTooltipView tutorialTooltipView;
     private int tutorialId4;
-    private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
     private Button buttonDialog;
+    private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
 
     private static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -75,31 +77,13 @@ public class TouchActivity extends AppCompatActivity {
         final Activity activity = this;
 
         onTutorialTooltipClickedListener = new OnTutorialTooltipClickedListener() {
-
             @Override
-            public boolean indicatorIsClickable() {
-                return true;
-            }
-
-            @Override
-            public void onIndicatorClicked(int id,
-                    TutorialTooltipIndicator indicator, View indicatorView) {
+            public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
                 Toast.makeText(getApplicationContext(),
-                        "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
+                        "Clicked outside: " + id,
                         Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public boolean messageIsClickable() {
-                return true;
-            }
-
-            @Override
-            public void onMessageClicked(int id,
-                    TutorialTooltipMessage indicator, View messageView) {
-                Toast.makeText(getApplicationContext(),
-                        "Message " + id + " " + messageView.getWidth() + " clicked!",
-                        Toast.LENGTH_SHORT).show();
+                TutorialTooltip.remove(activity, id);
             }
         };
 
@@ -121,12 +105,32 @@ public class TouchActivity extends AppCompatActivity {
                                     .indicator(new IndicatorBuilder(activity)
                                             .customView(waveIndicatorView)
                                             .offset(50, 50)
+                                            .onClick(new OnIndicatorClickedListener() {
+                                                @Override
+                                                public void onIndicatorClicked(int id,
+                                                        TutorialTooltipIndicator indicator,
+                                                        View indicatorView) {
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
                                             .build())
                                     .message(new MessageBuilder(activity)
                                             .text(getString(R.string.tutorial_message_1))
                                             .gravity(TutorialTooltipView.Gravity.TOP)
+                                            .onClick(new OnMessageClickedListener() {
+                                                @Override
+                                                public void onMessageClicked(int id,
+                                                        TutorialTooltipMessage message,
+                                                        View messageView) {
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Message " + id + " " + messageView.getWidth() + " clicked!",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
                                             .build())
-                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .onClick(onTutorialTooltipClickedListener)
                                     .build());
                 }
             }
@@ -145,7 +149,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .gravity(TutorialTooltipView.Gravity.LEFT)
                                             .build())
                                     .anchor(button4)
-                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .onClick(onTutorialTooltipClickedListener)
                                     .build());
                 }
             }
@@ -164,7 +168,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
                                     .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
-                                    .onClickListener(onTutorialTooltipClickedListener)
+                                    .onClick(onTutorialTooltipClickedListener)
                                     .build());
                 }
             }
@@ -186,14 +190,30 @@ public class TouchActivity extends AppCompatActivity {
                             new TutorialTooltipBuilder(activity)
                                     .indicator(new IndicatorBuilder(activity)
                                             .customView(waveIndicatorView)
+                                            .onClick(new OnIndicatorClickedListener() {
+                                                @Override
+                                                public void onIndicatorClicked(int id,
+                                                        TutorialTooltipIndicator indicator,
+                                                        View indicatorView) {
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
                                             .build())
                                     .message(new MessageBuilder(activity)
                                             .text(getString(R.string.tutorial_message_fab))
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
                                     .anchor(fab)
-                                    .attachToWindow()
-//                            .onClickListener(onTutorialTooltipClickedListener)
+                                    .attachToWindow(true)
+                                    .onClick(new OnTutorialTooltipClickedListener() {
+                                        @Override
+                                        public void onTutorialTooltipClicked(int id,
+                                                TutorialTooltipView tutorialTooltipView) {
+                                            tutorialTooltipView.remove();
+                                        }
+                                    })
                                     .build());
 
                     tutorialId3 = TutorialTooltip.show(tutorialTooltipView);
@@ -238,7 +258,7 @@ public class TouchActivity extends AppCompatActivity {
         TutorialTooltip.show(
                 new TutorialTooltipBuilder(this)
                         .anchor(new Point((int) x, (int) y))
-                        .onClickListener(onTutorialTooltipClickedListener)
+                        .onClick(onTutorialTooltipClickedListener)
                         .build());
     }
 }

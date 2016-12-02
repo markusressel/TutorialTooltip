@@ -17,7 +17,10 @@
 package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.content.Context;
+import android.view.View;
 
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -27,7 +30,17 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  */
 public class MessageBuilder extends Builder<MessageBuilder> {
 
+    public enum Type {
+        Default,
+        Custom
+    }
+
     private final Context context;
+
+    /**
+     * Specifies if a custom view is used
+     */
+    private Type type = Type.Default;
 
     /**
      * Message text
@@ -35,9 +48,19 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     private String text = "Your Tutorial Message is shown right here.";
 
     /**
+     * Custom message view
+     */
+    private View customView;
+
+    /**
      * Message gravity
      */
     private TutorialTooltipView.Gravity gravity = TutorialTooltipView.Gravity.TOP;
+
+    /**
+     * OnClick listener
+     */
+    private OnMessageClickedListener onMessageClickedListener;
 
     public MessageBuilder(Context context) {
         this.context = context;
@@ -69,6 +92,32 @@ public class MessageBuilder extends Builder<MessageBuilder> {
         return this;
     }
 
+    /**
+     * Set a custom view that should be used as the indicator
+     * <p>
+     * To build your own indicator view, you have to create a new class extending <code>View</code> and implement <code>TutorialTooltipIndicator</code>
+     *
+     * @param messageView custom indicator view
+     * @return MessageBuilder
+     */
+    public <T extends View & TutorialTooltipMessage> MessageBuilder customView(T messageView) {
+        throwIfCompleted();
+        this.type = Type.Custom;
+        this.customView = messageView;
+        return this;
+    }
+
+    /**
+     * Set an onClick listener for the message
+     *
+     * @param onMessageClickedListener onClick listener
+     * @return MessageBuilder
+     */
+    public MessageBuilder onClick(OnMessageClickedListener onMessageClickedListener) {
+        this.onMessageClickedListener = onMessageClickedListener;
+        return this;
+    }
+
     public Context getContext() {
         return context;
     }
@@ -79,5 +128,17 @@ public class MessageBuilder extends Builder<MessageBuilder> {
 
     public TutorialTooltipView.Gravity getGravity() {
         return gravity;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public View getCustomView() {
+        return customView;
+    }
+
+    public OnMessageClickedListener getOnMessageClickedListener() {
+        return onMessageClickedListener;
     }
 }
