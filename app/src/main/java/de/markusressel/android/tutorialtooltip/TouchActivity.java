@@ -206,7 +206,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
                                     .anchor(fab)
-                                    .attachToWindow(true)
+                                    .attachToWindow()
                                     .onClick(new OnTutorialTooltipClickedListener() {
                                         @Override
                                         public void onTutorialTooltipClicked(int id,
