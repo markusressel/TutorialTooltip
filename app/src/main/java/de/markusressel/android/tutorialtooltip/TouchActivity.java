@@ -165,6 +165,8 @@ public class TouchActivity extends AppCompatActivity {
                             new TutorialTooltipBuilder(activity)
                                     .message(new MessageBuilder(activity)
                                             .text(getString(R.string.tutorial_message_2))
+//                                            .anchor(new Point(300, 500))
+                                            .anchor(buttonDialog)
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
                                     .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)

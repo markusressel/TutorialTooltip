@@ -17,6 +17,7 @@
 package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.view.View;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
@@ -48,6 +49,16 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     private String text = "Your Tutorial Message is shown right here.";
 
     /**
+     * Anchor point if no view is used
+     */
+    private Point anchorPoint;
+
+    /**
+     * Anchor view
+     */
+    private View anchorView;
+
+    /**
      * Custom message view
      */
     private View customView;
@@ -67,14 +78,29 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     }
 
     /**
-     * Set the tutorial text
+     * Set a custom anchor point for the message view
      *
-     * @param text message
+     * @param anchorPoint anchor point
      * @return MessageBuilder
      */
-    public MessageBuilder text(String text) {
+    public MessageBuilder anchor(Point anchorPoint) {
         throwIfCompleted();
-        this.text = text;
+        this.anchorPoint = anchorPoint;
+        return this;
+    }
+
+    /**
+     * Set a custom anchor view for the message view
+     * <p>
+     * If no anchor view or point is specified
+     * the message will be positioned relative to the indicator view.
+     *
+     * @param anchorView anchor view
+     * @return MessageBuilder
+     */
+    public MessageBuilder anchor(View anchorView) {
+        throwIfCompleted();
+        this.anchorView = anchorView;
         return this;
     }
 
@@ -89,6 +115,18 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     public MessageBuilder gravity(TutorialTooltipView.Gravity gravity) {
         throwIfCompleted();
         this.gravity = gravity;
+        return this;
+    }
+
+    /**
+     * Set the tutorial text
+     *
+     * @param text message
+     * @return MessageBuilder
+     */
+    public MessageBuilder text(String text) {
+        throwIfCompleted();
+        this.text = text;
         return this;
     }
 
@@ -122,12 +160,20 @@ public class MessageBuilder extends Builder<MessageBuilder> {
         return context;
     }
 
-    public String getText() {
-        return text;
+    public Point getAnchorPoint() {
+        return anchorPoint;
+    }
+
+    public View getAnchorView() {
+        return anchorView;
     }
 
     public TutorialTooltipView.Gravity getGravity() {
         return gravity;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public Type getType() {
