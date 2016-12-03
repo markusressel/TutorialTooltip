@@ -235,6 +235,7 @@ public class TutorialTooltipView extends LinearLayout {
         } else {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
+            return;
         }
 
         if (messageBuilder.getAnchorPoint() != null) {
