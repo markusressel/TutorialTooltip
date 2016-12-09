@@ -19,6 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 import android.content.Context;
 import android.graphics.Point;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
@@ -67,6 +68,26 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * Message gravity
      */
     private TutorialTooltipView.Gravity gravity = TutorialTooltipView.Gravity.TOP;
+
+    /**
+     * Message x axis offset from anchor position
+     */
+    private int offsetX = 0;
+
+    /**
+     * Message y axis offset from anchor position
+     */
+    private int offsetY = 0;
+
+    /**
+     * Message x axis size (width)
+     */
+    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    /**
+     * Message y axis size (height)
+     */
+    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
     /**
      * OnClick listener
@@ -131,9 +152,39 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     }
 
     /**
+     * Set a custom size for the message
+     * <p>
+     *
+     * @param width  x-axis size in pixel
+     * @param height y-axis size in pixel
+     * @return MessageBuilder
+     */
+    public MessageBuilder size(int width, int height) {
+        throwIfCompleted();
+        this.width = width;
+        this.height = height;
+        return this;
+    }
+
+    /**
+     * Set an offset for the message view
+     *
+     * @param offsetX x-axis offset in pixel (positive is right, negative is left)
+     * @param offsetY y-axis offset in pixel (positive is down, negative is up)
+     * @return MessageBuilder
+     */
+    public MessageBuilder offset(int offsetX, int offsetY) {
+        throwIfCompleted();
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        return this;
+    }
+
+    /**
      * Set a custom view that should be used as the indicator
      * <p>
-     * To build your own indicator view, you have to create a new class extending <code>View</code> and implement <code>TutorialTooltipIndicator</code>
+     * To build your own indicator view, you have to create a new class extending <code>View</code>
+     * and implement <code>TutorialTooltipIndicator</code>
      *
      * @param messageView custom indicator view
      * @return MessageBuilder
@@ -182,6 +233,22 @@ public class MessageBuilder extends Builder<MessageBuilder> {
 
     public View getCustomView() {
         return customView;
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public OnMessageClickedListener getOnMessageClickedListener() {

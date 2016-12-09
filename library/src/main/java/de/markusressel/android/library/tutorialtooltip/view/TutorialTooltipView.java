@@ -207,8 +207,8 @@ public class TutorialTooltipView extends LinearLayout {
             });
         }
 
-        addView(indicatorLayout);
-        addView(messageLayout, WRAP_CONTENT, WRAP_CONTENT);
+        addView(indicatorLayout, indicatorBuilder.getWidth(), indicatorBuilder.getHeight());
+        addView(messageLayout, messageBuilder.getWidth(), messageBuilder.getHeight());
 
         if (anchorView != null && anchorView.get() != null) {
             anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
@@ -299,8 +299,8 @@ public class TutorialTooltipView extends LinearLayout {
         float x;
         float y;
 
-        x = anchorPoint.x - indicatorLayout.getWidth() / 2;
-        y = anchorPoint.y - indicatorLayout.getHeight() / 2;
+        x = anchorPoint.x - indicatorLayout.getWidth() / 2 + indicatorBuilder.getOffsetX();
+        y = anchorPoint.y - indicatorLayout.getHeight() / 2 + indicatorBuilder.getOffsetY();
 
         indicatorLayout.setX(x);
         indicatorLayout.setY(y);
@@ -350,6 +350,9 @@ public class TutorialTooltipView extends LinearLayout {
                 break;
         }
 
+        messageX += messageBuilder.getOffsetX();
+        messageY += messageBuilder.getOffsetY();
+
         messageLayout.setX(messageX);
         messageLayout.setY(messageY);
     }
@@ -381,6 +384,9 @@ public class TutorialTooltipView extends LinearLayout {
                 messageY = anchorPoint.y;
                 break;
         }
+
+        messageX += messageBuilder.getOffsetX();
+        messageY += messageBuilder.getOffsetY();
 
         messageLayout.setX(messageX);
         messageLayout.setY(messageY);

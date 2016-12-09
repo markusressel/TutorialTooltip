@@ -18,6 +18,7 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
@@ -57,6 +58,16 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     private int offsetY = 0;
 
     /**
+     * Indicator x axis size (width)
+     */
+    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    /**
+     * Indicator y axis size (height)
+     */
+    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    /**
      * OnClick listener
      */
     private OnIndicatorClickedListener onIndicatorClickedListener;
@@ -74,7 +85,8 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     /**
      * Set a custom view that should be used as the indicator
      * <p>
-     * To build your own indicator view, you have to create a new class extending <code>View</code> and implement <code>TutorialTooltipIndicator</code>
+     * To build your own indicator view, you have to create a new class extending <code>View</code>
+     * and implement <code>TutorialTooltipIndicator</code>
      *
      * @param indicatorView custom indicator view
      * @return IndicatorBuilder
@@ -84,6 +96,24 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
         throwIfCompleted();
         this.type = Type.Custom;
         this.customView = indicatorView;
+        return this;
+    }
+
+    /**
+     * Set a custom size for the indicator
+     * This does NOT change the actual view size. If the size specified here is smaller
+     * than the view, the view will be cropped. Otherwise the view will have a padding around it.
+     * <p>
+     * If no value is specified, the view itself will be used for size measuring.
+     *
+     * @param width  x-axis size in pixel
+     * @param height y-axis size in pixel
+     * @return IndicatorBuilder
+     */
+    public IndicatorBuilder size(int width, int height) {
+        throwIfCompleted();
+        this.width = width;
+        this.height = height;
         return this;
     }
 
@@ -119,6 +149,14 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     public Type getType() {
         return type;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public int getOffsetX() {

@@ -105,6 +105,7 @@ public class TouchActivity extends AppCompatActivity {
                                     .indicator(new IndicatorBuilder(activity)
                                             .customView(waveIndicatorView)
                                             .offset(50, 50)
+                                            .size(200, 200)
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
                                                 public void onIndicatorClicked(int id,
@@ -261,6 +262,10 @@ public class TouchActivity extends AppCompatActivity {
                 new TutorialTooltipBuilder(this)
                         .anchor(new Point((int) x, (int) y))
                         .onClick(onTutorialTooltipClickedListener)
+                        .message(new MessageBuilder(this)
+                                .size(200, 200)
+                                .offset(50, 50)
+                                .build())
                         .build());
     }
 }
