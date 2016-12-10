@@ -194,6 +194,14 @@ public class TutorialTooltipView extends LinearLayout {
             messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
         }
 
+        if (messageBuilder.getTextColor() != null) {
+            messageView.setTextColor(messageBuilder.getTextColor());
+        }
+
+        if (messageBuilder.getBackgroundColor() != null) {
+            messageView.setBackgroundColor(messageBuilder.getBackgroundColor());
+        }
+
         if (messageBuilder.getOnMessageClickedListener() != null) {
             messageLayout.setOnClickListener(new OnClickListener() {
                 @Override
@@ -208,14 +216,14 @@ public class TutorialTooltipView extends LinearLayout {
         }
 
         int indicatorWidth;
-        if (indicatorBuilder.getWidth() == IndicatorBuilder.DEFAULT) {
+        if (indicatorBuilder.getWidth() == null) {
             indicatorWidth = (int) ViewHelper.pxFromDp(getContext(), 50);
         } else {
             indicatorWidth = indicatorBuilder.getWidth();
         }
 
         int indicatorHeight;
-        if (indicatorBuilder.getHeight() == IndicatorBuilder.DEFAULT) {
+        if (indicatorBuilder.getHeight() == null) {
             indicatorHeight = (int) ViewHelper.pxFromDp(getContext(), 50);
         } else {
             indicatorHeight = indicatorBuilder.getHeight();

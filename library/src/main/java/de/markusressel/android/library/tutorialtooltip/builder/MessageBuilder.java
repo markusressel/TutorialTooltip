@@ -17,6 +17,7 @@
 package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.graphics.Point;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -99,6 +100,18 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * Message y axis size (height)
      */
     private int height = WRAP_CONTENT;
+
+    /**
+     * Text color
+     */
+    @ColorInt
+    private Integer textColor;
+
+    /**
+     * Background color
+     */
+    @ColorInt
+    private Integer backgroundColor;
 
     /**
      * OnClick listener
@@ -202,6 +215,32 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     }
 
     /**
+     * Set the text color for the message
+     *
+     * @param textColor text color
+     * @return MessageBuilder
+     */
+    @SuppressWarnings("unused")
+    public MessageBuilder textColor(@ColorInt int textColor) {
+        throwIfCompleted();
+        this.textColor = textColor;
+        return this;
+    }
+
+    /**
+     * Set the background color for the message
+     *
+     * @param backgroundColor background color
+     * @return MessageBuilder
+     */
+    @SuppressWarnings("unused")
+    public MessageBuilder backgroundColor(@ColorInt int backgroundColor) {
+        throwIfCompleted();
+        this.backgroundColor = backgroundColor;
+        return this;
+    }
+
+    /**
      * Set a custom view that should be used as the indicator
      * <p>
      * To build your own indicator view, you have to create a new class extending <code>View</code>
@@ -268,6 +307,14 @@ public class MessageBuilder extends Builder<MessageBuilder> {
 
     public int getHeight() {
         return height;
+    }
+
+    public Integer getTextColor() {
+        return textColor;
+    }
+
+    public Integer getBackgroundColor() {
+        return backgroundColor;
     }
 
     public OnMessageClickedListener getOnMessageClickedListener() {

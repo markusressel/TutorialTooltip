@@ -17,6 +17,7 @@
 package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.support.annotation.Dimension;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -41,12 +42,6 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      */
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
-
-    /**
-     * Constant size value to match the parents size
-     */
-    @SuppressWarnings("WeakerAccess,unused")
-    public static final int DEFAULT = -5;
 
     @SuppressWarnings("WeakerAccess")
     public enum Type {
@@ -77,12 +72,12 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     /**
      * Indicator x axis size (width)
      */
-    private int width = DEFAULT;
+    private Integer width;
 
     /**
      * Indicator y axis size (height)
      */
-    private int height = DEFAULT;
+    private Integer height;
 
     /**
      * OnClick listener
@@ -166,11 +161,13 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
         return type;
     }
 
-    public int getWidth() {
+    @Nullable
+    public Integer getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    @Nullable
+    public Integer getHeight() {
         return height;
     }
 
