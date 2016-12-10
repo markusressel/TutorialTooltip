@@ -42,6 +42,7 @@ public class TutorialTooltip {
      * @param builder TutorialTooltipBuilder
      * @return TutorialTooltipView
      */
+    @SuppressWarnings("unused")
     public static TutorialTooltipView make(TutorialTooltipBuilder builder) {
         if (!builder.isCompleted()) {
             throw new IllegalStateException("Builder is not complete! Did you call build()?");
@@ -55,6 +56,7 @@ public class TutorialTooltip {
      * @param builder TutorialTooltipBuilder
      * @return ID of TutorialTooltip
      */
+    @SuppressWarnings("unused")
     public static int show(TutorialTooltipBuilder builder) {
         TutorialTooltipView tutorialTooltipView = make(builder);
         return show(tutorialTooltipView);
@@ -66,6 +68,7 @@ public class TutorialTooltip {
      * @param tutorialTooltipView TutorialTooltipView
      * @return ID of TutorialTooltip
      */
+    @SuppressWarnings("unused")
     public static int show(TutorialTooltipView tutorialTooltipView) {
         tutorialTooltipView.show();
         return tutorialTooltipView.getTutorialTooltipId();
@@ -74,12 +77,14 @@ public class TutorialTooltip {
     /**
      * Searches through the view tree for instances of TutorialTooltipView
      * <p>
-     * This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
+     * WARNING: This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
+     * If you attach the TutorialTooltip to the window you have to keep a reference to its view manually.
      *
      * @param context activity context
      * @param id      id of TutorialTooltip
      * @return true if a TutorialTooltip with the given id exists, false otherwise
      */
+    @SuppressWarnings("unused")
     public static boolean exists(Context context, int id) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
@@ -100,12 +105,14 @@ public class TutorialTooltip {
     /**
      * Remove an existing TutorialTooltip via its ID
      * <p>
-     * This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
+     * WARNING: This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
+     * If you attach the TutorialTooltip to the window you have to keep a reference to its view manually.
      *
      * @param context activity context the specified tooltip was added to, application context will not work!
      * @param id      id of TutorialTooltip
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
+    @SuppressWarnings("unused")
     public static boolean remove(Context context, int id) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
@@ -131,6 +138,7 @@ public class TutorialTooltip {
      *
      * @param tutorialTooltipView TutorialTooltipView to remove
      */
+    @SuppressWarnings("unused")
     public static void remove(TutorialTooltipView tutorialTooltipView) {
         tutorialTooltipView.remove();
     }
@@ -138,10 +146,12 @@ public class TutorialTooltip {
     /**
      * Remove all existing TutorialTooltips from activity
      * <p>
-     * This does not remove TutorialTooltips that are attached to the window!
+     * WARNING: This does not remove TutorialTooltips that are attached to the window!
+     * If you attach the TutorialTooltip to the window you have to keep a reference to its view manually.
      *
      * @param context activity context the specified tooltip was added to, application context will not work!
      */
+    @SuppressWarnings("unused")
     public static void removeAll(Context context) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {

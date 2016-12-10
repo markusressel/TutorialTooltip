@@ -207,7 +207,21 @@ public class TutorialTooltipView extends LinearLayout {
             });
         }
 
-        addView(indicatorLayout, indicatorBuilder.getWidth(), indicatorBuilder.getHeight());
+        int indicatorWidth;
+        if (indicatorBuilder.getWidth() == IndicatorBuilder.DEFAULT) {
+            indicatorWidth = (int) ViewHelper.pxFromDp(getContext(), 50);
+        } else {
+            indicatorWidth = indicatorBuilder.getWidth();
+        }
+
+        int indicatorHeight;
+        if (indicatorBuilder.getHeight() == IndicatorBuilder.DEFAULT) {
+            indicatorHeight = (int) ViewHelper.pxFromDp(getContext(), 50);
+        } else {
+            indicatorHeight = indicatorBuilder.getHeight();
+        }
+
+        addView(indicatorLayout, indicatorWidth, indicatorHeight);
         addView(messageLayout, messageBuilder.getWidth(), messageBuilder.getHeight());
 
         if (anchorView != null && anchorView.get() != null) {

@@ -102,7 +102,7 @@ public class TouchActivity extends AppCompatActivity {
                     tutorialId1 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
                                     .anchor(button1, TutorialTooltipView.Gravity.TOP)
-                                    .indicator(new IndicatorBuilder(activity)
+                                    .indicator(new IndicatorBuilder()
                                             .customView(waveIndicatorView)
                                             .offset(50, 50)
                                             .size(200, 200)
@@ -117,7 +117,7 @@ public class TouchActivity extends AppCompatActivity {
                                                 }
                                             })
                                             .build())
-                                    .message(new MessageBuilder(activity)
+                                    .message(new MessageBuilder()
                                             .text(getString(R.string.tutorial_message_1))
                                             .gravity(TutorialTooltipView.Gravity.TOP)
                                             .onClick(new OnMessageClickedListener() {
@@ -145,7 +145,7 @@ public class TouchActivity extends AppCompatActivity {
                 } else {
                     tutorialId4 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
-                                    .message(new MessageBuilder(activity)
+                                    .message(new MessageBuilder()
                                             .text(getString(R.string.tutorial_message_3))
                                             .gravity(TutorialTooltipView.Gravity.LEFT)
                                             .build())
@@ -164,7 +164,7 @@ public class TouchActivity extends AppCompatActivity {
                 } else {
                     tutorialId2 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
-                                    .message(new MessageBuilder(activity)
+                                    .message(new MessageBuilder()
                                             .text(getString(R.string.tutorial_message_2))
 //                                            .anchor(new Point(300, 500))
                                             .anchor(buttonDialog)
@@ -191,7 +191,7 @@ public class TouchActivity extends AppCompatActivity {
 
                     tutorialTooltipView = TutorialTooltip.make(
                             new TutorialTooltipBuilder(activity)
-                                    .indicator(new IndicatorBuilder(activity)
+                                    .indicator(new IndicatorBuilder()
                                             .customView(waveIndicatorView)
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
@@ -204,7 +204,7 @@ public class TouchActivity extends AppCompatActivity {
                                                 }
                                             })
                                             .build())
-                                    .message(new MessageBuilder(activity)
+                                    .message(new MessageBuilder()
                                             .text(getString(R.string.tutorial_message_fab))
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
@@ -257,14 +257,21 @@ public class TouchActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    /**
+     * Creates a TutorialTooltip where the user taps (if no other view consumes the touch
+     *
+     * @param x x coordinate of touch
+     * @param y y coordinate of touch
+     */
     private void createTutorialTooltip(float x, float y) {
         TutorialTooltip.show(
                 new TutorialTooltipBuilder(this)
                         .anchor(new Point((int) x, (int) y))
                         .onClick(onTutorialTooltipClickedListener)
-                        .message(new MessageBuilder(this)
-                                .size(200, 200)
-                                .offset(50, 50)
+                        .message(new MessageBuilder()
+                                .size((int) getResources().getDimension(R.dimen.messageWidth),
+                                        MessageBuilder.WRAP_CONTENT)
+//                                .sizeDimen(this, R.dimen.messageWidth, MessageBuilder.WRAP_CONTENT)
                                 .build())
                         .build());
     }

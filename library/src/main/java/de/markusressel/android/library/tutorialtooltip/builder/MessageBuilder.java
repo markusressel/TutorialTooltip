@@ -16,8 +16,8 @@
 
 package de.markusressel.android.library.tutorialtooltip.builder;
 
-import android.content.Context;
 import android.graphics.Point;
+import android.support.annotation.Dimension;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -32,12 +32,23 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  */
 public class MessageBuilder extends Builder<MessageBuilder> {
 
+    /**
+     * Constant size value to wrap the views content
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    /**
+     * Constant size value to match the parents size
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
+
+    @SuppressWarnings("WeakerAccess")
     public enum Type {
         Default,
         Custom
     }
-
-    private final Context context;
 
     /**
      * Specifies if a custom view is used
@@ -82,20 +93,22 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     /**
      * Message x axis size (width)
      */
-    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private int width = WRAP_CONTENT;
 
     /**
      * Message y axis size (height)
      */
-    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private int height = WRAP_CONTENT;
 
     /**
      * OnClick listener
      */
     private OnMessageClickedListener onMessageClickedListener;
 
-    public MessageBuilder(Context context) {
-        this.context = context;
+    /**
+     * Constructor
+     */
+    public MessageBuilder() {
     }
 
     /**
@@ -104,6 +117,7 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param anchorPoint anchor point
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public MessageBuilder anchor(Point anchorPoint) {
         throwIfCompleted();
         this.anchorPoint = anchorPoint;
@@ -119,6 +133,7 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param anchorView anchor view
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public MessageBuilder anchor(View anchorView) {
         throwIfCompleted();
         this.anchorView = anchorView;
@@ -133,6 +148,7 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param gravity message view gravity
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public MessageBuilder gravity(TutorialTooltipView.Gravity gravity) {
         throwIfCompleted();
         this.gravity = gravity;
@@ -145,6 +161,7 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param text message
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public MessageBuilder text(String text) {
         throwIfCompleted();
         this.text = text;
@@ -159,7 +176,9 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param height y-axis size in pixel
      * @return MessageBuilder
      */
-    public MessageBuilder size(int width, int height) {
+    @SuppressWarnings("unused")
+    public MessageBuilder size(@Dimension(unit = Dimension.PX) int width,
+            @Dimension(unit = Dimension.PX) int height) {
         throwIfCompleted();
         this.width = width;
         this.height = height;
@@ -173,7 +192,9 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param offsetY y-axis offset in pixel (positive is down, negative is up)
      * @return MessageBuilder
      */
-    public MessageBuilder offset(int offsetX, int offsetY) {
+    @SuppressWarnings("unused")
+    public MessageBuilder offset(@Dimension(unit = Dimension.PX) int offsetX,
+            @Dimension(unit = Dimension.PX) int offsetY) {
         throwIfCompleted();
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -189,6 +210,7 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param messageView custom indicator view
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public <T extends View & TutorialTooltipMessage> MessageBuilder customView(T messageView) {
         throwIfCompleted();
         this.type = Type.Custom;
@@ -202,13 +224,10 @@ public class MessageBuilder extends Builder<MessageBuilder> {
      * @param onMessageClickedListener onClick listener
      * @return MessageBuilder
      */
+    @SuppressWarnings("unused")
     public MessageBuilder onClick(OnMessageClickedListener onMessageClickedListener) {
         this.onMessageClickedListener = onMessageClickedListener;
         return this;
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     public Point getAnchorPoint() {

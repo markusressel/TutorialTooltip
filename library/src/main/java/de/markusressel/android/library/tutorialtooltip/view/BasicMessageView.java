@@ -24,6 +24,8 @@ import android.widget.TextView;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
 /**
+ * Basic Message view implementation
+ * <p>
  * Created by Markus on 24.11.2016.
  */
 public class BasicMessageView extends TextView implements TutorialTooltipMessage {
@@ -41,6 +43,7 @@ public class BasicMessageView extends TextView implements TutorialTooltipMessage
     }
 
     @TargetApi(21)
+    @SuppressWarnings("unused")
     public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);

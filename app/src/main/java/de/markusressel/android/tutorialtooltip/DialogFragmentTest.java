@@ -34,6 +34,8 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTool
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
+ * Dialog for testing purpose
+ * <p>
  * Created by Markus on 28.11.2016.
  */
 public class DialogFragmentTest extends DialogFragment {
@@ -67,7 +69,7 @@ public class DialogFragmentTest extends DialogFragment {
 
     private void showTutorialTooltip() {
         TutorialTooltip.show(new TutorialTooltipBuilder(getActivity())
-                .message(new MessageBuilder(getActivity())
+                .message(new MessageBuilder()
                         .text("This is a dialog test message!\nhttp://power-switch.eu")
                         .gravity(TutorialTooltipView.Gravity.TOP)
                         .build())

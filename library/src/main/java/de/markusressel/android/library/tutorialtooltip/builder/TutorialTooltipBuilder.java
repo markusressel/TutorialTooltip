@@ -112,8 +112,8 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
         // set default values
         this.attachMode = AttachMode.Activity;
-        this.indicatorBuilder = new IndicatorBuilder(context).build();
-        this.messageBuilder = new MessageBuilder(context).build();
+        this.indicatorBuilder = new IndicatorBuilder().build();
+        this.messageBuilder = new MessageBuilder().build();
 
         this.id = ++lastId;
     }
@@ -125,6 +125,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      *
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder attachToWindow() {
         throwIfCompleted();
         attachMode = AttachMode.Window;
@@ -138,6 +139,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param dialog dialog to attach this view to
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder attachToDialog(Dialog dialog) {
         throwIfCompleted();
         attachMode = AttachMode.Dialog;
@@ -151,6 +153,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param view view which will be used as an anchor
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder anchor(View view) {
         return anchor(view, TutorialTooltipView.Gravity.CENTER);
     }
@@ -162,6 +165,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param gravity position relative to the anchor view which the indicator will point to
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder anchor(View view, TutorialTooltipView.Gravity gravity) {
         throwIfCompleted();
         this.anchorPoint = null;
@@ -176,6 +180,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param point position where the indicator will be located at
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder anchor(final Point point) {
         throwIfCompleted();
         this.anchorView = null;
@@ -189,6 +194,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param indicatorBuilder Indicator builder
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder indicator(IndicatorBuilder indicatorBuilder) {
         throwIfCompleted();
         this.indicatorBuilder = indicatorBuilder;
@@ -198,6 +204,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     /**
      * Set the message using a <code>MessageBuilder</code>
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder message(MessageBuilder messageBuilder) {
         throwIfCompleted();
         this.messageBuilder = messageBuilder;
@@ -210,6 +217,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param onTutorialTooltipClickedListener onClick listener
      * @return TutorialTooltipBuilder
      */
+    @SuppressWarnings("unused")
     public TutorialTooltipBuilder onClick(
             OnTutorialTooltipClickedListener onTutorialTooltipClickedListener) {
         throwIfCompleted();

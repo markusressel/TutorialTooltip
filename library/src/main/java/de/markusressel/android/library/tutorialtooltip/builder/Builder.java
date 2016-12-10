@@ -40,7 +40,7 @@ abstract class Builder<T> {
     /**
      * Checks if this Builder was already build and therefore cant be modified anymore
      */
-    protected void throwIfCompleted() {
+    void throwIfCompleted() {
         if (completed) {
             throw new IllegalStateException("Builder was already built!");
         }

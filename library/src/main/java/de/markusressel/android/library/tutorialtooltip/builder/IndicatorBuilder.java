@@ -16,7 +16,7 @@
 
 package de.markusressel.android.library.tutorialtooltip.builder;
 
-import android.content.Context;
+import android.support.annotation.Dimension;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -30,12 +30,29 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  */
 public class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
+    /**
+     * Constant size value to wrap the views content
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    /**
+     * Constant size value to match the parents size
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
+
+    /**
+     * Constant size value to match the parents size
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int DEFAULT = -5;
+
+    @SuppressWarnings("WeakerAccess")
     public enum Type {
         Default,
         Custom
     }
-
-    private Context context;
 
     /**
      * Specifies if a custom view is used
@@ -60,12 +77,12 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     /**
      * Indicator x axis size (width)
      */
-    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private int width = DEFAULT;
 
     /**
      * Indicator y axis size (height)
      */
-    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private int height = DEFAULT;
 
     /**
      * OnClick listener
@@ -75,11 +92,8 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     /**
      * Constructor for the builder.
      * Chain methods and call ".build()" as your last step to make this object immutable.
-     *
-     * @param context activity context
      */
-    public IndicatorBuilder(Context context) {
-        this.context = context;
+    public IndicatorBuilder() {
     }
 
     /**
@@ -91,6 +105,7 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * @param indicatorView custom indicator view
      * @return IndicatorBuilder
      */
+    @SuppressWarnings("unused")
     public <T extends View & TutorialTooltipIndicator> IndicatorBuilder customView(
             T indicatorView) {
         throwIfCompleted();
@@ -110,7 +125,9 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * @param height y-axis size in pixel
      * @return IndicatorBuilder
      */
-    public IndicatorBuilder size(int width, int height) {
+    @SuppressWarnings("unused")
+    public IndicatorBuilder size(@Dimension(unit = Dimension.PX) int width,
+            @Dimension(unit = Dimension.PX) int height) {
         throwIfCompleted();
         this.width = width;
         this.height = height;
@@ -124,7 +141,9 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * @param offsetY y-axis offset in pixel (positive is down, negative is up)
      * @return IndicatorBuilder
      */
-    public IndicatorBuilder offset(int offsetX, int offsetY) {
+    @SuppressWarnings("unused")
+    public IndicatorBuilder offset(@Dimension(unit = Dimension.PX) int offsetX,
+            @Dimension(unit = Dimension.PX) int offsetY) {
         throwIfCompleted();
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -137,14 +156,10 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * @param onIndicatorClickedListener onClick listener
      * @return IndicatorBuilder
      */
+    @SuppressWarnings("unused")
     public IndicatorBuilder onClick(OnIndicatorClickedListener onIndicatorClickedListener) {
         this.onIndicatorClickedListener = onIndicatorClickedListener;
         return this;
-    }
-
-
-    public Context getContext() {
-        return context;
     }
 
     public Type getType() {

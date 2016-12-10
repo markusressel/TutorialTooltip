@@ -26,6 +26,10 @@ import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 
 /**
+ * Basic indicator view
+ * <p>
+ * Shows rhythmic waves expanding from the center
+ * <p>
  * Created by Markus on 24.11.2016.
  */
 public class WaveIndicatorView extends CircleWaveAlertView implements TutorialTooltipIndicator {
@@ -43,6 +47,7 @@ public class WaveIndicatorView extends CircleWaveAlertView implements TutorialTo
     }
 
     @TargetApi(21)
+    @SuppressWarnings("unused")
     public WaveIndicatorView(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
