@@ -17,11 +17,13 @@
 package de.markusressel.android.tutorialtooltip;
 
 import android.app.Dialog;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -90,7 +92,24 @@ public class DialogFragmentTest extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // ask to really close
-        Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(getActivity()) {
+            @Override
+            public boolean onTouchEvent(MotionEvent event) {
+                switch (event.getAction()) {
+                    // When user touches the screen
+                    case MotionEvent.ACTION_DOWN:
+                        // Getting X coordinate
+                        float x = event.getX();
+                        // Getting Y Coordinate
+                        float y = event.getY();
+
+                        createTutorialTooltip(x, y);
+                        return true;
+                }
+
+                return super.onTouchEvent(event);
+            }
+        };
         dialog.setTitle("Dialog Test");
         dialog.setCanceledOnTouchOutside(true);
         dialog.getWindow()
@@ -107,5 +126,53 @@ public class DialogFragmentTest extends DialogFragment {
         dialog.show();
 
         return dialog;
+    }
+
+    /**
+     * Creates a TutorialTooltip where the user taps (if no other view consumes the touch
+     *
+     * @param x x coordinate of touch
+     * @param y y coordinate of touch
+     */
+    private void createTutorialTooltip(float x, float y) {
+        TutorialTooltipView.Gravity messageGravity;
+
+        int borderSize = 200;
+
+        int leftBorder = borderSize;
+        int rightBorder = getDialog().getWindow().getDecorView().getWidth() - borderSize;
+        int topBorder = borderSize;
+        int bottomBorder = getDialog().getWindow().getDecorView().getHeight() - borderSize;
+
+        if (x > rightBorder) {
+            messageGravity = TutorialTooltipView.Gravity.LEFT;
+        } else if (x < leftBorder) {
+            messageGravity = TutorialTooltipView.Gravity.RIGHT;
+        } else if (y < topBorder) {
+            messageGravity = TutorialTooltipView.Gravity.BOTTOM;
+        } else if (y > bottomBorder) {
+            messageGravity = TutorialTooltipView.Gravity.TOP;
+        } else {
+            messageGravity = TutorialTooltipView.Gravity.CENTER;
+        }
+
+
+        TutorialTooltip.show(
+                new TutorialTooltipBuilder(getActivity())
+                        .anchor(new Point((int) x, (int) y))
+                        .attachToDialog(getDialog())
+                        .onClick(new OnTutorialTooltipClickedListener() {
+                            @Override
+                            public void onTutorialTooltipClicked(int id,
+                                    TutorialTooltipView tutorialTooltipView) {
+                                tutorialTooltipView.remove();
+                            }
+                        })
+                        .message(new MessageBuilder()
+                                .gravity(messageGravity)
+                                .size(200, MessageBuilder.WRAP_CONTENT)
+                                .text("You touched the dialog right here!")
+                                .build())
+                        .build());
     }
 }

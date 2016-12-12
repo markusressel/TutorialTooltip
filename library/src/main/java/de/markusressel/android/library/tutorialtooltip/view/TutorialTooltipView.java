@@ -22,7 +22,6 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -321,8 +320,14 @@ public class TutorialTooltipView extends LinearLayout {
         float x;
         float y;
 
-        x = anchorPoint.x - indicatorLayout.getWidth() / 2 + indicatorBuilder.getOffsetX();
-        y = anchorPoint.y - indicatorLayout.getHeight() / 2 + indicatorBuilder.getOffsetY();
+        x = anchorPoint.x
+                - indicatorLayout.getWidth() / 2
+                + indicatorBuilder.getOffsetX()
+                - getRootView().getPaddingLeft();
+        y = anchorPoint.y
+                - indicatorLayout.getHeight() / 2
+                + indicatorBuilder.getOffsetY()
+                - getRootView().getPaddingTop();
 
         indicatorLayout.setX(x);
         indicatorLayout.setY(y);
@@ -337,10 +342,6 @@ public class TutorialTooltipView extends LinearLayout {
 
         int[] position = new int[2];
         view.getLocationInWindow(position);
-
-        View rootView = view.getRootView();
-        position[0] -= rootView.getPaddingLeft();
-        position[1] -= rootView.getPaddingTop();
 
         float anchorX = position[0];
         float anchorY = position[1];
@@ -371,6 +372,9 @@ public class TutorialTooltipView extends LinearLayout {
                 messageY = anchorY + view.getHeight();
                 break;
         }
+
+        messageX -= getRootView().getPaddingLeft();
+        messageY -= getRootView().getPaddingTop();
 
         messageX += messageBuilder.getOffsetX();
         messageY += messageBuilder.getOffsetY();
@@ -407,6 +411,10 @@ public class TutorialTooltipView extends LinearLayout {
                 break;
         }
 
+        // ignore padding for calculations
+        messageX -= getRootView().getPaddingLeft();
+        messageY -= getRootView().getPaddingTop();
+
         messageX += messageBuilder.getOffsetX();
         messageY += messageBuilder.getOffsetY();
 
@@ -416,20 +424,20 @@ public class TutorialTooltipView extends LinearLayout {
 //        updateMessageSize(messageX, messageY);
     }
 
-    private void updateMessageSize(float messageX, float messageY) {
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-
-        if (messageX + messageLayout.getWidth() > metrics.widthPixels) {
-            messageLayout.getLayoutParams().width = metrics.widthPixels - (int) messageX;
-        } else if (messageX < 0) {
-            messageLayout.setX(0);
-            messageLayout.getLayoutParams().width = messageLayout.getWidth() + (int) messageX;
-        }
-
-        messageLayout.requestLayout();
-    }
+//    private void updateMessageSize(float messageX, float messageY) {
+//        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        wm.getDefaultDisplay().getMetrics(metrics);
+//
+//        if (messageX + messageLayout.getWidth() > metrics.widthPixels) {
+//            messageLayout.getLayoutParams().width = metrics.widthPixels - (int) messageX;
+//        } else if (messageX < 0) {
+//            messageLayout.setX(0);
+//            messageLayout.getLayoutParams().width = messageLayout.getWidth() + (int) messageX;
+//        }
+//
+//        messageLayout.requestLayout();
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
