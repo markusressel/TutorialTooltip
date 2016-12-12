@@ -37,6 +37,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClick
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.tutorialtooltip.view.CardMessageView;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView;
 
@@ -147,7 +148,9 @@ public class TouchActivity extends AppCompatActivity {
                             new TutorialTooltipBuilder(activity)
                                     .message(new MessageBuilder()
                                             .text(getString(R.string.tutorial_message_3))
-                                            .gravity(TutorialTooltipView.Gravity.LEFT)
+                                            .gravity(TutorialTooltipView.Gravity.RIGHT)
+                                            .size((int) pxFromDp(getApplicationContext(), 150),
+                                                    MessageBuilder.WRAP_CONTENT)
                                             .build())
                                     .anchor(button4)
                                     .onClick(onTutorialTooltipClickedListener)
@@ -205,8 +208,11 @@ public class TouchActivity extends AppCompatActivity {
                                             })
                                             .build())
                                     .message(new MessageBuilder()
+                                            .customView(new CardMessageView(activity))
                                             .text(getString(R.string.tutorial_message_fab))
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
+                                            .backgroundColor(Color.BLACK)
+                                            .textColor(Color.WHITE)
                                             .build())
                                     .anchor(fab)
                                     .attachToWindow()
