@@ -16,12 +16,14 @@
 
 package de.markusressel.android.library.tutorialtooltip.view;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.text.Html;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -92,7 +94,21 @@ public class TutorialTooltipView extends LinearLayout {
     }
 
     protected TutorialTooltipView(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    protected TutorialTooltipView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    protected TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(21)
+    protected TutorialTooltipView(Context context, AttributeSet attrs, int defStyleAttr,
+            int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public TutorialTooltipView(TutorialTooltipBuilder tutorialTooltipBuilder) {
