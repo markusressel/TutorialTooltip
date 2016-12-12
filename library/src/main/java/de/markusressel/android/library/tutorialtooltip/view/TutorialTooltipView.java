@@ -167,7 +167,7 @@ public class TutorialTooltipView extends LinearLayout {
             indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
         } else {
             indicatorLayout.removeAllViews();
-            indicatorLayout.addView((View) indicatorView, WRAP_CONTENT, WRAP_CONTENT);
+            indicatorLayout.addView((View) indicatorView, MATCH_PARENT, MATCH_PARENT);
         }
 
         // Set onClick listeners

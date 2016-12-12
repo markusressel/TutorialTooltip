@@ -98,7 +98,7 @@ public class TouchActivity extends AppCompatActivity {
                     waveIndicatorView.setStartColor(Color.argb(255, 255, 0, 0));
                     waveIndicatorView.setEndColor(Color.argb(0, 255, 0, 0));
                     waveIndicatorView.setStrokeWidth(pxFromDp(activity, 5));
-                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
+//                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
                     tutorialId1 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
@@ -106,7 +106,7 @@ public class TouchActivity extends AppCompatActivity {
                                     .indicator(new IndicatorBuilder()
                                             .customView(waveIndicatorView)
                                             .offset(50, 50)
-                                            .size(200, 200)
+                                            .size(300, 300)
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
                                                 public void onIndicatorClicked(int id,
