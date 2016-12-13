@@ -52,6 +52,16 @@ You can afterwards show it very easily by calling:
 
     TutorialTooltip.show(tutorialTooltipBuilder);
 
+## Remove a TutorialTooltip
+
+To remove a ```TutorialTooltip``` either hold a reference to its view and call:
+
+    tutorialTooltipView.remove();
+
+or (if you attached it to an activity) you can use a static method:
+
+    TutorialTooltip.remove(activity, tutorialTooltipId);
+
 ## Customization
 
 The first example will show a default ```TutorialTooltipIndicator``` and default ```TutorialTooltipMessage``` so you can test things without getting to much into the details.
