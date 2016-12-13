@@ -29,7 +29,9 @@ in your desired module build.gradle file.
 ## Create the TutorialTooltip
 
 To create a ```TutorialTooltip``` you can use the builder pattern:
+
 ##### Using an Anchor View
+---
 
     TutorialTooltipBuilder tutorialTooltipBuilder =
         new TutorialTooltipBuilder(this)
@@ -37,6 +39,7 @@ To create a ```TutorialTooltip``` you can use the builder pattern:
             .build();
 
 ##### Using an Anchor Point
+---
 
     TutorialTooltipBuilder tutorialTooltipBuilder =
             new TutorialTooltipBuilder(this)
@@ -48,34 +51,25 @@ You can afterwards show it very easily by calling:
 
     TutorialTooltip.show(tutorialTooltipBuilder);
 
-## Troubleshooting
-
-### Dialogs
-If the ```TutorialTooltip``` is used in a ```Dialog``` (f.ex. ```DialogFragment```) you have to additionally call:
-
-    .attachToDialog(getDialog())
-
-in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instaed of the ```Activity```.
-
-### Attach to Window
-If somehow the ```TutorialTooltip``` is still not rendered above the content you want it to, you can attach it to the ```Window``` instead of the ```Activity``` using:
-
-    .attachToWindow()
-
-This will create a dedicated ```Window``` just for the ```TutorialTooltip``` and (should) always render above other content.
-When using this method you can only show one ```TutorialTooltip``` at a time though and onClick handling works a little different, so you should only use this as a last resort.
-
 ## Customization
+
 The first example will show a default ```TutorialTooltipIndicator``` and default ```TutorialTooltipMessage``` so you can test things without getting to much into the details.
-Of course this small example is not enough for everyday usage, so let's start with some more advanced ones and get more complex down the road.
+Of course this small example is not enough for everyday usage, so let's start with some more advanced ones and increase complexity down the road.
 
 ### Indicator
+
+##### Basic
+---
+
 The ```TutorialTooltip``` library allows you to customize the indicator in a fast and easy way using the builder pattern (again). To customize the look of the indicator use something like this in your ```TutorialTooltipBuilder```:
 
     .indicator(new IndicatorBuilder()
         .size(100, 100) // size values in pixel
         .build()
     )
+
+##### Advanced
+---
 
 There are other builder methods you can use to further customize the look of the indicator. Just have a look at the ```IndicatorBuilder``` class.
 
@@ -100,7 +94,8 @@ A complete example would look something like this:
 
     TutorialTooltip.show(tutorialTooltipBuilder);
 
-#### Custom Indicator View
+##### Geek
+---
 
 If you don't like the look of the included indicator you can override it completely with a custom view. To use a custom view as an indicator you have to make it:
 
@@ -124,6 +119,9 @@ This makes it possible to use the ```IndicatorBuilder``` even when using a compl
 
 ### Message
 
+##### Basic
+---
+
 The message view can be customized in the same way as the indicator.
 Customize the message using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so:
 
@@ -131,6 +129,9 @@ Customize the message using the ```MessageBuilder``` in your ```TutorialTooltipB
         .text("This is a tutorial message!")
         .build()
     )
+
+##### Advanced
+---
 
 Just like with the indicator you can further customize the message with something similar to this:
 
@@ -150,7 +151,8 @@ Just like with the indicator you can further customize the message with somethin
 
 Have a look at the ```MessageBuilder``` class for a full list of options.
 
-#### Custom Message View
+##### Geek
+---
 
 If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
 
@@ -175,6 +177,31 @@ An example would look like this:
         })
         .build()
     )
+
+## Troubleshooting
+
+### Dialogs
+---
+
+If the ```TutorialTooltip``` is used in a ```Dialog``` (f.ex. ```DialogFragment```) you have to additionally call:
+
+    .attachToDialog(getDialog())
+
+in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instaed of the ```Activity```.
+
+### Attach to Window
+---
+
+If somehow the ```TutorialTooltip``` is still not rendered above the content you want it to, you can attach it to the ```Window``` instead of the ```Activity``` using:
+
+    .attachToWindow()
+
+This will create a dedicated ```Window``` just for the ```TutorialTooltip``` and (should) always render above other content.
+When using this method you can only show one ```TutorialTooltip``` at a time though and onClick handling works a little different, so you should only use this as a last resort.
+
+---
+---
+---
 
 # Attributions
 
