@@ -48,9 +48,13 @@ This is the most basic ```TutorialTooltip``` you can create.
 
 ## Show a TutorialTooltip
 
-You can afterwards show it very easily by calling:
+If you used the builder to create your ```TutorialTooltip``` you can afterwards show it very easily by calling:
 
-    TutorialTooltip.show(tutorialTooltipBuilder);
+    înt tutorialTooltipId = TutorialTooltip.show(tutorialTooltipBuilder);
+
+If you used ```TutorialTooltip.make(tutorialTooltipBuilder)``` you can show it using:
+
+    înt tutorialTooltipId = TutorialTooltip.show(tutorialTooltipView);
 
 ## Remove a TutorialTooltip
 
@@ -58,7 +62,9 @@ To remove a ```TutorialTooltip``` either hold a reference to its view and call:
 
     tutorialTooltipView.remove();
 
-or (if you attached it to an activity) you can use a static method:
+on the respective view object.
+
+Or (if you attached it to an activity) you can use a static method and remove it by its ID:
 
     TutorialTooltip.remove(activity, tutorialTooltipId);
 
