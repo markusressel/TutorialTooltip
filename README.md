@@ -26,12 +26,11 @@ in your project build.gradle file and
 
 in your desired module build.gradle file.
 
-## Create the TutorialTooltip
+## Create a TutorialTooltip
 
 To create a ```TutorialTooltip``` you can use the builder pattern:
 
 ##### Using an Anchor View
----
 
     TutorialTooltipBuilder tutorialTooltipBuilder =
         new TutorialTooltipBuilder(this)
@@ -39,7 +38,6 @@ To create a ```TutorialTooltip``` you can use the builder pattern:
             .build();
 
 ##### Using an Anchor Point
----
 
     TutorialTooltipBuilder tutorialTooltipBuilder =
             new TutorialTooltipBuilder(this)
@@ -47,6 +45,9 @@ To create a ```TutorialTooltip``` you can use the builder pattern:
                 .build();
 
 This is the most basic ```TutorialTooltip``` you can create.
+
+## Show a TutorialTooltip
+
 You can afterwards show it very easily by calling:
 
     TutorialTooltip.show(tutorialTooltipBuilder);
@@ -99,7 +100,7 @@ A complete example would look something like this:
 
 If you don't like the look of the included indicator you can override it completely with a custom view. To use a custom view as an indicator you have to make it:
 
-1. extend ```android.view.View```
+1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
 2. implement the ```TutorialTooltipIndicator``` interface included in this library
 
 This makes it possible to use the ```IndicatorBuilder``` even when using a completely self written ```TutorialTooltipIndicator``` view which hopefully cleans up the code quite a bit. An example would look like this:
@@ -156,7 +157,7 @@ Have a look at the ```MessageBuilder``` class for a full list of options.
 
 If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
 
-1. extend ```android.view.View```
+1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
 2. implement the ```TutorialTooltipMessage``` interface included in this library
 
 See #Indicator for further explanation why.
@@ -180,6 +181,12 @@ An example would look like this:
 
 ## Troubleshooting
 
+### .build()
+---
+
+Always remember to finish your builder with the ```.build()``` call. This makes sure you don't change your builder after already using it.
+This is necessary for all builders including ```TutorialTooltipBuilder```, ```MessageBuilder``` and ```IndicatorBuilder```.
+
 ### Dialogs
 ---
 
@@ -187,7 +194,7 @@ If the ```TutorialTooltip``` is used in a ```Dialog``` (f.ex. ```DialogFragment`
 
     .attachToDialog(getDialog())
 
-in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instaed of the ```Activity```.
+in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instead of the ```Activity```.
 
 ### Attach to Window
 ---
