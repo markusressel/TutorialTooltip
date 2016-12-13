@@ -73,8 +73,8 @@ Of course this small example is not enough for everyday usage, so let's start wi
 The ```TutorialTooltip``` library allows you to customize the indicator in a fast and easy way using the builder pattern (again). To customize the look of the indicator use something like this in your ```TutorialTooltipBuilder```:
 
     .indicator(new IndicatorBuilder()
-                .size(100, 100) // size values in pixel
-                .build()
+        .size(100, 100) // size values in pixel
+        .build()
     )
 
 There are other builder methods you can use to further customize the look of the indicator. Just have a look at the ```IndicatorBuilder``` class.
