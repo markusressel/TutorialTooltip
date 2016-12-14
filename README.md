@@ -73,12 +73,81 @@ Or (if you attached it to an activity) you can use a static method and remove it
 The first example will show a default ```TutorialTooltipIndicator``` and default ```TutorialTooltipMessage``` so you can test things without getting to much into the details.
 Of course this small example is not enough for everyday usage, so let's start with some more advanced ones and increase complexity down the road.
 
+### Message
+
+##### Basic
+---
+
+The ```TutorialTooltip``` library allows you to customize the message in a fast and easy way using the builder pattern (again). To customize the look of the message use something like this in your ```TutorialTooltipBuilder```:
+
+    .message(new MessageBuilder()
+        .text("This is a tutorial message!")
+        .build()
+    )
+
+##### Advanced
+---
+
+There are other builder methods you can use to further customize the look of the message. Just have a look at the ```MessageBuilder``` class.
+
+A complete example would look something like this:
+
+    final Activity activity = this;
+    TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(activity)
+        .anchor(new Point(200, 300))
+        .message(new MessageBuilder()
+            .customView(new CardMessageView(activity))
+            .text("This is a tutorial message!")
+            .textColor(Color.BLACK)
+            .backgroundColor(Color.WHITE)
+            .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
+            .onClick(new OnMessageClickedListener() {
+                @Override
+                public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
+                    TutorialTooltip.remove(activity, id);
+                }
+            })
+            .build()
+        )
+        .build();
+
+    TutorialTooltip.show(tutorialTooltipBuilder);
+
+##### Geek
+---
+
+If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
+
+1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
+2. implement the ```TutorialTooltipMessage``` interface included in this library
+
+This makes it possible to use the ```MessageBuilder``` even when using a completely self written ```TutorialTooltipMessage``` view which hopefully cleans up the code quite a bit.
+
+An example would look like this:
+
+    .message(new MessageBuilder()
+        .customView(new CardMessageView(activity))
+        .text("This is a tutorial message!")
+        .textColor(Color.BLACK)
+        .backgroundColor(Color.WHITE)
+        .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
+        .onClick(new OnMessageClickedListener() {
+            @Override
+            public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
+                TutorialTooltip.remove(activity, id);
+            }
+        })
+        .build()
+    )
+
 ### Indicator
 
 ##### Basic
 ---
 
-The ```TutorialTooltip``` library allows you to customize the indicator in a fast and easy way using the builder pattern (again). To customize the look of the indicator use something like this in your ```TutorialTooltipBuilder```:
+
+The indicator view can be customized in the same way as the message.
+Customize the indicator using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so::
 
     .indicator(new IndicatorBuilder()
         .size(100, 100) // size values in pixel
@@ -88,9 +157,7 @@ The ```TutorialTooltip``` library allows you to customize the indicator in a fas
 ##### Advanced
 ---
 
-There are other builder methods you can use to further customize the look of the indicator. Just have a look at the ```IndicatorBuilder``` class.
-
-A complete example would look something like this:
+Just like with the message you can further customize the indicator with something similar to this:
 
     final Activity activity = this;
 
@@ -111,6 +178,8 @@ A complete example would look something like this:
 
     TutorialTooltip.show(tutorialTooltipBuilder);
 
+Have a look at the ```MessageBuilder``` class for a full list of options.
+
 ##### Geek
 ---
 
@@ -128,67 +197,6 @@ This makes it possible to use the ```IndicatorBuilder``` even when using a compl
         .onClick(new OnIndicatorClickedListener() {
             @Override
             public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
-                TutorialTooltip.remove(activity, id);
-            }
-        })
-        .build()
-    )
-
-### Message
-
-##### Basic
----
-
-The message view can be customized in the same way as the indicator.
-Customize the message using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so:
-
-    .message(new MessageBuilder()
-        .text("This is a tutorial message!")
-        .build()
-    )
-
-##### Advanced
----
-
-Just like with the indicator you can further customize the message with something similar to this:
-
-    .message(new MessageBuilder()
-        .text("This is a tutorial message!")
-        .textColor(Color.BLACK)
-        .backgroundColor(Color.WHITE)
-        .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
-        .onClick(new OnMessageClickedListener() {
-            @Override
-            public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
-                TutorialTooltip.remove(activity, id);
-            }
-        })
-        .build()
-    )
-
-Have a look at the ```MessageBuilder``` class for a full list of options.
-
-##### Geek
----
-
-If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
-
-1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
-2. implement the ```TutorialTooltipMessage``` interface included in this library
-
-See #Indicator for further explanation why.
-
-An example would look like this:
-
-    .message(new MessageBuilder()
-        .customView(new CardMessageView(activity))
-        .text("This is a tutorial message!")
-        .textColor(Color.BLACK)
-        .backgroundColor(Color.WHITE)
-        .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
-        .onClick(new OnMessageClickedListener() {
-            @Override
-            public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
                 TutorialTooltip.remove(activity, id);
             }
         })
