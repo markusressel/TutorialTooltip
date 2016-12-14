@@ -18,6 +18,8 @@ package de.markusressel.android.library.tutorialtooltip.interfaces;
 
 import android.view.View;
 
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+
 /**
  * OnClick listener for a TutorialTooltip
  * <p>
@@ -31,10 +33,11 @@ public interface OnIndicatorClickedListener {
     /**
      * This method is called when the indicator view is clicked
      *
-     * @param id            ID of the TutorialTooltip
-     * @param indicator     indicator
-     * @param indicatorView the same object as the indicator, but cast to View
+     * @param id                  ID of the TutorialTooltip
+     * @param tutorialTooltipView TutorialTooltipView
+     * @param indicator           indicator
+     * @param indicatorView       the same object as the indicator, but cast to View
      */
-    void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView);
-
+    void onIndicatorClicked(int id, TutorialTooltipView tutorialTooltipView,
+            TutorialTooltipIndicator indicator, View indicatorView);
 }

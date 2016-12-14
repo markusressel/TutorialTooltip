@@ -20,8 +20,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,8 +36,11 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  */
 public class CardMessageView extends LinearLayout implements TutorialTooltipMessage {
 
-    private final int backgroundColor = Color.parseColor("#FFFFFFFF");
-    private final int borderColor = Color.parseColor("#FFFFFFFF");
+    private int backgroundColor = Color.parseColor("#FFFFFFFF");
+    private int borderColor = Color.parseColor("#FFFFFFFF");
+    private int borderThickness = 3;
+    private float cornerRadius;
+    private int defaultPadding;
 
     private TextView textView;
     private GradientDrawable cardShape;
@@ -67,11 +72,16 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
     }
 
     private void init() {
+        cornerRadius = (int) ViewHelper.pxFromDp(getContext(), 12);
+        defaultPadding = (int) ViewHelper.pxFromDp(getContext(), 8);
+
+        textView.setGravity(Gravity.CENTER);
+        textView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+
         addView(textView);
 
-        float cornerRadius = 16;
-
         cardShape = new GradientDrawable();
+        cardShape.mutate();
         cardShape.setShape(GradientDrawable.RECTANGLE);
         cardShape.setCornerRadii(new float[]{cornerRadius,
                 cornerRadius,
@@ -82,11 +92,13 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
                 cornerRadius,
                 cornerRadius});
         cardShape.setColor(backgroundColor);
-        cardShape.setStroke(3, borderColor);
+        cardShape.setStroke(borderThickness, borderColor);
         setBackgroundDrawable(cardShape);
 
-        int cornerRadiusInt = (int) cornerRadius;
-        setPadding(cornerRadiusInt, cornerRadiusInt, cornerRadiusInt, cornerRadiusInt);
+        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setElevation(ViewHelper.pxFromDp(getContext(), 4));
+        }
     }
 
     @Override
@@ -101,7 +113,53 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
 
     @Override
     public void setBackgroundColor(int backgroundColor) {
-        cardShape.setColor(backgroundColor);
+        this.backgroundColor = backgroundColor;
+        cardShape.setColor(this.backgroundColor);
+
+        invalidate();
+    }
+
+    /**
+     * Set the card border color
+     *
+     * @param color color as int
+     */
+    public void setBorderColor(@ColorInt int color) {
+        this.borderColor = color;
+        cardShape.setStroke(borderThickness, borderColor);
+
+        invalidate();
+    }
+
+    /**
+     * Set the card border thickness
+     *
+     * @param thickness width in pixel
+     */
+    public void setBorderThickness(int thickness) {
+        this.borderThickness = thickness;
+        cardShape.setStroke(borderThickness, borderColor);
+
+        invalidate();
+    }
+
+    /**
+     * Set the card corner radius
+     *
+     * @param radius radius in pixel
+     */
+    public void setCornerRadius(float radius) {
+        cornerRadius = radius;
+        cardShape.setCornerRadii(new float[]{
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius}
+        );
 
         invalidate();
     }

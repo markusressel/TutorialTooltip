@@ -179,10 +179,14 @@ public class TutorialTooltipView extends LinearLayout {
                 this,
                 false);
         if (indicatorView == null) {
-            indicatorView = (WaveIndicatorView) indicatorLayout.findViewById(R.id.indicator);
+            indicatorView = (TutorialTooltipIndicator) indicatorLayout.findViewById(R.id.indicator);
         } else {
             indicatorLayout.removeAllViews();
             indicatorLayout.addView((View) indicatorView, MATCH_PARENT, MATCH_PARENT);
+        }
+
+        if (indicatorBuilder.getColor() != -1) {
+            indicatorView.setColor(indicatorBuilder.getColor());
         }
 
         // Set onClick listeners
@@ -194,7 +198,9 @@ public class TutorialTooltipView extends LinearLayout {
                     if (indicatorBuilder.getOnIndicatorClickedListener() != null) {
                         indicatorBuilder.getOnIndicatorClickedListener()
                                 .onIndicatorClicked(getTutorialTooltipId(),
-                                        indicatorView, (View) indicatorView);
+                                        getTutorialTooltipView(),
+                                        indicatorView,
+                                        (View) indicatorView);
                     }
                 }
             });
@@ -203,7 +209,7 @@ public class TutorialTooltipView extends LinearLayout {
         messageLayout = (FrameLayout) inflater.inflate(R.layout.layout_tutorial_text, this, false);
 
         if (messageView == null) {
-            messageView = (BasicMessageView) messageLayout.findViewById(R.id.messageView);
+            messageView = (TutorialTooltipMessage) messageLayout.findViewById(R.id.messageView);
         } else {
             messageLayout.removeAllViews();
             messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
@@ -224,7 +230,9 @@ public class TutorialTooltipView extends LinearLayout {
                     if (messageBuilder.getOnMessageClickedListener() != null) {
                         messageBuilder.getOnMessageClickedListener()
                                 .onMessageClicked(getTutorialTooltipId(),
-                                        messageView, (View) messageView);
+                                        getTutorialTooltipView(),
+                                        messageView,
+                                        (View) messageView);
                     }
                 }
             });
@@ -490,8 +498,8 @@ public class TutorialTooltipView extends LinearLayout {
         return super.dispatchKeyEvent(event);
     }
 
-    private void setTutorialMessage(CharSequence charSequence) {
-        messageView.setText(charSequence);
+    private void setTutorialMessage(CharSequence text) {
+        messageView.setText(text);
     }
 
     private TutorialTooltipView getTutorialTooltipView() {

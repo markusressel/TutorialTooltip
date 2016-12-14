@@ -73,6 +73,8 @@ Or (if you attached it to an activity) you can use a static method and remove it
 The first example will show a default ```TutorialTooltipIndicator``` and default ```TutorialTooltipMessage``` so you can test things without getting to much into the details.
 Of course this small example is not enough for everyday usage, so let's start with some more advanced ones and increase complexity down the road.
 
+FYI: In it's current state you can only create and customize TutorialTooltips in code. Styling via theme attributes or xml views may be added at a later stage.
+
 ### Message
 
 ##### Basic
@@ -90,40 +92,7 @@ The ```TutorialTooltip``` library allows you to customize the message in a fast 
 
 There are other builder methods you can use to further customize the look of the message. Just have a look at the ```MessageBuilder``` class.
 
-A complete example would look something like this:
-
-    final Activity activity = this;
-    TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(activity)
-        .anchor(new Point(200, 300))
-        .message(new MessageBuilder()
-            .customView(new CardMessageView(activity))
-            .text("This is a tutorial message!")
-            .textColor(Color.BLACK)
-            .backgroundColor(Color.WHITE)
-            .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
-            .onClick(new OnMessageClickedListener() {
-                @Override
-                public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
-                    TutorialTooltip.remove(activity, id);
-                }
-            })
-            .build()
-        )
-        .build();
-
-    TutorialTooltip.show(tutorialTooltipBuilder);
-
-##### Geek
----
-
-If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
-
-1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
-2. implement the ```TutorialTooltipMessage``` interface included in this library
-
-This makes it possible to use the ```MessageBuilder``` even when using a completely self written ```TutorialTooltipMessage``` view which hopefully cleans up the code quite a bit.
-
-An example would look like this:
+A more complex example would look something like this:
 
     .message(new MessageBuilder()
         .customView(new CardMessageView(activity))
@@ -140,11 +109,24 @@ An example would look like this:
         .build()
     )
 
+##### Geek
+---
+
+If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
+
+1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
+2. implement the ```TutorialTooltipMessage``` interface included in this library
+
+This makes it possible to use the ```MessageBuilder``` even when using a completely self written ```TutorialTooltipMessage``` view which hopefully cleans up the code quite a bit.
+
+Just add this line to your  ```MessageBuilder ```:
+
+    .customView(new CardMessageView(activity))
+
 ### Indicator
 
 ##### Basic
 ---
-
 
 The indicator view can be customized in the same way as the message.
 Customize the indicator using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so::
@@ -159,24 +141,17 @@ Customize the indicator using the ```MessageBuilder``` in your ```TutorialToolti
 
 Just like with the message you can further customize the indicator with something similar to this:
 
-    final Activity activity = this;
-
-    TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(activity)
-        .anchor(new Point(200, 300))
-        .indicator(new IndicatorBuilder()
-            .size(100, 100) // size values in pixel
-            .offset(50, 50) // offset values in pixel
-            .onClick(new OnIndicatorClickedListener() {
-                @Override
-                public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
-                    TutorialTooltip.remove(activity, id);
-                }
-            })
-            .build()
-        )
-        .build();
-
-    TutorialTooltip.show(tutorialTooltipBuilder);
+    .indicator(new IndicatorBuilder()
+        .size(100, 100) // size values in pixel
+        .offset(50, 50) // offset values in pixel
+        .onClick(new OnIndicatorClickedListener() {
+            @Override
+            public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
+                TutorialTooltip.remove(activity, id);
+            }
+        })
+        .build()
+    )
 
 Have a look at the ```MessageBuilder``` class for a full list of options.
 
@@ -188,20 +163,75 @@ If you don't like the look of the included indicator you can override it complet
 1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
 2. implement the ```TutorialTooltipIndicator``` interface included in this library
 
-This makes it possible to use the ```IndicatorBuilder``` even when using a completely self written ```TutorialTooltipIndicator``` view which hopefully cleans up the code quite a bit. An example would look like this:
+This makes it possible to use the ```IndicatorBuilder``` even when using a completely self written ```TutorialTooltipIndicator``` view which hopefully cleans up the code quite a bit.
 
-    .indicator(new IndicatorBuilder()
-        .customView(new WaveIndicatorView(activity))
-        .size(100, 100) // size values in pixel
-        .offset(50, 50) // offset values in pixel
-        .onClick(new OnIndicatorClickedListener() {
+Just add this line to your  ```IndicatorBuilder ```:
+
+     .customView(new WaveIndicatorView(activity))
+
+### Bringing it all together
+
+A fully customized TutorialTooltip can then look something like this:
+
+    // custom message view
+    CardMessageView cardMessageView = new CardMessageView(getActivity());
+
+    // custom indicator view
+    WaveIndicatorView waveIndicatorView = new WaveIndicatorView(getActivity());
+    waveIndicatorView.setStrokeWidth(10); // customization that is not included in the IndicatorBuilder
+
+    TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(getActivity())
+    .anchor(button)
+    .attachToDialog(getDialog())
+    .message(new MessageBuilder()
+        .customView(cardMessageView)
+        .offset(0, 0)
+        .text("This is a tutorial message!")
+        .textColor(Color.BLACK)
+        .backgroundColor(Color.WHITE)
+        .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
+        .onClick(new OnMessageClickedListener() {
             @Override
-            public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
-                TutorialTooltip.remove(activity, id);
+            public void onMessageClicked(int id, TutorialTooltipView tutorialTooltipView, TutorialTooltipMessage message, View messageView) {
+                // this will intercept touches only for the message view
+                // if you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
+                // just specify an empty OnMessageClickedListener
+
+                TutorialTooltip.remove(getDialog(), id);
             }
         })
+        .size(MessageBuilder.WRAP_CONTENT, MessageBuilder.WRAP_CONTENT)
         .build()
     )
+    .indicator(new IndicatorBuilder()
+        .customView(waveIndicatorView)
+        .offset(0, 0)
+        .size(200, 200)
+        .color(Color.BLUE)
+        .onClick(new OnIndicatorClickedListener() {
+            @Override
+            public void onIndicatorClicked(int id, TutorialTooltipView tutorialTooltipView, TutorialTooltipIndicator indicator, View indicatorView) {
+                // this will intercept touches only for the indicator view
+                // if you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
+                // just specify an empty OnIndicatorClickedListener
+
+                TutorialTooltip.remove(getDialog(), id);
+            }
+        })
+        .build())
+    .onClick(new OnTutorialTooltipClickedListener() {
+        @Override
+        public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
+            // this will intercept touches of the complete window
+            // if you don't specify additional listeners for the indicator or
+            // message view they will be included
+
+            TutorialTooltip.remove(getDialog(), id);
+        }
+    })
+    .build();
+
+    TutorialTooltip.show(tutorialTooltipBuilder);
 
 ## Troubleshooting
 

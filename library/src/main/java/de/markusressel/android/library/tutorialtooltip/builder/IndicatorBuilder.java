@@ -16,6 +16,7 @@
 
 package de.markusressel.android.library.tutorialtooltip.builder;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -78,6 +79,12 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      * Indicator y axis size (height)
      */
     private Integer height;
+
+    /**
+     * Main indicator color
+     */
+    @ColorInt
+    private int color = -1;
 
     /**
      * OnClick listener
@@ -146,6 +153,19 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
     }
 
     /**
+     * Set the main color of this indicator
+     *
+     * @param color color as int
+     * @return
+     */
+    @SuppressWarnings("unused")
+    public IndicatorBuilder color(@ColorInt int color) {
+        throwIfCompleted();
+        this.color = color;
+        return this;
+    }
+
+    /**
      * Set an onClick listener for the indicator
      *
      * @param onIndicatorClickedListener onClick listener
@@ -177,6 +197,10 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     public int getOffsetY() {
         return offsetY;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public View getCustomView() {

@@ -110,6 +110,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
                                                 public void onIndicatorClicked(int id,
+                                                        TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipIndicator indicator,
                                                         View indicatorView) {
                                                     Toast.makeText(getApplicationContext(),
@@ -124,6 +125,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .onClick(new OnMessageClickedListener() {
                                                 @Override
                                                 public void onMessageClicked(int id,
+                                                        TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipMessage message,
                                                         View messageView) {
                                                     Toast.makeText(getApplicationContext(),
@@ -199,6 +201,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
                                                 public void onIndicatorClicked(int id,
+                                                        TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipIndicator indicator,
                                                         View indicatorView) {
                                                     Toast.makeText(getApplicationContext(),

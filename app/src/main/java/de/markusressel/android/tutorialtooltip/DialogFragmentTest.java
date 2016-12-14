@@ -17,8 +17,10 @@
 package de.markusressel.android.tutorialtooltip;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -30,10 +32,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.tutorialtooltip.view.CardMessageView;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView;
 
 /**
  * Dialog for testing purpose
@@ -70,22 +79,73 @@ public class DialogFragmentTest extends DialogFragment {
     }
 
     private void showTutorialTooltip() {
-        TutorialTooltip.show(new TutorialTooltipBuilder(getActivity())
-                .message(new MessageBuilder()
-                        .text("This is a dialog test message!\nhttp://power-switch.eu")
-                        .gravity(TutorialTooltipView.Gravity.TOP)
-                        .build())
+        // custom message view
+        CardMessageView cardMessageView = new CardMessageView(getActivity());
+        @ColorInt int transparentWhite = Color.argb(255, 255, 255, 255);
+        cardMessageView.setBorderColor(Color.BLACK);
+
+        // custom indicator view
+        WaveIndicatorView waveIndicatorView = new WaveIndicatorView(getActivity());
+        waveIndicatorView.setStrokeWidth(10); // customization that is not included in the IndicatorBuilder
+
+        TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(getActivity())
                 .anchor(button)
                 .attachToDialog(getDialog())
+                .message(new MessageBuilder()
+                        .customView(cardMessageView)
+                        .offset(0, 0)
+                        .text("This is a tutorial message!\nNow with two lines!")
+                        .textColor(Color.BLACK)
+                        .backgroundColor(Color.WHITE)
+                        .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
+                        .onClick(new OnMessageClickedListener() {
+                            @Override
+                            public void onMessageClicked(int id,
+                                    TutorialTooltipView tutorialTooltipView,
+                                    TutorialTooltipMessage message,
+                                    View messageView) {
+                                // this will intercept touches only for the message view
+                                // if you don't want the main OnTutorialTooltipClickedListener listener
+                                // to react to touches here just specify an empty OnMessageClickedListener
+
+                                TutorialTooltip.remove(getDialog(), id);
+                            }
+                        })
+                        .size(MessageBuilder.WRAP_CONTENT, MessageBuilder.WRAP_CONTENT)
+                        .build()
+                )
+                .indicator(new IndicatorBuilder()
+                        .customView(waveIndicatorView)
+                        .offset(0, 0)
+                        .size(200, 200)
+                        .color(Color.BLUE)
+                        .onClick(new OnIndicatorClickedListener() {
+                            @Override
+                            public void onIndicatorClicked(int id,
+                                    TutorialTooltipView tutorialTooltipView,
+                                    TutorialTooltipIndicator indicator, View indicatorView) {
+                                // this will intercept touches only for the indicator view
+                                // if you don't want the main OnTutorialTooltipClickedListener listener
+                                // to react to touches here just specify an empty OnIndicatorClickedListener
+
+                                TutorialTooltip.remove(getDialog(), id);
+                            }
+                        })
+                        .build())
                 .onClick(new OnTutorialTooltipClickedListener() {
                     @Override
                     public void onTutorialTooltipClicked(int id,
                             TutorialTooltipView tutorialTooltipView) {
-                        tutorialTooltipView.remove();
+                        // this will intercept touches of the complete window
+                        // if you don't specify additional listeners for the indicator or
+                        // message view they will be included
+
+                        TutorialTooltip.remove(getDialog(), id);
                     }
                 })
-                .build()
-        );
+                .build();
+
+        TutorialTooltip.show(tutorialTooltipBuilder);
     }
 
     @NonNull
