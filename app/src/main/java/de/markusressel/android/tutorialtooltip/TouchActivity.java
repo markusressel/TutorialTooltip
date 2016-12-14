@@ -80,10 +80,6 @@ public class TouchActivity extends AppCompatActivity {
         onTutorialTooltipClickedListener = new OnTutorialTooltipClickedListener() {
             @Override
             public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
-                Toast.makeText(getApplicationContext(),
-                        "Clicked outside: " + id,
-                        Toast.LENGTH_SHORT).show();
-
                 TutorialTooltip.remove(activity, id);
             }
         };

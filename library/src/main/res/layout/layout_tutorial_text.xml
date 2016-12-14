@@ -25,9 +25,6 @@
         android:id="@+id/messageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="all"
-        android:background="@android:color/white"
-        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmallInverse"/>
 
 </FrameLayout>

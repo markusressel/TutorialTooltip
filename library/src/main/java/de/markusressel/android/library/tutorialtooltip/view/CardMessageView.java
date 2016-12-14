@@ -24,6 +24,7 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  * <p>
  * Created by Markus on 24.11.2016.
  */
-public class CardMessageView extends LinearLayout implements TutorialTooltipMessage {
+public class CardMessageView extends FrameLayout implements TutorialTooltipMessage {
 
     private int backgroundColor = Color.parseColor("#FFFFFFFF");
     private int borderColor = Color.parseColor("#FFFFFFFF");
@@ -42,6 +43,7 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
     private float cornerRadius;
     private int defaultPadding;
 
+    private LinearLayout linearLayout;
     private TextView textView;
     private GradientDrawable cardShape;
 
@@ -56,6 +58,7 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
     public CardMessageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        linearLayout = new LinearLayout(context, attrs, defStyleAttr);
         textView = new TextView(context, attrs, defStyleAttr);
         init();
     }
@@ -66,6 +69,7 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
+        linearLayout = new LinearLayout(context, attrs, defStyleAttr, defStyleRes);
         textView = new TextView(context, attrs, defStyleAttr, defStyleRes);
 
         init();
@@ -78,7 +82,9 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundColor(Color.argb(0, 0, 0, 0));
 
-        addView(textView);
+        linearLayout.addView(textView);
+        addView(linearLayout);
+
 
         cardShape = new GradientDrawable();
         cardShape.mutate();
@@ -93,11 +99,24 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
                 cornerRadius});
         cardShape.setColor(backgroundColor);
         cardShape.setStroke(borderThickness, borderColor);
-        setBackgroundDrawable(cardShape);
 
-        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            linearLayout.setBackground(cardShape);
+        } else {
+            linearLayout.setBackgroundDrawable(cardShape);
+        }
+
+        linearLayout.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setElevation(ViewHelper.pxFromDp(getContext(), 4));
+            float elevation = ViewHelper.pxFromDp(getContext(), 6);
+            int padding = (int) ViewHelper.pxFromDp(getContext(), 6);
+
+            linearLayout.setElevation(elevation);
+            linearLayout.setClipToPadding(false);
+
+            setPadding(padding, padding, padding, padding);
+            setClipToPadding(false);
         }
     }
 
