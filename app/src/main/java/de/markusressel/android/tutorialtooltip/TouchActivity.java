@@ -279,8 +279,7 @@ public class TouchActivity extends AppCompatActivity {
                         .onClick(onTutorialTooltipClickedListener)
                         .message(new MessageBuilder()
                                 .text("You touched right here!")
-                                .textColor(Color.argb(255, 255, 0, 0))
-                                .backgroundColor(Color.argb(255, 0, 255, 0))
+                                .backgroundColor(Color.parseColor("#FFF3E0"))
                                 .size((int) getResources().getDimension(R.dimen.messageWidth),
                                         MessageBuilder.WRAP_CONTENT)
 //                                .sizeDimen(this, R.dimen.messageWidth, MessageBuilder.WRAP_CONTENT)

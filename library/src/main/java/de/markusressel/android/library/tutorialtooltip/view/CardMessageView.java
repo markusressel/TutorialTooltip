@@ -114,7 +114,9 @@ public class CardMessageView extends LinearLayout implements TutorialTooltipMess
     @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
+        this.borderColor = backgroundColor;
         cardShape.setColor(this.backgroundColor);
+        cardShape.setStroke(borderThickness, borderColor);
 
         invalidate();
     }
