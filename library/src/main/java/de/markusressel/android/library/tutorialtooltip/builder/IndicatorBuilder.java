@@ -30,7 +30,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  * <p>
  * Created by Markus on 01.12.2016.
  */
-public class IndicatorBuilder extends Builder<IndicatorBuilder> {
+public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     /**
      * Constant size value to wrap the views content
@@ -43,6 +43,12 @@ public class IndicatorBuilder extends Builder<IndicatorBuilder> {
      */
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
+
+    /**
+     * Constant size value to match the anchors view size
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int MATCH_ANCHOR = -5;
 
     @SuppressWarnings("WeakerAccess")
     public enum Type {

@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -99,6 +100,11 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * OnClick listener for the whole TutorialTooltipView
      */
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
+
+    /**
+     * Listener for TutorialTooltip remove() events
+     */
+    private OnTutorialTooltipRemovedListener onTutorialTooltipRemovedListener;
 
     /**
      * Constructor for the builder.
@@ -225,6 +231,10 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         return this;
     }
 
+    protected void onRemoved(OnTutorialTooltipRemovedListener onTutorialTooltipRemovedListener) {
+        this.onTutorialTooltipRemovedListener = onTutorialTooltipRemovedListener;
+    }
+
     public AttachMode getAttachMode() {
         return attachMode;
     }
@@ -263,6 +273,10 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
     public OnTutorialTooltipClickedListener getOnTutorialTooltipClickedListener() {
         return onTutorialTooltipClickedListener;
+    }
+
+    public OnTutorialTooltipRemovedListener getOnTutorialTooltipRemovedListener() {
+        return onTutorialTooltipRemovedListener;
     }
 
     @Override

@@ -31,7 +31,7 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
  * <p>
  * Created by Markus on 01.12.2016.
  */
-public class MessageBuilder extends Builder<MessageBuilder> {
+public final class MessageBuilder extends Builder<MessageBuilder> {
 
     /**
      * Constant size value to wrap the views content

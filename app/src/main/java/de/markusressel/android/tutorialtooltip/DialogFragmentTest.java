@@ -117,7 +117,7 @@ public class DialogFragmentTest extends DialogFragment {
                 .indicator(new IndicatorBuilder()
                         .customView(waveIndicatorView)
                         .offset(0, 0)
-                        .size(200, 200)
+                        .size(IndicatorBuilder.MATCH_ANCHOR, IndicatorBuilder.MATCH_ANCHOR)
                         .color(Color.BLUE)
                         .onClick(new OnIndicatorClickedListener() {
                             @Override

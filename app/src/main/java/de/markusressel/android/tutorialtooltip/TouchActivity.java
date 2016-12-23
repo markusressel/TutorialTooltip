@@ -32,6 +32,7 @@ import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipChainBuilder;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
@@ -243,6 +244,29 @@ public class TouchActivity extends AppCompatActivity {
                 dialogFragmentTest.show(getSupportFragmentManager(), null);
             }
         });
+
+        new TutorialTooltipChainBuilder()
+                .addItem(new TutorialTooltipBuilder(this)
+                        .anchor(button1)
+                        .onClick(onTutorialTooltipClickedListener)
+                        .build())
+                .addItem(new TutorialTooltipBuilder(this)
+                        .anchor(button2)
+                        .onClick(onTutorialTooltipClickedListener)
+                        .build())
+                .addItem(new TutorialTooltipBuilder(this)
+                        .anchor(button3)
+                        .onClick(onTutorialTooltipClickedListener)
+                        .build())
+                .addItem(new TutorialTooltipBuilder(this)
+                        .anchor(button4)
+                        .onClick(onTutorialTooltipClickedListener)
+                        .build())
+                .addItem(new TutorialTooltipBuilder(this)
+                        .anchor(fab)
+                        .onClick(onTutorialTooltipClickedListener)
+                        .build())
+                .execute();
     }
 
     @Override

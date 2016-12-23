@@ -46,7 +46,6 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * TutorialTooltip View class
@@ -79,6 +78,7 @@ public class TutorialTooltipView extends LinearLayout {
             new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    updateSizes();
                     updatePositions();
                 }
             };
@@ -212,7 +212,7 @@ public class TutorialTooltipView extends LinearLayout {
             messageView = (TutorialTooltipMessage) messageLayout.findViewById(R.id.messageView);
         } else {
             messageLayout.removeAllViews();
-            messageLayout.addView((View) messageView, WRAP_CONTENT, WRAP_CONTENT);
+            messageLayout.addView((View) messageView, MATCH_PARENT, MATCH_PARENT);
         }
 
         if (messageBuilder.getTextColor() != null) {
@@ -270,6 +270,32 @@ public class TutorialTooltipView extends LinearLayout {
 
         //        float targetDiameter = 200;
         //        circleWaveAlertView.setTargetDiameter(targetDiameter);
+    }
+
+    private void updateSizes() {
+        updateIndicatorSize();
+    }
+
+    private void updateIndicatorSize() {
+        LayoutParams indicatorParams = (LayoutParams) indicatorLayout.getLayoutParams();
+
+        Integer indicatorWidth = indicatorBuilder.getWidth();
+        Integer indicatorHeight = indicatorBuilder.getHeight();
+        if (indicatorWidth != null && indicatorWidth == IndicatorBuilder.MATCH_ANCHOR && anchorView != null) {
+            View view = anchorView.get();
+            if (view != null) {
+                indicatorParams.width = view.getWidth();
+            }
+        }
+
+        if (indicatorHeight != null && indicatorHeight == IndicatorBuilder.MATCH_ANCHOR && anchorView != null) {
+            View view = anchorView.get();
+            if (view != null) {
+                indicatorParams.height = view.getHeight();
+            }
+        }
+
+        indicatorLayout.setLayoutParams(indicatorParams);
     }
 
     private void updatePositions() {
@@ -533,11 +559,11 @@ public class TutorialTooltipView extends LinearLayout {
                     mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
                     mParams.packageName = getContext().getPackageName();
                     mParams.setTitle("TutorialTooltip");
-                    mParams.flags =
+                    mParams.flags = activity.getWindow().getAttributes().flags |
                             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
-                                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-                                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                            | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                     ;
 
                     if (tutorialTooltipBuilder.getOnTutorialTooltipClickedListener() == null) {
@@ -566,12 +592,16 @@ public class TutorialTooltipView extends LinearLayout {
      * Remove this view
      */
     public void remove() {
+        if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
+            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener().onRemove(tooltipId, this);
+        }
+
         ViewParent parent = getParent();
 
         switch (attachMode) {
             case Window:
                 WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-                if (null != parent) {
+                if (parent != null) {
                     wm.removeView(this);
                 }
                 break;
@@ -582,6 +612,11 @@ public class TutorialTooltipView extends LinearLayout {
                     ((ViewGroup) parent).removeView(TutorialTooltipView.this);
                 }
                 break;
+        }
+
+        if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
+            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
+                    .postRemove(tooltipId, this);
         }
     }
 }

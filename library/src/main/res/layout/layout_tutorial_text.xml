@@ -23,8 +23,8 @@
 
     <de.markusressel.android.library.tutorialtooltip.view.CardMessageView
         android:id="@+id/messageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceSmallInverse"/>
 
 </FrameLayout>
