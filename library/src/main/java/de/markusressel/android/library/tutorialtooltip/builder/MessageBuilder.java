@@ -45,6 +45,12 @@ public class MessageBuilder extends Builder<MessageBuilder> {
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT;
 
+    /**
+     * Constant size value to match the anchors view size
+     */
+    @SuppressWarnings("WeakerAccess,unused")
+    public static final int MATCH_ANCHOR = -5;
+
     @SuppressWarnings("WeakerAccess")
     public enum Type {
         Default,

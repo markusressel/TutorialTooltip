@@ -22,7 +22,7 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 
-import de.markusressel.android.library.circlewaveview.CircleWaveAlertView;
+import de.markusressel.android.library.circlewaveview.CircleWaveView;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 
 /**
@@ -32,7 +32,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  * <p>
  * Created by Markus on 24.11.2016.
  */
-public class WaveIndicatorView extends CircleWaveAlertView implements TutorialTooltipIndicator {
+public class WaveIndicatorView extends CircleWaveView implements TutorialTooltipIndicator {
 
     public WaveIndicatorView(Context context) {
         super(context);

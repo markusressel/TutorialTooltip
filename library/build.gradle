@@ -43,7 +43,8 @@ dependencies {
 //    })
 //    testCompile 'junit:junit:4.12'
 
-    compile('com.github.markusressel:CircleWaveView:v0.1') {
+    compile('com.github.markusressel:CircleWaveView:v0.1.2') {
         exclude module: 'app'
+        transitive = true
     }
 }
