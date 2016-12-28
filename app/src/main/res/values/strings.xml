@@ -59,4 +59,11 @@
     <string name="tutorial_message_fab">This TutorialTooltip is attached at the center of the FAB and its message is displayed below it.</string>
     <string name="tutorial_message_3">This TutorialTooltip is attached to the CENTER of the anchor View, with its message to the right.</string>
 
+    <string name="top">Top</string>
+    <string name="center">Center</string>
+    <string name="bottom">Bottom</string>
+    <string name="clear_all">Clear all</string>
+    <string name="dialog_test">Dialog Test</string>
+    <string name="chain">Chain</string>
+
 </resources>

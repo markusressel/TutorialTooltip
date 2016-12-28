@@ -48,16 +48,17 @@ public class TouchActivity extends AppCompatActivity {
     private int tutorialId2;
     private int tutorialId3;
 
-    private Button button1;
-    private Button button2;
-    private FloatingActionButton fab;
-    private Button button3;
-    private Button button4;
+    private Button buttonTop;
+    private Button buttonBottom;
+    private FloatingActionButton buttonFab;
+    private Button buttonClear;
+    private Button buttonCenter;
 
     private TutorialTooltipView tutorialTooltipView;
     private int tutorialId4;
     private Button buttonDialog;
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
+    private Button buttonChain;
 
     private static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -69,12 +70,13 @@ public class TouchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_test);
 
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        button3 = (Button) findViewById(R.id.button3);
-        button4 = (Button) findViewById(R.id.button4);
-        buttonDialog = (Button) findViewById(R.id.buttonDialog);
+        buttonTop = (Button) findViewById(R.id.button_top);
+        buttonBottom = (Button) findViewById(R.id.button_bottom);
+        buttonFab = (FloatingActionButton) findViewById(R.id.button_fab);
+        buttonCenter = (Button) findViewById(R.id.button_center);
+        buttonDialog = (Button) findViewById(R.id.button_dialog);
+        buttonChain = (Button) findViewById(R.id.button_chain);
+        buttonClear = (Button) findViewById(R.id.button_clear_all);
 
         final Activity activity = this;
 
@@ -85,7 +87,7 @@ public class TouchActivity extends AppCompatActivity {
             }
         };
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        buttonTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId1)) {
@@ -99,7 +101,7 @@ public class TouchActivity extends AppCompatActivity {
 
                     tutorialId1 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
-                                    .anchor(button1, TutorialTooltipView.Gravity.TOP)
+                                    .anchor(buttonTop, TutorialTooltipView.Gravity.TOP)
                                     .indicator(new IndicatorBuilder()
                                             .customView(waveIndicatorView)
                                             .offset(50, 50)
@@ -137,7 +139,7 @@ public class TouchActivity extends AppCompatActivity {
             }
         });
 
-        button4.setOnClickListener(new View.OnClickListener() {
+        buttonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId4)) {
@@ -151,14 +153,14 @@ public class TouchActivity extends AppCompatActivity {
                                             .size((int) pxFromDp(getApplicationContext(), 150),
                                                     MessageBuilder.WRAP_CONTENT)
                                             .build())
-                                    .anchor(button4)
+                                    .anchor(buttonCenter)
                                     .onClick(onTutorialTooltipClickedListener)
                                     .build());
                 }
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        buttonBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId2)) {
@@ -172,14 +174,14 @@ public class TouchActivity extends AppCompatActivity {
                                             .anchor(buttonDialog)
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                             .build())
-                                    .anchor(button2, TutorialTooltipView.Gravity.BOTTOM)
+                                    .anchor(buttonBottom, TutorialTooltipView.Gravity.BOTTOM)
                                     .onClick(onTutorialTooltipClickedListener)
                                     .build());
                 }
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        buttonFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (tutorialTooltipView != null && tutorialTooltipView.isShown()) {
@@ -214,7 +216,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .backgroundColor(Color.BLACK)
                                             .textColor(Color.WHITE)
                                             .build())
-                                    .anchor(fab)
+                                    .anchor(buttonFab)
                                     .attachToWindow()
                                     .onClick(new OnTutorialTooltipClickedListener() {
                                         @Override
@@ -230,7 +232,7 @@ public class TouchActivity extends AppCompatActivity {
             }
         });
 
-        button3.setOnClickListener(new View.OnClickListener() {
+        buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TutorialTooltip.removeAll(activity);
@@ -245,28 +247,34 @@ public class TouchActivity extends AppCompatActivity {
             }
         });
 
-        new TutorialTooltipChainBuilder()
-                .addItem(new TutorialTooltipBuilder(this)
-                        .anchor(button1)
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
-                .addItem(new TutorialTooltipBuilder(this)
-                        .anchor(button2)
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
-                .addItem(new TutorialTooltipBuilder(this)
-                        .anchor(button3)
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
-                .addItem(new TutorialTooltipBuilder(this)
-                        .anchor(button4)
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
-                .addItem(new TutorialTooltipBuilder(this)
-                        .anchor(fab)
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
-                .execute();
+        buttonChain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TutorialTooltipChainBuilder tutorialTooltipChainBuilder = new TutorialTooltipChainBuilder();
+
+                View[] anchorViews = new View[]{
+                        buttonTop,
+                        buttonCenter,
+                        buttonBottom,
+                        buttonFab,
+                        buttonDialog,
+                        buttonChain,
+                        buttonClear
+                };
+
+                for (int i = 0; i < anchorViews.length; i++) {
+                    tutorialTooltipChainBuilder.addItem(new TutorialTooltipBuilder(activity)
+                            .anchor(anchorViews[i])
+                            .message(new MessageBuilder().text((i + 1) + "/" + anchorViews.length + ": Message")
+                                    .build())
+                            .onClick(onTutorialTooltipClickedListener)
+                            .build());
+                }
+
+                tutorialTooltipChainBuilder.execute();
+            }
+        });
+
     }
 
     @Override

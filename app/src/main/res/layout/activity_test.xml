@@ -23,45 +23,52 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Top"/>
+        android:text="@string/top"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Center"/>
+        android:text="@string/center"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Bottom"/>
+        android:text="@string/bottom"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/button_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:src="@mipmap/ic_launcher"/>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Clear all"/>
+        android:text="@string/dialog_test"/>
 
     <Button
-        android:id="@+id/buttonDialog"
+        android:id="@+id/button_chain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Dialog Test"/>
+        android:text="@string/chain"/>
+
+    <Button
+        android:id="@+id/button_clear_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/clear_all"/>
 
 </LinearLayout>
