@@ -108,7 +108,7 @@ public class DialogFragmentTest extends DialogFragment {
                                 // if you don't want the main OnTutorialTooltipClickedListener listener
                                 // to react to touches here just specify an empty OnMessageClickedListener
 
-                                TutorialTooltip.remove(getDialog(), id);
+                                TutorialTooltip.remove(getDialog(), id, true);
                             }
                         })
                         .size(MessageBuilder.WRAP_CONTENT, MessageBuilder.WRAP_CONTENT)
@@ -128,7 +128,7 @@ public class DialogFragmentTest extends DialogFragment {
                                 // if you don't want the main OnTutorialTooltipClickedListener listener
                                 // to react to touches here just specify an empty OnIndicatorClickedListener
 
-                                TutorialTooltip.remove(getDialog(), id);
+                                TutorialTooltip.remove(getDialog(), id, true);
                             }
                         })
                         .build())
@@ -140,7 +140,7 @@ public class DialogFragmentTest extends DialogFragment {
                         // if you don't specify additional listeners for the indicator or
                         // message view they will be included
 
-                        TutorialTooltip.remove(getDialog(), id);
+                        TutorialTooltip.remove(getDialog(), id, true);
                     }
                 })
                 .build();
@@ -225,7 +225,7 @@ public class DialogFragmentTest extends DialogFragment {
                             @Override
                             public void onTutorialTooltipClicked(int id,
                                     TutorialTooltipView tutorialTooltipView) {
-                                tutorialTooltipView.remove();
+                                tutorialTooltipView.remove(true);
                             }
                         })
                         .message(new MessageBuilder()

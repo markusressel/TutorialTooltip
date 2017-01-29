@@ -33,6 +33,11 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -517,7 +522,7 @@ public class TutorialTooltipView extends LinearLayout {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            remove();
+            remove(true);
             return true;
         }
 
@@ -590,12 +595,82 @@ public class TutorialTooltipView extends LinearLayout {
 
     /**
      * Remove this view
+     *
+     * @param animated true fades out, false removes immediately
      */
-    public void remove() {
+    public void remove(boolean animated) {
         if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
             tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener().onRemove(tooltipId, this);
         }
 
+        if (animated) {
+            fadeOut();
+        } else {
+            removeFromParent();
+        }
+    }
+
+    private void fadeOut() {
+        // fade out animation duration
+        final int animationDuration = 200;
+
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // workaround to prevent flickering at animation end
+                // afaik setFillAfter(true) should fix this, but sadly it doesn't
+                indicatorLayout.setVisibility(ViewGroup.INVISIBLE);
+                messageLayout.setVisibility(ViewGroup.INVISIBLE);
+                removeFromParent();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+
+        // animation set for the indicator
+        AnimationSet indicatorAnimationSet = new AnimationSet(true); // true means shared interpolators
+        indicatorAnimationSet.setInterpolator(new DecelerateInterpolator());
+        indicatorAnimationSet.setDuration(animationDuration);
+        indicatorAnimationSet.setFillAfter(true);
+        indicatorAnimationSet.setAnimationListener(animationListener);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+
+        indicatorAnimationSet.addAnimation(alphaAnimation);
+
+        // animation set for the message view
+        AnimationSet messageAnimationSet = new AnimationSet(true);
+        messageAnimationSet.setInterpolator(new DecelerateInterpolator());
+        messageAnimationSet.setDuration(animationDuration);
+        messageAnimationSet.setFillAfter(true);
+
+        // move message view slightly to the bottom in addition to the fade out
+        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.05f);
+
+        messageAnimationSet.addAnimation(alphaAnimation);
+        messageAnimationSet.addAnimation(translateAnimation);
+
+        // start animations
+        indicatorLayout.startAnimation(indicatorAnimationSet);
+        messageLayout.startAnimation(messageAnimationSet);
+    }
+
+    private void removeFromParent() {
         ViewParent parent = getParent();
 
         switch (attachMode) {

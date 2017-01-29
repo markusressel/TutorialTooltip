@@ -109,16 +109,17 @@ public class TutorialTooltip {
      * WARNING: This only works if the TutorialTooltip was attached to the Activity and NOT to the Window!
      * If you attach the TutorialTooltip to the window you have to keep a reference to its view manually.
      *
-     * @param context activity context the specified tooltip was added to, application context will not work!
-     * @param id      id of TutorialTooltip
+     * @param context  activity context the specified tooltip was added to, application context will not work!
+     * @param id       id of TutorialTooltip
+     * @param animated true fades out, false removes immediately
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean remove(Context context, int id) {
+    public static boolean remove(Context context, int id, boolean animated) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
             ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
-            return removeChild(id, rootView);
+            return removeChild(id, rootView, animated);
         }
 
         return false;
@@ -131,15 +132,16 @@ public class TutorialTooltip {
      * If you attach the TutorialTooltip to the activity use <code>remove(Context context, int id)</code>
      * If you attach it to the window you have to keep a reference to its view and remove it manually.
      *
-     * @param dialog dialog the specified tooltip was added to
-     * @param id     id of TutorialTooltip
+     * @param dialog   dialog the specified tooltip was added to
+     * @param id       id of TutorialTooltip
+     * @param animated true fades out, false removes immediately
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean remove(Dialog dialog, int id) {
+    public static boolean remove(Dialog dialog, int id, boolean animated) {
         if (dialog != null) {
             ViewGroup rootView = (ViewGroup) (dialog.getWindow().getDecorView());
-            return removeChild(id, rootView);
+            return removeChild(id, rootView, animated);
         }
 
         return false;
@@ -150,18 +152,19 @@ public class TutorialTooltip {
      * and searches for a TutorialTooltipView with the given ID
      * until a matching view is found and removes it.
      *
-     * @param id     ID of the TutorialTooltip
-     * @param parent parent ViewGroup
+     * @param id       ID of the TutorialTooltip
+     * @param parent   parent ViewGroup
+     * @param animated true fades out, false removes immediately
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
-    private static boolean removeChild(int id, ViewGroup parent) {
+    private static boolean removeChild(int id, ViewGroup parent, boolean animated) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
             if (child instanceof TutorialTooltipView) {
                 TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
 
                 if (tutorialTooltipView.getTutorialTooltipId() == id) {
-                    tutorialTooltipView.remove();
+                    tutorialTooltipView.remove(animated);
                     return true;
                 }
             }
@@ -170,7 +173,7 @@ public class TutorialTooltip {
         for (int i = 0; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
             if (child instanceof ViewGroup) {
-                if (removeChild(id, (ViewGroup) child)) {
+                if (removeChild(id, (ViewGroup) child, animated)) {
                     return true;
                 }
             }
@@ -183,10 +186,11 @@ public class TutorialTooltip {
      * Remove an existing TutorialTooltip
      *
      * @param tutorialTooltipView TutorialTooltipView to remove
+     * @param animated            true fades out, false removes immediately
      */
     @SuppressWarnings("unused")
-    public static void remove(TutorialTooltipView tutorialTooltipView) {
-        tutorialTooltipView.remove();
+    public static void remove(TutorialTooltipView tutorialTooltipView, boolean animated) {
+        tutorialTooltipView.remove(animated);
     }
 
     /**
@@ -195,10 +199,11 @@ public class TutorialTooltip {
      * WARNING: This does not remove TutorialTooltips that are attached to the window!
      * If you attach the TutorialTooltip to the window you have to keep a reference to its view manually.
      *
-     * @param context activity context the specified tooltip was added to, application context will not work!
+     * @param context  activity context the specified tooltip was added to, application context will not work!
+     * @param animated true fades out, false removes immediately
      */
     @SuppressWarnings("unused")
-    public static void removeAll(Context context) {
+    public static void removeAll(Context context, boolean animated) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
             ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
@@ -206,7 +211,7 @@ public class TutorialTooltip {
                 final View child = rootView.getChildAt(i);
                 if (child instanceof TutorialTooltipView) {
                     TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
-                    tutorialTooltipView.remove();
+                    tutorialTooltipView.remove(animated);
 
                     // a view was removed fron the parent so the child list is now one element smaller
                     // to prevent skipping one element in the list the index is kept the same for the next loop (decremented and incremented)

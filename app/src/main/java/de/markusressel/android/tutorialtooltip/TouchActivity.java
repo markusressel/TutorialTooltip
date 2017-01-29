@@ -83,7 +83,7 @@ public class TouchActivity extends AppCompatActivity {
         onTutorialTooltipClickedListener = new OnTutorialTooltipClickedListener() {
             @Override
             public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
-                TutorialTooltip.remove(activity, id);
+                TutorialTooltip.remove(activity, id, true);
             }
         };
 
@@ -91,7 +91,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId1)) {
-                    TutorialTooltip.remove(activity, tutorialId1);
+                    TutorialTooltip.remove(activity, tutorialId1, true);
                 } else {
                     WaveIndicatorView waveIndicatorView = new WaveIndicatorView(activity);
                     waveIndicatorView.setStartColor(Color.argb(255, 255, 0, 0));
@@ -143,7 +143,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId4)) {
-                    TutorialTooltip.remove(activity, tutorialId4);
+                    TutorialTooltip.remove(activity, tutorialId4, true);
                 } else {
                     tutorialId4 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
@@ -164,7 +164,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (TutorialTooltip.exists(activity, tutorialId2)) {
-                    TutorialTooltip.remove(activity, tutorialId2);
+                    TutorialTooltip.remove(activity, tutorialId2, true);
                 } else {
                     tutorialId2 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
@@ -185,7 +185,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (tutorialTooltipView != null && tutorialTooltipView.isShown()) {
-                    tutorialTooltipView.remove();
+                    tutorialTooltipView.remove(true);
                 } else {
                     WaveIndicatorView waveIndicatorView = new WaveIndicatorView(activity);
                     waveIndicatorView.setStartColor(Color.argb(255, 255, 255, 255));
@@ -222,7 +222,7 @@ public class TouchActivity extends AppCompatActivity {
                                         @Override
                                         public void onTutorialTooltipClicked(int id,
                                                 TutorialTooltipView tutorialTooltipView) {
-                                            tutorialTooltipView.remove();
+                                            tutorialTooltipView.remove(true);
                                         }
                                     })
                                     .build());
@@ -235,7 +235,7 @@ public class TouchActivity extends AppCompatActivity {
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TutorialTooltip.removeAll(activity);
+                TutorialTooltip.removeAll(activity, true);
             }
         });
 
