@@ -260,6 +260,9 @@ public class TutorialTooltipView extends LinearLayout {
         addView(indicatorLayout, indicatorWidth, indicatorHeight);
         addView(messageLayout, messageBuilder.getWidth(), messageBuilder.getHeight());
 
+        indicatorLayout.setVisibility(INVISIBLE);
+        messageLayout.setVisibility(INVISIBLE);
+
         if (anchorView != null && anchorView.get() != null) {
             anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
         } else if (anchorPoint != null) {
@@ -268,6 +271,13 @@ public class TutorialTooltipView extends LinearLayout {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                fadeIn();
+            }
+        });
     }
 
     private void updateValues() {
@@ -610,14 +620,68 @@ public class TutorialTooltipView extends LinearLayout {
         }
     }
 
-    private void fadeOut() {
+    private void fadeIn() {
         // fade out animation duration
-        final int animationDuration = 200;
+        final int animationDuration = 100;
 
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                indicatorLayout.setVisibility(VISIBLE);
+                messageLayout.setVisibility(VISIBLE);
+            }
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        };
+
+        // animation set for the indicator
+        AnimationSet indicatorAnimationSet = new AnimationSet(true); // true means shared interpolators
+        indicatorAnimationSet.setInterpolator(new DecelerateInterpolator());
+        indicatorAnimationSet.setDuration(animationDuration);
+        indicatorAnimationSet.setFillAfter(true);
+        indicatorAnimationSet.setAnimationListener(animationListener);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+
+        indicatorAnimationSet.addAnimation(alphaAnimation);
+
+        // animation set for the message view
+        AnimationSet messageAnimationSet = new AnimationSet(true);
+        messageAnimationSet.setInterpolator(new DecelerateInterpolator());
+        messageAnimationSet.setDuration(animationDuration);
+        messageAnimationSet.setFillAfter(true);
+
+        // move message view slightly to the bottom in addition to the fade out
+        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.0f,
+                Animation.RELATIVE_TO_SELF,
+                -0.05f,
+                Animation.RELATIVE_TO_SELF,
+                0.00f);
+
+        messageAnimationSet.addAnimation(alphaAnimation);
+        messageAnimationSet.addAnimation(translateAnimation);
+
+        // start animations
+        indicatorLayout.startAnimation(indicatorAnimationSet);
+        messageLayout.startAnimation(messageAnimationSet);
+    }
+
+    private void fadeOut() {
+        // fade out animation duration
+        final int animationDuration = 100;
+
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
             }
 
             @Override
@@ -631,7 +695,6 @@ public class TutorialTooltipView extends LinearLayout {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         };
 
