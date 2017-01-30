@@ -622,7 +622,7 @@ public class TutorialTooltipView extends LinearLayout {
 
     private void fadeIn() {
         // fade out animation duration
-        final int animationDuration = 100;
+        final int animationDuration = 225;
 
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
@@ -677,7 +677,7 @@ public class TutorialTooltipView extends LinearLayout {
 
     private void fadeOut() {
         // fade out animation duration
-        final int animationDuration = 100;
+        final int animationDuration = 195;
 
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
