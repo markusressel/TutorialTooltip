@@ -50,7 +50,6 @@ import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBu
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * TutorialTooltip View class
@@ -83,6 +82,17 @@ public class TutorialTooltipView extends LinearLayout {
             new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    updateVisibility();
+                    updateSizes();
+                    updatePositions();
+                }
+            };
+
+    private final ViewTreeObserver.OnGlobalLayoutListener anchorViewLayoutListener =
+            new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    updateVisibility();
                     updateSizes();
                     updatePositions();
                 }
@@ -180,14 +190,45 @@ public class TutorialTooltipView extends LinearLayout {
             });
         }
 
+        // Create indicator and message views based on builder values
+        initializeIndicatorView(inflater);
+        initializeMessageView(inflater);
+
+        if (anchorView != null && anchorView.get() != null) {
+            anchorView.get()
+                    .getViewTreeObserver()
+                    .addOnGlobalLayoutListener(anchorViewLayoutListener);
+        } else if (anchorPoint != null) {
+            anchorView = null;
+        } else {
+            Log.e(TAG,
+                    "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
+        }
+
+        // fade in view after successful creation
+        post(new Runnable() {
+            @Override
+            public void run() {
+                updateVisibility();
+                updateSizes();
+                updatePositions();
+                fadeIn();
+            }
+        });
+    }
+
+    private void initializeIndicatorView(LayoutInflater inflater) {
         indicatorLayout = (FrameLayout) inflater.inflate(R.layout.layout_indicator,
                 this,
                 false);
+
         if (indicatorView == null) {
             indicatorView = (TutorialTooltipIndicator) indicatorLayout.findViewById(R.id.indicator);
         } else {
             indicatorLayout.removeAllViews();
-            indicatorLayout.addView((View) indicatorView, MATCH_PARENT, MATCH_PARENT);
+            indicatorLayout.addView((View) indicatorView,
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT);
         }
 
         if (indicatorBuilder.getColor() != -1) {
@@ -211,13 +252,36 @@ public class TutorialTooltipView extends LinearLayout {
             });
         }
 
+        int indicatorWidth;
+        if (indicatorBuilder.getWidth() == null) {
+            indicatorWidth = (int) ViewHelper.pxFromDp(getContext(), 50);
+        } else {
+            indicatorWidth = indicatorBuilder.getWidth();
+        }
+
+        int indicatorHeight;
+        if (indicatorBuilder.getHeight() == null) {
+            indicatorHeight = (int) ViewHelper.pxFromDp(getContext(), 50);
+        } else {
+            indicatorHeight = indicatorBuilder.getHeight();
+        }
+
+        addView(indicatorLayout, indicatorWidth, indicatorHeight);
+
+        // hide at the beginning to prevent flickering upon fadein
+        indicatorLayout.setVisibility(INVISIBLE);
+    }
+
+    private void initializeMessageView(LayoutInflater inflater) {
         messageLayout = (FrameLayout) inflater.inflate(R.layout.layout_tutorial_text, this, false);
 
         if (messageView == null) {
             messageView = (TutorialTooltipMessage) messageLayout.findViewById(R.id.messageView);
         } else {
             messageLayout.removeAllViews();
-            messageLayout.addView((View) messageView, MATCH_PARENT, MATCH_PARENT);
+            messageLayout.addView((View) messageView,
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT);
         }
 
         if (messageBuilder.getTextColor() != null) {
@@ -243,41 +307,10 @@ public class TutorialTooltipView extends LinearLayout {
             });
         }
 
-        int indicatorWidth;
-        if (indicatorBuilder.getWidth() == null) {
-            indicatorWidth = (int) ViewHelper.pxFromDp(getContext(), 50);
-        } else {
-            indicatorWidth = indicatorBuilder.getWidth();
-        }
-
-        int indicatorHeight;
-        if (indicatorBuilder.getHeight() == null) {
-            indicatorHeight = (int) ViewHelper.pxFromDp(getContext(), 50);
-        } else {
-            indicatorHeight = indicatorBuilder.getHeight();
-        }
-
-        addView(indicatorLayout, indicatorWidth, indicatorHeight);
         addView(messageLayout, messageBuilder.getWidth(), messageBuilder.getHeight());
 
-        indicatorLayout.setVisibility(INVISIBLE);
+        // hide at the beginning to prevent flickering upon fadein
         messageLayout.setVisibility(INVISIBLE);
-
-        if (anchorView != null && anchorView.get() != null) {
-            anchorView.get().getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
-        } else if (anchorPoint != null) {
-            anchorView = null;
-        } else {
-            Log.e(TAG,
-                    "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
-        }
-
-        post(new Runnable() {
-            @Override
-            public void run() {
-                fadeIn();
-            }
-        });
     }
 
     private void updateValues() {
@@ -285,6 +318,17 @@ public class TutorialTooltipView extends LinearLayout {
 
         //        float targetDiameter = 200;
         //        circleWaveAlertView.setTargetDiameter(targetDiameter);
+    }
+
+    private void updateVisibility() {
+        // if an anchorView is set, update visibility based on the anchor view
+        if (anchorView != null && anchorView.get() != null) {
+            if (anchorView.get().isShown() && getVisibility() != View.VISIBLE) {
+                setVisibility(VISIBLE);
+            } else if (!anchorView.get().isShown() && getVisibility() != View.GONE) {
+                setVisibility(GONE);
+            }
+        }
     }
 
     private void updateSizes() {
@@ -562,7 +606,8 @@ public class TutorialTooltipView extends LinearLayout {
     public void show() {
         if (getParent() == null) {
             final Activity activity = ViewHelper.getActivity(getContext());
-            LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT);
 
             switch (attachMode) {
                 case Window:
@@ -609,6 +654,9 @@ public class TutorialTooltipView extends LinearLayout {
      * @param animated true fades out, false removes immediately
      */
     public void remove(boolean animated) {
+        // prevent calling onClick when fading out
+        setOnClickListener(null);
+
         if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
             tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener().onRemove(tooltipId, this);
         }
@@ -690,7 +738,13 @@ public class TutorialTooltipView extends LinearLayout {
                 // afaik setFillAfter(true) should fix this, but sadly it doesn't
                 indicatorLayout.setVisibility(ViewGroup.INVISIBLE);
                 messageLayout.setVisibility(ViewGroup.INVISIBLE);
-                removeFromParent();
+
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        removeFromParent();
+                    }
+                });
             }
 
             @Override

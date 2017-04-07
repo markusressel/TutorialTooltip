@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
@@ -54,6 +55,9 @@ public class TouchActivity extends AppCompatActivity {
     private Button buttonClear;
     private Button buttonCenter;
 
+    private Button buttonShowLayout;
+    private Button buttonHideLayout;
+
     private TutorialTooltipView tutorialTooltipView;
     private int tutorialId4;
     private Button buttonDialog;
@@ -77,6 +81,25 @@ public class TouchActivity extends AppCompatActivity {
         buttonDialog = (Button) findViewById(R.id.button_dialog);
         buttonChain = (Button) findViewById(R.id.button_chain);
         buttonClear = (Button) findViewById(R.id.button_clear_all);
+
+
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.linear_layout_right_bottom);
+        buttonShowLayout = (Button) findViewById(R.id.button_show_layout);
+        buttonShowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.VISIBLE);
+            }
+        });
+        buttonHideLayout = (Button) findViewById(R.id.button_hide_layout);
+        buttonHideLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        TutorialTooltip.show(new TutorialTooltipBuilder(this).anchor(buttonHideLayout).build());
 
         final Activity activity = this;
 

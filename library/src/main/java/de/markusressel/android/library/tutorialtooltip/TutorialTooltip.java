@@ -22,6 +22,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.ViewHelper;
@@ -207,16 +212,28 @@ public class TutorialTooltip {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
             ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
+
+            List<Integer> childsToRemove = new LinkedList<>();
+
             for (int i = 0; i < rootView.getChildCount(); i++) {
                 final View child = rootView.getChildAt(i);
                 if (child instanceof TutorialTooltipView) {
                     TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
-                    tutorialTooltipView.remove(animated);
-
-                    // a view was removed fron the parent so the child list is now one element smaller
-                    // to prevent skipping one element in the list the index is kept the same for the next loop (decremented and incremented)
-                    i--;
+                    childsToRemove.add(i);
                 }
+            }
+
+            Collections.sort(childsToRemove, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return o2.compareTo(o1);
+                }
+            });
+
+            for (Integer childIndex : childsToRemove) {
+                TutorialTooltipView tutorialTooltipView =
+                        (TutorialTooltipView) rootView.getChildAt(childIndex);
+                tutorialTooltipView.remove(animated);
             }
         }
     }
