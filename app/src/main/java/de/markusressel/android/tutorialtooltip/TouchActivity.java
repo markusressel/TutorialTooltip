@@ -16,6 +16,7 @@
 
 package de.markusressel.android.tutorialtooltip;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -98,6 +99,17 @@ public class TouchActivity extends AppCompatActivity {
                 layout.setVisibility(View.INVISIBLE);
             }
         });
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0, 200);
+        animator.setDuration(2000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                buttonHideLayout.setX((float) animation.getAnimatedValue());
+            }
+        });
+        animator.start();
 
         TutorialTooltip.show(new TutorialTooltipBuilder(this).anchor(buttonHideLayout).build());
 

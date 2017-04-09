@@ -78,26 +78,6 @@ public class TutorialTooltipView extends LinearLayout {
     private TutorialTooltipIndicator indicatorView;
     private TutorialTooltipMessage messageView;
 
-    private final ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener =
-            new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    updateVisibility();
-                    updateSizes();
-                    updatePositions();
-                }
-            };
-
-    private final ViewTreeObserver.OnGlobalLayoutListener anchorViewLayoutListener =
-            new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    updateVisibility();
-                    updateSizes();
-                    updatePositions();
-                }
-            };
-
     private TutorialTooltipBuilder.AttachMode attachMode;
 
     public enum Gravity {
@@ -135,7 +115,15 @@ public class TutorialTooltipView extends LinearLayout {
 
         updateValues();
 
-        getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                updateVisibility();
+                updateSizes();
+                updatePositions();
+                return true;
+            }
+        });
     }
 
     private void getBuilderValues(TutorialTooltipBuilder tutorialTooltipBuilder) {
@@ -194,13 +182,7 @@ public class TutorialTooltipView extends LinearLayout {
         initializeIndicatorView(inflater);
         initializeMessageView(inflater);
 
-        if (anchorView != null && anchorView.get() != null) {
-            anchorView.get()
-                    .getViewTreeObserver()
-                    .addOnGlobalLayoutListener(anchorViewLayoutListener);
-        } else if (anchorPoint != null) {
-            anchorView = null;
-        } else {
+        if ((anchorView == null || anchorView.get() == null) && anchorPoint == null) {
             Log.e(TAG,
                     "Invalid anchorView and no anchorPoint either! You have to specify at least one!");
         }
@@ -209,9 +191,6 @@ public class TutorialTooltipView extends LinearLayout {
         post(new Runnable() {
             @Override
             public void run() {
-                updateVisibility();
-                updateSizes();
-                updatePositions();
                 fadeIn();
             }
         });
@@ -264,6 +243,10 @@ public class TutorialTooltipView extends LinearLayout {
             indicatorHeight = (int) ViewHelper.pxFromDp(getContext(), 50);
         } else {
             indicatorHeight = indicatorBuilder.getHeight();
+        }
+
+        if (anchorPoint != null) {
+            anchorView = null;
         }
 
         addView(indicatorLayout, indicatorWidth, indicatorHeight);
@@ -325,8 +308,12 @@ public class TutorialTooltipView extends LinearLayout {
         if (anchorView != null && anchorView.get() != null) {
             if (anchorView.get().isShown() && getVisibility() != View.VISIBLE) {
                 setVisibility(VISIBLE);
+                indicatorLayout.setVisibility(INVISIBLE);
+                messageLayout.setVisibility(INVISIBLE);
             } else if (!anchorView.get().isShown() && getVisibility() != View.GONE) {
                 setVisibility(GONE);
+                indicatorLayout.setVisibility(GONE);
+                messageLayout.setVisibility(GONE);
             }
         }
     }
