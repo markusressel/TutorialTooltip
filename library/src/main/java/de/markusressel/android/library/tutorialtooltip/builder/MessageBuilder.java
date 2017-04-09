@@ -271,6 +271,7 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
      */
     @SuppressWarnings("unused")
     public MessageBuilder onClick(OnMessageClickedListener onMessageClickedListener) {
+        throwIfCompleted();
         this.onMessageClickedListener = onMessageClickedListener;
         return this;
     }

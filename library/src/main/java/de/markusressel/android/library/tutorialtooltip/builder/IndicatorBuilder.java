@@ -179,6 +179,7 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
      */
     @SuppressWarnings("unused")
     public IndicatorBuilder onClick(OnIndicatorClickedListener onIndicatorClickedListener) {
+        throwIfCompleted();
         this.onIndicatorClickedListener = onIndicatorClickedListener;
         return this;
     }
