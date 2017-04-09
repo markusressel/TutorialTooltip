@@ -308,8 +308,8 @@ public class TutorialTooltipView extends LinearLayout {
         if (anchorView != null && anchorView.get() != null) {
             if (anchorView.get().isShown() && getVisibility() != View.VISIBLE) {
                 setVisibility(VISIBLE);
-                indicatorLayout.setVisibility(INVISIBLE);
-                messageLayout.setVisibility(INVISIBLE);
+                indicatorLayout.setVisibility(VISIBLE);
+                messageLayout.setVisibility(VISIBLE);
             } else if (!anchorView.get().isShown() && getVisibility() != View.GONE) {
                 setVisibility(GONE);
                 indicatorLayout.setVisibility(GONE);
