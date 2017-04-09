@@ -84,12 +84,23 @@ public class TouchActivity extends AppCompatActivity {
         buttonClear = (Button) findViewById(R.id.button_clear_all);
 
 
+        final ValueAnimator animator = ValueAnimator.ofFloat(0, 200);
+        animator.setDuration(2000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                buttonHideLayout.setX((float) animation.getAnimatedValue());
+            }
+        });
+
         final LinearLayout layout = (LinearLayout) findViewById(R.id.linear_layout_right_bottom);
         buttonShowLayout = (Button) findViewById(R.id.button_show_layout);
         buttonShowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.VISIBLE);
+                animator.start();
             }
         });
         buttonHideLayout = (Button) findViewById(R.id.button_hide_layout);
@@ -97,16 +108,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 200);
-        animator.setDuration(2000);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                buttonHideLayout.setX((float) animation.getAnimatedValue());
+                animator.end();
             }
         });
         animator.start();
