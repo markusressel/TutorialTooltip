@@ -119,8 +119,10 @@ public class TutorialTooltipView extends LinearLayout {
             @Override
             public boolean onPreDraw() {
                 updateVisibility();
-                updateSizes();
-                updatePositions();
+                if (getVisibility() == VISIBLE) {
+                    updateSizes();
+                    updatePositions();
+                }
                 return true;
             }
         });
