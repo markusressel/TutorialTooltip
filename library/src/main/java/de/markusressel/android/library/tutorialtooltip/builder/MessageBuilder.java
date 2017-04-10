@@ -16,9 +16,11 @@
 
 package de.markusressel.android.library.tutorialtooltip.builder;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -56,6 +58,8 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
         Default,
         Custom
     }
+
+    private final Context context;
 
     /**
      * Specifies if a custom view is used
@@ -126,8 +130,11 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
 
     /**
      * Constructor
+     *
+     * @param context application context
      */
-    public MessageBuilder() {
+    public MessageBuilder(Context context) {
+        this.context = context;
     }
 
     /**
@@ -184,6 +191,19 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
     public MessageBuilder text(String text) {
         throwIfCompleted();
         this.text = text;
+        return this;
+    }
+
+    /**
+     * Set the tutorial text
+     *
+     * @param textRes message resource
+     * @return MessageBuilder
+     */
+    @SuppressWarnings("unused")
+    public MessageBuilder text(@StringRes int textRes) {
+        throwIfCompleted();
+        this.text = context.getString(textRes);
         return this;
     }
 
