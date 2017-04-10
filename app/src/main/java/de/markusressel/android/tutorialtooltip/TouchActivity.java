@@ -155,7 +155,7 @@ public class TouchActivity extends AppCompatActivity {
                                                 }
                                             })
                                             .build())
-                                    .message(new MessageBuilder()
+                                    .message(new MessageBuilder(TouchActivity.this)
                                             .text(getString(R.string.tutorial_message_1))
                                             .gravity(TutorialTooltipView.Gravity.TOP)
                                             .onClick(new OnMessageClickedListener() {
@@ -184,7 +184,7 @@ public class TouchActivity extends AppCompatActivity {
                 } else {
                     tutorialId4 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
-                                    .message(new MessageBuilder()
+                                    .message(new MessageBuilder(TouchActivity.this)
                                             .text(getString(R.string.tutorial_message_3))
                                             .gravity(TutorialTooltipView.Gravity.RIGHT)
                                             .size((int) pxFromDp(getApplicationContext(), 150),
@@ -205,7 +205,7 @@ public class TouchActivity extends AppCompatActivity {
                 } else {
                     tutorialId2 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
-                                    .message(new MessageBuilder()
+                                    .message(new MessageBuilder(TouchActivity.this)
                                             .text(getString(R.string.tutorial_message_2))
 //                                            .anchor(new Point(300, 500))
                                             .anchor(buttonDialog)
@@ -246,7 +246,7 @@ public class TouchActivity extends AppCompatActivity {
                                                 }
                                             })
                                             .build())
-                                    .message(new MessageBuilder()
+                                    .message(new MessageBuilder(TouchActivity.this)
                                             .customView(new CardMessageView(activity))
                                             .text(getString(R.string.tutorial_message_fab))
                                             .gravity(TutorialTooltipView.Gravity.BOTTOM)
@@ -302,7 +302,7 @@ public class TouchActivity extends AppCompatActivity {
                 for (int i = 0; i < anchorViews.length; i++) {
                     tutorialTooltipChainBuilder.addItem(new TutorialTooltipBuilder(activity)
                             .anchor(anchorViews[i])
-                            .message(new MessageBuilder().text((i + 1) + "/" + anchorViews.length + ": Message")
+                            .message(new MessageBuilder(TouchActivity.this).text((i + 1) + "/" + anchorViews.length + ": Message")
                                     .build())
                             .onClick(onTutorialTooltipClickedListener)
                             .build());
@@ -342,7 +342,7 @@ public class TouchActivity extends AppCompatActivity {
                 new TutorialTooltipBuilder(this)
                         .anchor(new Point((int) x, (int) y))
                         .onClick(onTutorialTooltipClickedListener)
-                        .message(new MessageBuilder()
+                        .message(new MessageBuilder(TouchActivity.this)
                                 .text("You touched right here!")
                                 .backgroundColor(Color.parseColor("#FFF3E0"))
                                 .size((int) getResources().getDimension(R.dimen.messageWidth),

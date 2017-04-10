@@ -91,7 +91,7 @@ public class DialogFragmentTest extends DialogFragment {
         TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(getActivity())
                 .anchor(button)
                 .attachToDialog(getDialog())
-                .message(new MessageBuilder()
+                .message(new MessageBuilder(getContext())
                         .customView(cardMessageView)
                         .offset(0, 0)
                         .text("This is a tutorial message!\nNow with two lines!")
@@ -228,7 +228,7 @@ public class DialogFragmentTest extends DialogFragment {
                                 tutorialTooltipView.remove(true);
                             }
                         })
-                        .message(new MessageBuilder()
+                        .message(new MessageBuilder(getContext())
                                 .gravity(messageGravity)
                                 .size(200, MessageBuilder.WRAP_CONTENT)
                                 .text("You touched the dialog right here!")

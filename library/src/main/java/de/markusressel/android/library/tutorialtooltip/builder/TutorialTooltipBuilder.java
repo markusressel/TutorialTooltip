@@ -119,7 +119,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         // set default values
         this.attachMode = AttachMode.Activity;
         this.indicatorBuilder = new IndicatorBuilder().build();
-        this.messageBuilder = new MessageBuilder().build();
+        this.messageBuilder = new MessageBuilder(context).build();
 
         this.id = ++lastId;
     }
