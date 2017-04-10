@@ -49,49 +49,35 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
      */
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_ANCHOR = -5;
-
-    @SuppressWarnings("WeakerAccess")
-    public enum Type {
-        Default,
-        Custom
-    }
-
     /**
      * Specifies if a custom view is used
      */
     private Type type = Type.Default;
-
     /**
      * Custom indicator view
      */
     private View customView;
-
     /**
      * Indicator x axis offset from anchor position
      */
     private int offsetX = 0;
-
     /**
      * Indicator y axis offset from anchor position
      */
     private int offsetY = 0;
-
     /**
      * Indicator x axis size (width)
      */
     private Integer width;
-
     /**
      * Indicator y axis size (height)
      */
     private Integer height;
-
     /**
      * Main indicator color
      */
     @ColorInt
-    private int color = -1;
-
+    private Integer color = null;
     /**
      * OnClick listener
      */
@@ -206,7 +192,8 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
         return offsetY;
     }
 
-    public int getColor() {
+    @ColorInt
+    public Integer getColor() {
         return color;
     }
 
@@ -216,5 +203,11 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     public OnIndicatorClickedListener getOnIndicatorClickedListener() {
         return onIndicatorClickedListener;
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public enum Type {
+        Default,
+        Custom
     }
 }

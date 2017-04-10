@@ -205,6 +205,7 @@ public class TouchActivity extends AppCompatActivity {
                 } else {
                     tutorialId2 = TutorialTooltip.show(
                             new TutorialTooltipBuilder(activity)
+                                    .indicator(new IndicatorBuilder().color(Color.WHITE).build())
                                     .message(new MessageBuilder(TouchActivity.this)
                                             .text(getString(R.string.tutorial_message_2))
 //                                            .anchor(new Point(300, 500))

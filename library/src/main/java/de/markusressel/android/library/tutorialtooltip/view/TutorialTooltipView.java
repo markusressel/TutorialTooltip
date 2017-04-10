@@ -80,14 +80,6 @@ public class TutorialTooltipView extends LinearLayout {
 
     private TutorialTooltipBuilder.AttachMode attachMode;
 
-    public enum Gravity {
-        TOP,
-        BOTTOM,
-        LEFT,
-        RIGHT,
-        CENTER
-    }
-
     protected TutorialTooltipView(Context context) {
         this(context, null);
     }
@@ -212,7 +204,7 @@ public class TutorialTooltipView extends LinearLayout {
                     LayoutParams.MATCH_PARENT);
         }
 
-        if (indicatorBuilder.getColor() != -1) {
+        if (indicatorBuilder.getColor() != null) {
             indicatorView.setColor(indicatorBuilder.getColor());
         }
 
@@ -522,6 +514,19 @@ public class TutorialTooltipView extends LinearLayout {
 //        updateMessageSize(messageX, messageY);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean onTouchEvent = super.onTouchEvent(event);
+
+//        Toast.makeText(getContext(),
+//                "onTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
+//                .show();
+
+        Log.d(TAG, "onTouchEvent: " + event.getX() + "," + event.getY());
+
+        return onTouchEvent;
+    }
+
 //    private void updateMessageSize(float messageX, float messageY) {
 //        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 //        DisplayMetrics metrics = new DisplayMetrics();
@@ -536,19 +541,6 @@ public class TutorialTooltipView extends LinearLayout {
 //
 //        messageLayout.requestLayout();
 //    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        boolean onTouchEvent = super.onTouchEvent(event);
-
-//        Toast.makeText(getContext(),
-//                "onTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
-//                .show();
-
-        Log.d(TAG, "onTouchEvent: " + event.getX() + "," + event.getY());
-
-        return onTouchEvent;
-    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -799,5 +791,13 @@ public class TutorialTooltipView extends LinearLayout {
             tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
                     .postRemove(tooltipId, this);
         }
+    }
+
+    public enum Gravity {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        CENTER
     }
 }
