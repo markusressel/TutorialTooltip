@@ -19,6 +19,7 @@ package de.markusressel.android.library.tutorialtooltip;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
+import de.markusressel.android.library.tutorialtooltip.preferences.PreferencesHandler;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.ViewHelper;
 
@@ -236,6 +238,28 @@ public class TutorialTooltip {
                 tutorialTooltipView.remove(animated);
             }
         }
+    }
+
+    /**
+     * Reset the show count for a TutorialTooltip
+     *
+     * @param tutorialTooltipView the TutorialTooltip to reset the count for
+     */
+    @SuppressWarnings("unused")
+    public static void resetShowCount(@NonNull TutorialTooltipView tutorialTooltipView) {
+        PreferencesHandler preferencesHandler = new PreferencesHandler(tutorialTooltipView.getContext());
+        preferencesHandler.resetCount(tutorialTooltipView);
+    }
+
+    /**
+     * Reset the show count for ALL TutorialTooltips
+     *
+     * @param context application context
+     */
+    @SuppressWarnings("unused")
+    public static void resetAllShowCount(@NonNull Context context) {
+        PreferencesHandler preferencesHandler = new PreferencesHandler(context);
+        preferencesHandler.clearAll();
     }
 
 }

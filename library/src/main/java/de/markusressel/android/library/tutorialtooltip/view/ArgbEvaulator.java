@@ -30,6 +30,22 @@ class ArgbEvaluator implements TypeEvaluator {
     private android.animation.ArgbEvaluator mDelegate;
 
     /**
+     * Private constructor
+     * <p>
+     * Use <code>ArgbEvaluator.getNewInstance()</code> instead
+     */
+    private ArgbEvaluator() {
+    }
+
+    static ArgbEvaluator getNewInstance() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return new ArgbEvaluator().withDelegate(new android.animation.ArgbEvaluator());
+        } else {
+            return new ArgbEvaluator();
+        }
+    }
+
+    /**
      * This function returns the calculated in-between value for a color
      * given integers that represent the start and end values in the four
      * bytes of the 32-bit int. Each channel is separately linearly interpolated
@@ -71,14 +87,6 @@ class ArgbEvaluator implements TypeEvaluator {
         }
 
         return result;
-    }
-
-    static ArgbEvaluator getNewInstance() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return new ArgbEvaluator().withDelegate(new android.animation.ArgbEvaluator());
-        } else {
-            return new ArgbEvaluator();
-        }
     }
 
     private ArgbEvaluator withDelegate(android.animation.ArgbEvaluator delegate) {

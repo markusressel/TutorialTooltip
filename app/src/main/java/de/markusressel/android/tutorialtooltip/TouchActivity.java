@@ -50,6 +50,7 @@ public class TouchActivity extends AppCompatActivity {
     private int tutorialId2;
     private int tutorialId3;
 
+    private Button buttonCount;
     private Button buttonTop;
     private Button buttonBottom;
     private FloatingActionButton buttonFab;
@@ -75,6 +76,7 @@ public class TouchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_test);
 
+        buttonCount = (Button) findViewById(R.id.button_count);
         buttonTop = (Button) findViewById(R.id.button_top);
         buttonBottom = (Button) findViewById(R.id.button_bottom);
         buttonFab = (FloatingActionButton) findViewById(R.id.button_fab);
@@ -124,6 +126,18 @@ public class TouchActivity extends AppCompatActivity {
             }
         };
 
+        buttonCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TutorialTooltip.show(
+                        new TutorialTooltipBuilder(activity)
+                                .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
+                                .onClick(onTutorialTooltipClickedListener)
+                                .showCount("buttonCount", 3)
+                                .build());
+            }
+        });
+
         buttonTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,6 +185,7 @@ public class TouchActivity extends AppCompatActivity {
                                             })
                                             .build())
                                     .onClick(onTutorialTooltipClickedListener)
+                                    .showCount("Hallo", 1)
                                     .build());
                 }
             }

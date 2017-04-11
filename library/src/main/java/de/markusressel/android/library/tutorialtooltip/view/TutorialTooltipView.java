@@ -22,6 +22,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -49,6 +50,7 @@ import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder;
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.tutorialtooltip.preferences.PreferencesHandler;
 
 
 /**
@@ -61,6 +63,9 @@ public class TutorialTooltipView extends LinearLayout {
     private static final String TAG = "TutorialTooltipView";
 
     private int tooltipId;
+    private String identifier;
+
+    private Integer showCount;
 
     private Dialog dialog;
 
@@ -124,6 +129,9 @@ public class TutorialTooltipView extends LinearLayout {
         this.tutorialTooltipBuilder = tutorialTooltipBuilder;
 
         tooltipId = tutorialTooltipBuilder.getId();
+        identifier = tutorialTooltipBuilder.getIdentifier();
+
+        showCount = tutorialTooltipBuilder.getShowCount();
 
         attachMode = tutorialTooltipBuilder.getAttachMode();
         dialog = tutorialTooltipBuilder.getDialog();
@@ -582,9 +590,36 @@ public class TutorialTooltipView extends LinearLayout {
     }
 
     /**
+     * Get the TutorialTooltip identifier for this TutorialTooltipView
+     *
+     * @return identifier
+     */
+    public String getTutorialTooltipIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * Get the show count for this TutorialTooltipView
+     *
+     * @return showCount or null
+     */
+    @Nullable
+    public Integer getShowCount() {
+        return showCount;
+    }
+
+    /**
      * Show this view
      */
     public void show() {
+        if (getShowCount() != null) {
+            PreferencesHandler preferencesHandler = new PreferencesHandler(getContext());
+            if (preferencesHandler.getCount(this) >= getShowCount()) {
+                Log.w(TAG, "showCount reached, TutorialTooltip will not be shown");
+                return;
+            }
+        }
+
         if (getParent() == null) {
             final Activity activity = ViewHelper.getActivity(getContext());
             LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -646,6 +681,16 @@ public class TutorialTooltipView extends LinearLayout {
             fadeOut();
         } else {
             removeFromParent();
+        }
+
+        PreferencesHandler preferencesHandler = new PreferencesHandler(getContext());
+        if (showCount != null && preferencesHandler.getCount(this) < showCount) {
+            preferencesHandler.increaseCount(this);
+        }
+
+        if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
+            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
+                    .postRemove(tooltipId, this);
         }
     }
 
@@ -785,11 +830,6 @@ public class TutorialTooltipView extends LinearLayout {
                     ((ViewGroup) parent).removeView(TutorialTooltipView.this);
                 }
                 break;
-        }
-
-        if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
-            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
-                    .postRemove(tooltipId, this);
         }
     }
 

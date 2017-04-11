@@ -19,6 +19,9 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 
@@ -34,17 +37,10 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder> {
 
     private static final String TAG = "TutorialTooltipBuilder";
-
     /**
-     * Determines how the TutorialTooltip is attached to the parent view
-     * This is used only internally
+     * last used ID value, used to determine the next valid and unused ID
      */
-    public enum AttachMode {
-        Window,
-        Activity,
-        Dialog
-    }
-
+    private static int lastId = 0;
     /**
      * Activity context
      */
@@ -59,48 +55,40 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * Dialog the TutorialTooltip will be attached to (if AttachMode is Dialog)
      */
     private Dialog dialog;
-
-    /**
-     * last used ID value, used to determine the next valid and unused ID
-     */
-    private static int lastId = 0;
-
     /**
      * ID the TutorialTooltip will get
      */
     private int id;
-
+    private String identifier = null;
+    /**
+     * The amount of times to show this TutorialTooltip
+     */
+    private Integer showCount;
     /**
      * Anchor view
      * This view is used to position the indicator view
      */
     private View anchorView;
-
     /**
      * Anchor gravity used to position the indicator using the anchorView borders (or center)
      */
     private TutorialTooltipView.Gravity anchorGravity;
-
     /**
      * Exact coordinates the indicator should be positioned
      */
     private Point anchorPoint;
-
     /**
      * IndicatorBuilder
      */
     private IndicatorBuilder indicatorBuilder;
-
     /**
      * MessageBuilder
      */
     private MessageBuilder messageBuilder;
-
     /**
      * OnClick listener for the whole TutorialTooltipView
      */
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
-
     /**
      * Listener for TutorialTooltip remove() events
      */
@@ -113,7 +101,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @param context activity context that the TutorialTooltip will be added to.
      *                Application context will not suffice!
      */
-    public TutorialTooltipBuilder(Context context) {
+    public TutorialTooltipBuilder(@NonNull Context context) {
         this.context = context;
 
         // set default values
@@ -146,7 +134,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder attachToDialog(Dialog dialog) {
+    public TutorialTooltipBuilder attachToDialog(@NonNull Dialog dialog) {
         throwIfCompleted();
         attachMode = AttachMode.Dialog;
         this.dialog = dialog;
@@ -160,7 +148,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder anchor(View view) {
+    public TutorialTooltipBuilder anchor(@NonNull View view) {
         return anchor(view, TutorialTooltipView.Gravity.CENTER);
     }
 
@@ -172,7 +160,8 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder anchor(View view, TutorialTooltipView.Gravity gravity) {
+    public TutorialTooltipBuilder anchor(@NonNull View view,
+            @NonNull TutorialTooltipView.Gravity gravity) {
         throwIfCompleted();
         this.anchorPoint = null;
         this.anchorView = view;
@@ -187,7 +176,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder anchor(final Point point) {
+    public TutorialTooltipBuilder anchor(@NonNull final Point point) {
         throwIfCompleted();
         this.anchorView = null;
         this.anchorPoint = point;
@@ -197,11 +186,11 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     /**
      * Set the indicator using an <code>IndicatorBuilder</code>
      *
-     * @param indicatorBuilder Indicator builder
+     * @param indicatorBuilder IndicatorBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder indicator(IndicatorBuilder indicatorBuilder) {
+    public TutorialTooltipBuilder indicator(@NonNull IndicatorBuilder indicatorBuilder) {
         throwIfCompleted();
         this.indicatorBuilder = indicatorBuilder;
         return this;
@@ -209,11 +198,47 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
     /**
      * Set the message using a <code>MessageBuilder</code>
+     *
+     * @param messageBuilder MessageBuilder
+     * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder message(MessageBuilder messageBuilder) {
+    public TutorialTooltipBuilder message(@NonNull MessageBuilder messageBuilder) {
         throwIfCompleted();
         this.messageBuilder = messageBuilder;
+        return this;
+    }
+
+    /**
+     * Set how often this TutorialTooltip should be shown
+     * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
+     * NOT when it is <b>shown</b>.
+     *
+     * @param identifierRes an identifier resource for the TutorialTooltip that will be used to save
+     *                      how often it was shown already
+     * @param count         the number of times to show this TutorialTooltip, <code>null</code> for infinity
+     * @return TutorialTooltipBuilder
+     */
+    @SuppressWarnings("unused")
+    public TutorialTooltipBuilder showCount(@StringRes int identifierRes, @Nullable Integer count) {
+        return showCount(context.getString(identifierRes), count);
+    }
+
+    /**
+     * Set how often this TutorialTooltip should be shown
+     * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
+     * NOT when it is <b>shown</b>.
+     *
+     * @param identifier an identifier for the TutorialTooltip that will be used to save
+     *                   how often it was shown already
+     * @param count      the number of times to show this TutorialTooltip, <code>null</code> for infinity
+     * @return TutorialTooltipBuilder
+     */
+    @SuppressWarnings("unused")
+    public TutorialTooltipBuilder showCount(@NonNull String identifier, @Nullable Integer count) {
+        throwIfCompleted();
+        this.identifier = identifier;
+        this.showCount = count;
         return this;
     }
 
@@ -224,7 +249,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * @return TutorialTooltipBuilder
      */
     @SuppressWarnings("unused")
-    public TutorialTooltipBuilder onClick(
+    public TutorialTooltipBuilder onClick(@Nullable
             OnTutorialTooltipClickedListener onTutorialTooltipClickedListener) {
         throwIfCompleted();
         this.onTutorialTooltipClickedListener = onTutorialTooltipClickedListener;
@@ -249,6 +274,14 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
 
     public int getId() {
         return id;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public Integer getShowCount() {
+        return showCount;
     }
 
     public Point getAnchorPoint() {
@@ -294,5 +327,15 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         }
 
         return super.build();
+    }
+
+    /**
+     * Determines how the TutorialTooltip is attached to the parent view
+     * This is used only internally
+     */
+    public enum AttachMode {
+        Window,
+        Activity,
+        Dialog
     }
 }
