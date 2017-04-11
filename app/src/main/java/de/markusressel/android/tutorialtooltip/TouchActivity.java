@@ -185,7 +185,6 @@ public class TouchActivity extends AppCompatActivity {
                                             })
                                             .build())
                                     .onClick(onTutorialTooltipClickedListener)
-                                    .showCount("Hallo", 1)
                                     .build());
                 }
             }

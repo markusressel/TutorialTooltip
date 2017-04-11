@@ -210,12 +210,27 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     }
 
     /**
+     * Call this to show this TutorialTooltip only once.
+     * <p>
+     * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
+     * NOT when it is <b>shown</b>.
+     *
+     * @param identifierRes an identifier resource for the TutorialTooltip that will be used to save
+     *                      how often it was shown
+     * @return TutorialTooltipBuilder
+     */
+    @SuppressWarnings("unused")
+    public TutorialTooltipBuilder oneTimeUse(@StringRes int identifierRes) {
+        return showCount(context.getString(identifierRes), 1);
+    }
+
+    /**
      * Set how often this TutorialTooltip should be shown
      * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
      * NOT when it is <b>shown</b>.
      *
      * @param identifierRes an identifier resource for the TutorialTooltip that will be used to save
-     *                      how often it was shown already
+     *                      how often it was shown
      * @param count         the number of times to show this TutorialTooltip, <code>null</code> for infinity
      * @return TutorialTooltipBuilder
      */
