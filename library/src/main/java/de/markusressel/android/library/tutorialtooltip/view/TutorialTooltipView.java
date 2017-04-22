@@ -62,8 +62,7 @@ public class TutorialTooltipView extends LinearLayout {
 
     private static final String TAG = "TutorialTooltipView";
 
-    private int tooltipId;
-    private String identifier;
+    private TooltipId tooltipId;
 
     private Integer showCount;
 
@@ -128,8 +127,7 @@ public class TutorialTooltipView extends LinearLayout {
     private void getBuilderValues(TutorialTooltipBuilder tutorialTooltipBuilder) {
         this.tutorialTooltipBuilder = tutorialTooltipBuilder;
 
-        tooltipId = tutorialTooltipBuilder.getId();
-        identifier = tutorialTooltipBuilder.getIdentifier();
+        tooltipId = tutorialTooltipBuilder.getTooltipId();
 
         showCount = tutorialTooltipBuilder.getShowCount();
 
@@ -581,21 +579,12 @@ public class TutorialTooltipView extends LinearLayout {
     }
 
     /**
-     * Get the TutorialTooltip identifier for this TutorialTooltipView
+     * Get the TutorialTooltip tooltipId for this TutorialTooltipView
      *
-     * @return id
+     * @return tooltipId
      */
-    public int getTutorialTooltipId() {
+    public TooltipId getTutorialTooltipId() {
         return tooltipId;
-    }
-
-    /**
-     * Get the TutorialTooltip identifier for this TutorialTooltipView
-     *
-     * @return identifier
-     */
-    public String getTutorialTooltipIdentifier() {
-        return identifier;
     }
 
     /**
@@ -674,7 +663,8 @@ public class TutorialTooltipView extends LinearLayout {
         setOnClickListener(null);
 
         if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
-            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener().onRemove(tooltipId, this);
+            tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
+                    .onRemove(getTutorialTooltipId(), this);
         }
 
         if (animated) {
@@ -690,7 +680,7 @@ public class TutorialTooltipView extends LinearLayout {
 
         if (tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener() != null) {
             tutorialTooltipBuilder.getOnTutorialTooltipRemovedListener()
-                    .postRemove(tooltipId, this);
+                    .postRemove(getTutorialTooltipId(), this);
         }
     }
 

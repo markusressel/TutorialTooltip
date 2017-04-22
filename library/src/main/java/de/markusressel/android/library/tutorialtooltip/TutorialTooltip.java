@@ -30,6 +30,7 @@ import java.util.List;
 
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder;
 import de.markusressel.android.library.tutorialtooltip.preferences.PreferencesHandler;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.ViewHelper;
 
@@ -65,7 +66,7 @@ public class TutorialTooltip {
      * @return ID of TutorialTooltip
      */
     @SuppressWarnings("unused")
-    public static int show(TutorialTooltipBuilder builder) {
+    public static TooltipId show(TutorialTooltipBuilder builder) {
         TutorialTooltipView tutorialTooltipView = make(builder);
         return show(tutorialTooltipView);
     }
@@ -77,7 +78,7 @@ public class TutorialTooltip {
      * @return ID of TutorialTooltip
      */
     @SuppressWarnings("unused")
-    public static int show(TutorialTooltipView tutorialTooltipView) {
+    public static TooltipId show(TutorialTooltipView tutorialTooltipView) {
         tutorialTooltipView.show();
         return tutorialTooltipView.getTutorialTooltipId();
     }
@@ -93,7 +94,7 @@ public class TutorialTooltip {
      * @return true if a TutorialTooltip with the given id exists, false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean exists(Context context, int id) {
+    public static boolean exists(Context context, TooltipId id) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
             ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
@@ -101,7 +102,7 @@ public class TutorialTooltip {
                 final View child = rootView.getChildAt(i);
                 if (child instanceof TutorialTooltipView) {
                     TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
-                    if (tutorialTooltipView.getTutorialTooltipId() == id) {
+                    if (tutorialTooltipView.getTutorialTooltipId().equals(id)) {
                         return true;
                     }
                 }
@@ -122,7 +123,7 @@ public class TutorialTooltip {
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean remove(Context context, int id, boolean animated) {
+    public static boolean remove(Context context, TooltipId id, boolean animated) {
         final Activity act = ViewHelper.getActivity(context);
         if (act != null) {
             ViewGroup rootView = (ViewGroup) (act.getWindow().getDecorView());
@@ -136,7 +137,7 @@ public class TutorialTooltip {
      * Remove an existing TutorialTooltip via its ID
      * <p>
      * WARNING: This only works if the TutorialTooltip was attached to a Dialog and NOT to the Window or Activity!
-     * If you attach the TutorialTooltip to the activity use <code>remove(Context context, int id)</code>
+     * If you attach the TutorialTooltip to the activity use <code>remove(Context context, TooltipId id)</code>
      * If you attach it to the window you have to keep a reference to its view and remove it manually.
      *
      * @param dialog   dialog the specified tooltip was added to
@@ -145,7 +146,7 @@ public class TutorialTooltip {
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean remove(Dialog dialog, int id, boolean animated) {
+    public static boolean remove(Dialog dialog, TooltipId id, boolean animated) {
         if (dialog != null) {
             ViewGroup rootView = (ViewGroup) (dialog.getWindow().getDecorView());
             return removeChild(id, rootView, animated);
@@ -164,13 +165,13 @@ public class TutorialTooltip {
      * @param animated true fades out, false removes immediately
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
-    private static boolean removeChild(int id, ViewGroup parent, boolean animated) {
+    private static boolean removeChild(TooltipId id, ViewGroup parent, boolean animated) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             final View child = parent.getChildAt(i);
             if (child instanceof TutorialTooltipView) {
                 TutorialTooltipView tutorialTooltipView = (TutorialTooltipView) child;
 
-                if (tutorialTooltipView.getTutorialTooltipId() == id) {
+                if (tutorialTooltipView.getTutorialTooltipId().equals(id)) {
                     tutorialTooltipView.remove(animated);
                     return true;
                 }

@@ -41,6 +41,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTool
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView;
 
@@ -100,7 +101,7 @@ public class DialogFragmentTest extends DialogFragment {
                         .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
                         .onClick(new OnMessageClickedListener() {
                             @Override
-                            public void onMessageClicked(int id,
+                            public void onMessageClicked(TooltipId id,
                                     TutorialTooltipView tutorialTooltipView,
                                     TutorialTooltipMessage message,
                                     View messageView) {
@@ -121,7 +122,7 @@ public class DialogFragmentTest extends DialogFragment {
                         .color(Color.BLUE)
                         .onClick(new OnIndicatorClickedListener() {
                             @Override
-                            public void onIndicatorClicked(int id,
+                            public void onIndicatorClicked(TooltipId id,
                                     TutorialTooltipView tutorialTooltipView,
                                     TutorialTooltipIndicator indicator, View indicatorView) {
                                 // this will intercept touches only for the indicator view
@@ -134,7 +135,7 @@ public class DialogFragmentTest extends DialogFragment {
                         .build())
                 .onClick(new OnTutorialTooltipClickedListener() {
                     @Override
-                    public void onTutorialTooltipClicked(int id,
+                    public void onTutorialTooltipClicked(TooltipId id,
                             TutorialTooltipView tutorialTooltipView) {
                         // this will intercept touches of the complete window
                         // if you don't specify additional listeners for the indicator or
@@ -223,7 +224,7 @@ public class DialogFragmentTest extends DialogFragment {
                         .attachToDialog(getDialog())
                         .onClick(new OnTutorialTooltipClickedListener() {
                             @Override
-                            public void onTutorialTooltipClicked(int id,
+                            public void onTutorialTooltipClicked(TooltipId id,
                                     TutorialTooltipView tutorialTooltipView) {
                                 tutorialTooltipView.remove(true);
                             }

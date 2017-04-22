@@ -41,14 +41,15 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTool
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView;
 
 public class TouchActivity extends AppCompatActivity {
 
-    private int tutorialId1;
-    private int tutorialId2;
-    private int tutorialId3;
+    private TooltipId tutorialId1;
+    private TooltipId tutorialId2;
+    private TooltipId tutorialId3;
 
     private Button buttonCount;
     private Button buttonTop;
@@ -61,7 +62,7 @@ public class TouchActivity extends AppCompatActivity {
     private Button buttonHideLayout;
 
     private TutorialTooltipView tutorialTooltipView;
-    private int tutorialId4;
+    private TooltipId tutorialId4;
     private Button buttonDialog;
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
     private Button buttonChain;
@@ -121,7 +122,8 @@ public class TouchActivity extends AppCompatActivity {
 
         onTutorialTooltipClickedListener = new OnTutorialTooltipClickedListener() {
             @Override
-            public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
+            public void onTutorialTooltipClicked(TooltipId id,
+                    TutorialTooltipView tutorialTooltipView) {
                 TutorialTooltip.remove(activity, id, true);
             }
         };
@@ -159,7 +161,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .size(300, 300)
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
-                                                public void onIndicatorClicked(int id,
+                                                public void onIndicatorClicked(TooltipId id,
                                                         TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipIndicator indicator,
                                                         View indicatorView) {
@@ -174,7 +176,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .gravity(TutorialTooltipView.Gravity.TOP)
                                             .onClick(new OnMessageClickedListener() {
                                                 @Override
-                                                public void onMessageClicked(int id,
+                                                public void onMessageClicked(TooltipId id,
                                                         TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipMessage message,
                                                         View messageView) {
@@ -251,7 +253,7 @@ public class TouchActivity extends AppCompatActivity {
                                             .customView(waveIndicatorView)
                                             .onClick(new OnIndicatorClickedListener() {
                                                 @Override
-                                                public void onIndicatorClicked(int id,
+                                                public void onIndicatorClicked(TooltipId id,
                                                         TutorialTooltipView tutorialTooltipView,
                                                         TutorialTooltipIndicator indicator,
                                                         View indicatorView) {
@@ -272,7 +274,7 @@ public class TouchActivity extends AppCompatActivity {
                                     .attachToWindow()
                                     .onClick(new OnTutorialTooltipClickedListener() {
                                         @Override
-                                        public void onTutorialTooltipClicked(int id,
+                                        public void onTutorialTooltipClicked(TooltipId id,
                                                 TutorialTooltipView tutorialTooltipView) {
                                             tutorialTooltipView.remove(true);
                                         }

@@ -18,6 +18,7 @@ package de.markusressel.android.library.tutorialtooltip.interfaces;
 
 import android.view.View;
 
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -38,6 +39,6 @@ public interface OnMessageClickedListener {
      * @param message             message
      * @param messageView         the same object as the message, but cast to View
      */
-    void onMessageClicked(int id, TutorialTooltipView tutorialTooltipView,
+    void onMessageClicked(TooltipId id, TutorialTooltipView tutorialTooltipView,
             TutorialTooltipMessage message, View messageView);
 }

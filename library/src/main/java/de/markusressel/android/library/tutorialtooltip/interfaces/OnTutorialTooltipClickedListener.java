@@ -16,6 +16,7 @@
 
 package de.markusressel.android.library.tutorialtooltip.interfaces;
 
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -33,6 +34,6 @@ public interface OnTutorialTooltipClickedListener {
      * @param id                  ID of the TutorialTooltip
      * @param tutorialTooltipView TutorialTooltipView
      */
-    void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView);
+    void onTutorialTooltipClicked(TooltipId id, TutorialTooltipView tutorialTooltipView);
 
 }

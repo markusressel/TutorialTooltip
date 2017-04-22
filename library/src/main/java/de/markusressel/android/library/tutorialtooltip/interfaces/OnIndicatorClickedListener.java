@@ -18,6 +18,7 @@ package de.markusressel.android.library.tutorialtooltip.interfaces;
 
 import android.view.View;
 
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -38,6 +39,6 @@ public interface OnIndicatorClickedListener {
      * @param indicator           indicator
      * @param indicatorView       the same object as the indicator, but cast to View
      */
-    void onIndicatorClicked(int id, TutorialTooltipView tutorialTooltipView,
+    void onIndicatorClicked(TooltipId id, TutorialTooltipView tutorialTooltipView,
             TutorialTooltipIndicator indicator, View indicatorView);
 }

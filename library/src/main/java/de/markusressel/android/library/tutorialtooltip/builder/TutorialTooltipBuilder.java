@@ -27,6 +27,7 @@ import android.view.View;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -37,10 +38,7 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder> {
 
     private static final String TAG = "TutorialTooltipBuilder";
-    /**
-     * last used ID value, used to determine the next valid and unused ID
-     */
-    private static int lastId = 0;
+
     /**
      * Activity context
      */
@@ -58,8 +56,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     /**
      * ID the TutorialTooltip will get
      */
-    private int id;
-    private String identifier = null;
+    private TooltipId tooltipId;
     /**
      * The amount of times to show this TutorialTooltip
      */
@@ -109,7 +106,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         this.indicatorBuilder = new IndicatorBuilder().build();
         this.messageBuilder = new MessageBuilder(context).build();
 
-        this.id = ++lastId;
+        this.tooltipId = new TooltipId();
     }
 
     /**
@@ -215,7 +212,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
      * NOT when it is <b>shown</b>.
      *
-     * @param identifierRes an identifier resource for the TutorialTooltip that will be used to save
+     * @param identifierRes an tooltipId resource for the TutorialTooltip that will be used to save
      *                      how often it was shown
      * @return TutorialTooltipBuilder
      */
@@ -229,7 +226,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
      * NOT when it is <b>shown</b>.
      *
-     * @param identifierRes an identifier resource for the TutorialTooltip that will be used to save
+     * @param identifierRes an tooltipId resource for the TutorialTooltip that will be used to save
      *                      how often it was shown
      * @param count         the number of times to show this TutorialTooltip, <code>null</code> for infinity
      * @return TutorialTooltipBuilder
@@ -244,7 +241,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
      * The counter will increase when the TutorialTooltip is <b>removed</b> from the sceen.
      * NOT when it is <b>shown</b>.
      *
-     * @param identifier an identifier for the TutorialTooltip that will be used to save
+     * @param identifier an tooltipId for the TutorialTooltip that will be used to save
      *                   how often it was shown already
      * @param count      the number of times to show this TutorialTooltip, <code>null</code> for infinity
      * @return TutorialTooltipBuilder
@@ -252,7 +249,7 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     @SuppressWarnings("unused")
     public TutorialTooltipBuilder showCount(@NonNull String identifier, @Nullable Integer count) {
         throwIfCompleted();
-        this.identifier = identifier;
+        this.tooltipId = new TooltipId(identifier);
         this.showCount = count;
         return this;
     }
@@ -287,12 +284,8 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         return dialog;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getIdentifier() {
-        return identifier;
+    public TooltipId getTooltipId() {
+        return tooltipId;
     }
 
     public Integer getShowCount() {

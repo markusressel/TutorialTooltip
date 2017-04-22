@@ -51,7 +51,7 @@ public class PreferencesHandler {
      * @return the show count
      */
     public int getCount(@NonNull TutorialTooltipView tutorialTooltipView) {
-        return sharedPref.getInt(keyPrefix + tutorialTooltipView.getTutorialTooltipIdentifier(), 0);
+        return sharedPref.getInt(keyPrefix + tutorialTooltipView.getTutorialTooltipId(), 0);
     }
 
     /**
@@ -62,7 +62,7 @@ public class PreferencesHandler {
      */
     public void setCount(@NonNull TutorialTooltipView tutorialTooltipView, int count) {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(keyPrefix + tutorialTooltipView.getTutorialTooltipIdentifier(), count);
+        editor.putInt(keyPrefix + tutorialTooltipView.getTutorialTooltipId(), count);
         editor.apply();
     }
 

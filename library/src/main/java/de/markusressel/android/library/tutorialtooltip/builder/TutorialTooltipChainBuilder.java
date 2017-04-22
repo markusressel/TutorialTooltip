@@ -23,6 +23,7 @@ import java.util.List;
 
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -81,12 +82,12 @@ public final class TutorialTooltipChainBuilder extends Builder<TutorialTooltipCh
 
             tooltipBuilder.onRemoved(new OnTutorialTooltipRemovedListener() {
                 @Override
-                public void onRemove(int id, TutorialTooltipView tutorialTooltipView) {
+                public void onRemove(TooltipId id, TutorialTooltipView tutorialTooltipView) {
 
                 }
 
                 @Override
-                public void postRemove(int id, TutorialTooltipView tutorialTooltipView) {
+                public void postRemove(TooltipId id, TutorialTooltipView tutorialTooltipView) {
                     // open the next TutorialTooltip in the chain (if one exists)
                     if (currentIndex >= 0 && currentIndex < tooltips.size() - 1) {
                         TutorialTooltip.show(tooltips.get(currentIndex + 1));

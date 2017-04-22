@@ -16,6 +16,7 @@
 
 package de.markusressel.android.library.tutorialtooltip.interfaces;
 
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -29,7 +30,7 @@ public interface OnTutorialTooltipRemovedListener {
      * @param id                  TutorialTooltip id
      * @param tutorialTooltipView TutorialTooltipView
      */
-    void onRemove(int id, TutorialTooltipView tutorialTooltipView);
+    void onRemove(TooltipId id, TutorialTooltipView tutorialTooltipView);
 
     /**
      * This method is called when the TutorialTooltipView is completely removed from the view
@@ -37,6 +38,6 @@ public interface OnTutorialTooltipRemovedListener {
      * @param id                  TutorialTooltip id
      * @param tutorialTooltipView TutorialTooltipView
      */
-    void postRemove(int id, TutorialTooltipView tutorialTooltipView);
+    void postRemove(TooltipId id, TutorialTooltipView tutorialTooltipView);
 
 }
