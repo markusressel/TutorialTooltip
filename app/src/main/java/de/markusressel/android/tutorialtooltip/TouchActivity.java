@@ -135,6 +135,19 @@ public class TouchActivity extends AppCompatActivity {
                         new TutorialTooltipBuilder(activity)
                                 .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
                                 .onClick(onTutorialTooltipClickedListener)
+                                .indicator(new IndicatorBuilder()
+                                        .onClick(new OnIndicatorClickedListener() {
+                                            @Override
+                                            public void onIndicatorClicked(TooltipId id,
+                                                    TutorialTooltipView tutorialTooltipView,
+                                                    TutorialTooltipIndicator indicator,
+                                                    View indicatorView) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "Indicator " + id + " " + indicatorView.getWidth() + " clicked!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .build())
                                 .showCount("buttonCount", 3)
                                 .build());
             }
@@ -290,6 +303,7 @@ public class TouchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TutorialTooltip.removeAll(activity, true);
+                TutorialTooltip.resetAllShowCount(getApplicationContext());
             }
         });
 
