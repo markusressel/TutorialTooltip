@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import de.markusressel.android.library.tutorialtooltip.R;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
 
 /**
@@ -57,13 +58,23 @@ public class PreferencesHandler {
     /**
      * Set the count for the specified TutorialTooltip to a specific value
      *
+     * @param tooltipId the TutorialTooltip to set the count for
+     * @param count     the count to set
+     */
+    private void setCount(@NonNull TooltipId tooltipId, int count) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(keyPrefix + tooltipId, count);
+        editor.apply();
+    }
+
+    /**
+     * Set the count for the specified TutorialTooltip to a specific value
+     *
      * @param tutorialTooltipView the TutorialTooltip to set the count for
      * @param count               the count to set
      */
-    public void setCount(@NonNull TutorialTooltipView tutorialTooltipView, int count) {
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(keyPrefix + tutorialTooltipView.getTutorialTooltipId(), count);
-        editor.apply();
+    private void setCount(@NonNull TutorialTooltipView tutorialTooltipView, int count) {
+        setCount(tutorialTooltipView.getTutorialTooltipId(), count);
     }
 
     /**
@@ -78,10 +89,19 @@ public class PreferencesHandler {
     /**
      * Reset the show count of the specified TutorialTooltip to 0.
      *
+     * @param tooltipId the TutorialTooltip ID to reset count for
+     */
+    public void resetCount(@NonNull TooltipId tooltipId) {
+        setCount(tooltipId, 0);
+    }
+
+    /**
+     * Reset the show count of the specified TutorialTooltip to 0.
+     *
      * @param tutorialTooltipView the TutorialTooltip to reset count for
      */
     public void resetCount(@NonNull TutorialTooltipView tutorialTooltipView) {
-        setCount(tutorialTooltipView, 0);
+        setCount(tutorialTooltipView.getTutorialTooltipId(), 0);
     }
 
     /**

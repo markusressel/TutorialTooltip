@@ -242,6 +242,19 @@ public class TutorialTooltip {
     }
 
     /**
+     * Reset the show count for a TutorialTooltip ID
+     *
+     * @param applicationContext application context (for access to SharedPreferences)
+     * @param tooltipId          the TutorialTooltip ID to reset the count for
+     */
+    @SuppressWarnings("unused")
+    public static void resetShowCount(@NonNull Context applicationContext,
+            @NonNull TooltipId tooltipId) {
+        PreferencesHandler preferencesHandler = new PreferencesHandler(applicationContext);
+        preferencesHandler.resetCount(tooltipId);
+    }
+
+    /**
      * Reset the show count for a TutorialTooltip
      *
      * @param tutorialTooltipView the TutorialTooltip to reset the count for
