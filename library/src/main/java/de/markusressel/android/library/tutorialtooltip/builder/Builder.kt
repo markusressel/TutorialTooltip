@@ -14,49 +14,49 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.builder;
+package de.markusressel.android.library.tutorialtooltip.builder
 
 /**
  * Base class for builders
- * <p>
+ *
+ *
  * Use T to pass in the class that extends this Builder.
- * f.ex.: <code>MessageBuilder extends Builder<MessageBuilder></code>
- * <p>
+ * f.ex.: `MessageBuilder extends Builder<MessageBuilder></MessageBuilder>`
+ *
+ *
  * Created by Markus on 01.12.2016.
  */
 abstract class Builder<T> {
 
-    private boolean completed;
-
     /**
      * Checks if this TutorialTooltipBuilder is already complete
-     *
+
      * @return true if completed, false otherwise
      */
-    public boolean isCompleted() {
-        return completed;
-    }
+    var isCompleted: Boolean = false
+        private set
 
     /**
      * Checks if this Builder was already build and therefore cant be modified anymore
      */
-    void throwIfCompleted() {
-        if (completed) {
-            throw new IllegalStateException("Builder was already built!");
+    fun throwIfCompleted() {
+        if (isCompleted) {
+            throw IllegalStateException("Builder was already built!")
         }
     }
 
     /**
      * Complete the build process
-     * <p>
      *
+     *
+
      * @return T The extending Builder class
      */
-    public T build() {
-        throwIfCompleted();
-        this.completed = true;
+    open fun build(): T {
+        throwIfCompleted()
+        this.isCompleted = true
 
-        return (T) this;
+        return this as T
     }
 
 }

@@ -14,33 +14,32 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.view;
+package de.markusressel.android.library.tutorialtooltip.view
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.support.annotation.Nullable;
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 
 /**
  * Helper class for easy access to views
- * <p>
+ *
+ *
  * Created by Markus on 17.11.2016.
  */
-public class ViewHelper {
+object ViewHelper {
 
-    @Nullable
-    public static Activity getActivity(@Nullable Context context) {
+    fun getActivity(context: Context?): Activity? {
         if (context == null) {
-            return null;
-        } else if (context instanceof Activity) {
-            return (Activity) context;
-        } else if (context instanceof ContextWrapper) {
-            return getActivity(((ContextWrapper) context).getBaseContext());
+            return null
+        } else if (context is Activity) {
+            return context
+        } else if (context is ContextWrapper) {
+            return getActivity(context.baseContext)
         }
-        return null;
+        return null
     }
 
-    static float pxFromDp(final Context context, final float dp) {
-        return dp * context.getResources().getDisplayMetrics().density;
+    internal fun pxFromDp(context: Context, dp: Float): Float {
+        return dp * context.resources.displayMetrics.density
     }
 }
