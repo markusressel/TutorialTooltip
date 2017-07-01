@@ -84,16 +84,16 @@ class TouchActivity : AppCompatActivity() {
         animator.duration = 2000
         animator.repeatCount = ValueAnimator.INFINITE
         animator.repeatMode = ValueAnimator.REVERSE
-        animator.addUpdateListener { animation -> buttonHideLayout!!.x = animation.animatedValue as Float }
+        animator.addUpdateListener { animation -> buttonHideLayout?.x = animation.animatedValue as Float }
 
         val layout = findViewById(R.id.linear_layout_right_bottom) as LinearLayout
         buttonShowLayout = findViewById(R.id.button_show_layout) as Button
-        buttonShowLayout!!.setOnClickListener {
+        buttonShowLayout?.setOnClickListener {
             layout.visibility = View.VISIBLE
             animator.start()
         }
         buttonHideLayout = findViewById(R.id.button_hide_layout) as Button
-        buttonHideLayout!!.setOnClickListener {
+        buttonHideLayout?.setOnClickListener {
             layout.visibility = View.INVISIBLE
             animator.end()
         }
@@ -109,7 +109,7 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonCount!!.setOnClickListener {
+        buttonCount?.setOnClickListener {
             TutorialTooltip.show(
                     TutorialTooltipBuilder(activity)
                             .anchor(buttonCount!!, TutorialTooltipView.Gravity.TOP)
@@ -130,7 +130,7 @@ class TouchActivity : AppCompatActivity() {
                             .build())
         }
 
-        buttonTop!!.setOnClickListener {
+        buttonTop?.setOnClickListener {
             if (TutorialTooltip.exists(activity, tutorialId1!!)) {
                 TutorialTooltip.remove(activity, tutorialId1!!, true)
             } else {
@@ -171,7 +171,7 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonCenter!!.setOnClickListener {
+        buttonCenter?.setOnClickListener {
             if (TutorialTooltip.exists(activity, tutorialId4!!)) {
                 TutorialTooltip.remove(activity, tutorialId4!!, true)
             } else {
@@ -189,7 +189,7 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonBottom!!.setOnClickListener {
+        buttonBottom?.setOnClickListener {
             if (TutorialTooltip.exists(activity, tutorialId2!!)) {
                 TutorialTooltip.remove(activity, tutorialId2!!, true)
             } else {
@@ -208,9 +208,9 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonFab!!.setOnClickListener {
+        buttonFab?.setOnClickListener {
             if (tutorialTooltipView != null && tutorialTooltipView!!.isShown) {
-                tutorialTooltipView!!.remove(true)
+                tutorialTooltipView?.remove(true)
             } else {
                 val waveIndicatorView = WaveIndicatorView(activity)
                 waveIndicatorView.startColor = Color.argb(255, 255, 255, 255)
@@ -250,17 +250,17 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonClear!!.setOnClickListener {
+        buttonClear?.setOnClickListener {
             TutorialTooltip.removeAll(activity, true)
             TutorialTooltip.resetAllShowCount(applicationContext)
         }
 
-        buttonDialog!!.setOnClickListener {
+        buttonDialog?.setOnClickListener {
             val dialogFragmentTest = DialogFragmentTest.newInstance()
             dialogFragmentTest.show(supportFragmentManager, null)
         }
 
-        buttonChain!!.setOnClickListener {
+        buttonChain?.setOnClickListener {
             val tutorialTooltipChainBuilder = TutorialTooltipChainBuilder()
 
             val anchorViews = arrayOf<View>(buttonTop!!, buttonCenter!!, buttonBottom!!, buttonFab!!, buttonDialog!!, buttonChain!!, buttonClear!!)

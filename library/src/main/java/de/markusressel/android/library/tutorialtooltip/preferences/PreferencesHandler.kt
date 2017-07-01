@@ -30,19 +30,15 @@ import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
  * Created by Markus on 11.04.2017.
  */
 class PreferencesHandler
+
 /**
  * Constructor
-
  * @param context application context
  */
 (context: Context) {
-    private val sharedPref: SharedPreferences
-
-    init {
-        sharedPref = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE)
-    }
+    private val sharedPref: SharedPreferences = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE)
 
     /**
      * Get a preference value by key

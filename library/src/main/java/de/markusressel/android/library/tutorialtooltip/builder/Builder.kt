@@ -26,7 +26,7 @@ package de.markusressel.android.library.tutorialtooltip.builder
  *
  * Created by Markus on 01.12.2016.
  */
-abstract class Builder<T> {
+abstract class Builder<out T> {
 
     /**
      * Checks if this TutorialTooltipBuilder is already complete
