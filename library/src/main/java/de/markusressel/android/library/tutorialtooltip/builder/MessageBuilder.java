@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnMessageClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import lombok.Getter;
 
 /**
  * Builder to create the message view
@@ -52,80 +53,73 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
      */
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_ANCHOR = -5;
-
-    @SuppressWarnings("WeakerAccess")
-    public enum Type {
-        Default,
-        Custom
-    }
-
     private final Context context;
-
     /**
      * Specifies if a custom view is used
      */
+    @Getter
     private Type type = Type.Default;
-
     /**
      * Message text
      */
+    @Getter
     private String text = "Your Tutorial Message is shown right here.";
-
     /**
      * Anchor point if no view is used
      */
+    @Getter
     private Point anchorPoint;
-
     /**
      * Anchor view
      */
+    @Getter
     private View anchorView;
-
     /**
      * Custom message view
      */
+    @Getter
     private View customView;
-
     /**
      * Message gravity
      */
+    @Getter
     private TutorialTooltipView.Gravity gravity = TutorialTooltipView.Gravity.TOP;
-
     /**
      * Message x axis offset from anchor position
      */
+    @Getter
     private int offsetX = 0;
-
     /**
      * Message y axis offset from anchor position
      */
+    @Getter
     private int offsetY = 0;
-
     /**
      * Message x axis size (width)
      */
+    @Getter
     private int width = WRAP_CONTENT;
-
     /**
      * Message y axis size (height)
      */
+    @Getter
     private int height = WRAP_CONTENT;
-
     /**
      * Text color
      */
+    @Getter
     @ColorInt
     private Integer textColor;
-
     /**
      * Background color
      */
+    @Getter
     @ColorInt
     private Integer backgroundColor;
-
     /**
      * OnClick listener
      */
+    @Getter
     private OnMessageClickedListener onMessageClickedListener;
 
     /**
@@ -296,55 +290,10 @@ public final class MessageBuilder extends Builder<MessageBuilder> {
         return this;
     }
 
-    public Point getAnchorPoint() {
-        return anchorPoint;
+    @SuppressWarnings("WeakerAccess")
+    public enum Type {
+        Default,
+        Custom
     }
 
-    public View getAnchorView() {
-        return anchorView;
-    }
-
-    public TutorialTooltipView.Gravity getGravity() {
-        return gravity;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public View getCustomView() {
-        return customView;
-    }
-
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    public int getOffsetY() {
-        return offsetY;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Integer getTextColor() {
-        return textColor;
-    }
-
-    public Integer getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public OnMessageClickedListener getOnMessageClickedListener() {
-        return onMessageClickedListener;
-    }
 }

@@ -43,6 +43,10 @@ dependencies {
 //    })
 //    testCompile 'junit:junit:4.12'
 
+    // Lombok - Boilerplate compile time generator
+    compile "org.projectlombok:lombok:1.16.16"
+    annotationProcessor "org.projectlombok:lombok:1.16.16"
+
     compile('com.github.markusressel:CircleWaveView:v0.1.2') {
         exclude module: 'app'
         transitive = true

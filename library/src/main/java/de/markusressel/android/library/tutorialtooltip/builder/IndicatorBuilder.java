@@ -18,18 +18,20 @@ package de.markusressel.android.library.tutorialtooltip.builder;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnIndicatorClickedListener;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Use this Builder to create and customize any of the included indicators
  * <p>
  * Created by Markus on 01.12.2016.
  */
+@NoArgsConstructor
 public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
 
     /**
@@ -49,46 +51,48 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
      */
     @SuppressWarnings("WeakerAccess,unused")
     public static final int MATCH_ANCHOR = -5;
+
     /**
      * Specifies if a custom view is used
      */
+    @Getter
     private Type type = Type.Default;
     /**
      * Custom indicator view
      */
+    @Getter
     private View customView;
     /**
      * Indicator x axis offset from anchor position
      */
+    @Getter
     private int offsetX = 0;
     /**
      * Indicator y axis offset from anchor position
      */
+    @Getter
     private int offsetY = 0;
     /**
      * Indicator x axis size (width)
      */
+    @Getter
     private Integer width;
     /**
      * Indicator y axis size (height)
      */
+    @Getter
     private Integer height;
     /**
      * Main indicator color
      */
+    @Getter
     @ColorInt
     private Integer color = null;
     /**
      * OnClick listener
      */
+    @Getter
     private OnIndicatorClickedListener onIndicatorClickedListener;
-
-    /**
-     * Constructor for the builder.
-     * Chain methods and call ".build()" as your last step to make this object immutable.
-     */
-    public IndicatorBuilder() {
-    }
 
     /**
      * Set a custom view that should be used as the indicator
@@ -168,41 +172,6 @@ public final class IndicatorBuilder extends Builder<IndicatorBuilder> {
         throwIfCompleted();
         this.onIndicatorClickedListener = onIndicatorClickedListener;
         return this;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Nullable
-    public Integer getWidth() {
-        return width;
-    }
-
-    @Nullable
-    public Integer getHeight() {
-        return height;
-    }
-
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    public int getOffsetY() {
-        return offsetY;
-    }
-
-    @ColorInt
-    public Integer getColor() {
-        return color;
-    }
-
-    public View getCustomView() {
-        return customView;
-    }
-
-    public OnIndicatorClickedListener getOnIndicatorClickedListener() {
-        return onIndicatorClickedListener;
     }
 
     @SuppressWarnings("WeakerAccess")

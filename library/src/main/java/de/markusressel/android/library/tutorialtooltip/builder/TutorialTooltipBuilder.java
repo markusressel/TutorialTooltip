@@ -29,6 +29,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTool
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener;
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import lombok.Getter;
 
 /**
  * Use this Builder to create a TutorialTooltip
@@ -42,53 +43,75 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
     /**
      * Activity context
      */
+    @Getter
     private Context context;
 
     /**
      * AttachMode used to distinguish between activity, dialog and window scope
      */
+    @Getter
     private AttachMode attachMode;
+
 
     /**
      * Dialog the TutorialTooltip will be attached to (if AttachMode is Dialog)
      */
+    @Getter
     private Dialog dialog;
+
     /**
      * ID the TutorialTooltip will get
      */
+    @Getter
     private TooltipId tooltipId;
+
     /**
      * The amount of times to show this TutorialTooltip
      */
+    @Getter
     private Integer showCount;
+
     /**
      * Anchor view
      * This view is used to position the indicator view
      */
+    @Getter
     private View anchorView;
+
     /**
      * Anchor gravity used to position the indicator using the anchorView borders (or center)
      */
+    @Getter
     private TutorialTooltipView.Gravity anchorGravity;
+
     /**
      * Exact coordinates the indicator should be positioned
      */
+    @Getter
     private Point anchorPoint;
+
     /**
      * IndicatorBuilder
      */
+    @Getter
     private IndicatorBuilder indicatorBuilder;
+
     /**
      * MessageBuilder
      */
+    @Getter
     private MessageBuilder messageBuilder;
+
     /**
      * OnClick listener for the whole TutorialTooltipView
      */
+    @Getter
     private OnTutorialTooltipClickedListener onTutorialTooltipClickedListener;
+
     /**
      * Listener for TutorialTooltip remove() events
      */
+    @Getter
     private OnTutorialTooltipRemovedListener onTutorialTooltipRemovedListener;
 
     /**
@@ -268,56 +291,8 @@ public final class TutorialTooltipBuilder extends Builder<TutorialTooltipBuilder
         return this;
     }
 
-    protected void onRemoved(OnTutorialTooltipRemovedListener onTutorialTooltipRemovedListener) {
+    void onRemoved(OnTutorialTooltipRemovedListener onTutorialTooltipRemovedListener) {
         this.onTutorialTooltipRemovedListener = onTutorialTooltipRemovedListener;
-    }
-
-    public AttachMode getAttachMode() {
-        return attachMode;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public Dialog getDialog() {
-        return dialog;
-    }
-
-    public TooltipId getTooltipId() {
-        return tooltipId;
-    }
-
-    public Integer getShowCount() {
-        return showCount;
-    }
-
-    public Point getAnchorPoint() {
-        return anchorPoint;
-    }
-
-    public View getAnchorView() {
-        return anchorView;
-    }
-
-    public TutorialTooltipView.Gravity getAnchorGravity() {
-        return anchorGravity;
-    }
-
-    public IndicatorBuilder getIndicatorBuilder() {
-        return indicatorBuilder;
-    }
-
-    public MessageBuilder getMessageBuilder() {
-        return messageBuilder;
-    }
-
-    public OnTutorialTooltipClickedListener getOnTutorialTooltipClickedListener() {
-        return onTutorialTooltipClickedListener;
-    }
-
-    public OnTutorialTooltipRemovedListener getOnTutorialTooltipRemovedListener() {
-        return onTutorialTooltipRemovedListener;
     }
 
     @Override

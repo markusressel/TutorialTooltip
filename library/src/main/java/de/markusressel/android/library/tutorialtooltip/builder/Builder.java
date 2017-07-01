@@ -16,6 +16,8 @@
 
 package de.markusressel.android.library.tutorialtooltip.builder;
 
+import lombok.Getter;
+
 /**
  * Base class for builders
  * <p>
@@ -26,16 +28,11 @@ package de.markusressel.android.library.tutorialtooltip.builder;
  */
 abstract class Builder<T> {
 
-    private boolean completed;
-
     /**
-     * Checks if this TutorialTooltipBuilder is already complete
-     *
-     * @return true if completed, false otherwise
+     * true if the Builder has been built, false otherwise
      */
-    public boolean isCompleted() {
-        return completed;
-    }
+    @Getter
+    private boolean completed;
 
     /**
      * Checks if this Builder was already build and therefore cant be modified anymore

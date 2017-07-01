@@ -16,10 +16,9 @@
 
 package de.markusressel.android.library.tutorialtooltip.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
@@ -28,7 +27,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  * <p>
  * Created by Markus on 24.11.2016.
  */
-public class BasicMessageView extends TextView implements TutorialTooltipMessage {
+public class BasicMessageView extends AppCompatTextView implements TutorialTooltipMessage {
 
     public BasicMessageView(Context context) {
         super(context);
@@ -40,13 +39,6 @@ public class BasicMessageView extends TextView implements TutorialTooltipMessage
 
     public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    @TargetApi(21)
-    @SuppressWarnings("unused")
-    public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 }
