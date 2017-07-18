@@ -17,12 +17,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName "1.1"
 
@@ -43,8 +43,8 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
 
     // Lombok - Boilerplate compile time generator
-    compile "org.projectlombok:lombok:1.16.16"
-    annotationProcessor "org.projectlombok:lombok:1.16.16"
+    compile "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
 
     compile('com.github.markusressel:CircleWaveView:v0.1.2') {
         exclude module: 'app'
