@@ -8,7 +8,7 @@ A simple and easy way to add targeted tutorial messages to your app.
 
 | Master       | Beta | Dev               |
 |--------------|------|-------------------|
-| ![Master](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=master) | ![Beta](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=beta) | ![Dev](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=dev) |
+| ![Master](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=master) | ![Beta](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=beta) | ![Dev](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=dev) |
 
 # Why?
 
