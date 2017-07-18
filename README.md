@@ -4,6 +4,12 @@ A simple and easy way to add targeted tutorial messages to your app.
 # Work in progress
 *This library is still very much a work in progress and not ready to use.*
 
+# Build Status
+
+| Master       | Beta | Dev               |
+|--------------|------|-------------------|
+| ![Master](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=master) | ![Beta](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=beta) | ![Dev](https://travis-ci.org/markusressel/TypedPreferences.svg?branch=dev) |
+
 # Why?
 
 I needed a better way to create step by step tutorials for my app(s) and even though there were existing libraries to help with this they didn't offer the flexibility I was looking for. I could have taken an existing library and customize it for my needs, but it was just a pain to get through the existing code and I didnt learn much about how to build stuff like this. So I thought to myself - why dont you build it yourself from the ground up? And here I am.
