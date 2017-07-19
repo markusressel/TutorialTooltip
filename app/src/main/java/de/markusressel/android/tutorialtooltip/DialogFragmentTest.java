@@ -68,7 +68,7 @@ public class DialogFragmentTest extends DialogFragment {
         View rootView = inflater.inflate(R.layout.dialog_test, container);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme);
 
-        button = (Button) rootView.findViewById(R.id.testbutton);
+        button = rootView.findViewById(R.id.testbutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

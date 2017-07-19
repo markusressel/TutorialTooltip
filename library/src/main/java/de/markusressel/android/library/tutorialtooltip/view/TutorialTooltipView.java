@@ -83,6 +83,7 @@ public class TutorialTooltipView extends LinearLayout {
     private TutorialTooltipMessage messageView;
 
     private TutorialTooltipBuilder.AttachMode attachMode;
+    private PreferencesHandler preferencesHandler;
 
     protected TutorialTooltipView(Context context) {
         this(context, null);
@@ -104,6 +105,7 @@ public class TutorialTooltipView extends LinearLayout {
 
     public TutorialTooltipView(TutorialTooltipBuilder tutorialTooltipBuilder) {
         this(tutorialTooltipBuilder.getContext());
+        preferencesHandler = new PreferencesHandler(getContext());
 
         getBuilderValues(tutorialTooltipBuilder);
 
@@ -602,7 +604,6 @@ public class TutorialTooltipView extends LinearLayout {
      */
     public void show() {
         if (getShowCount() != null) {
-            PreferencesHandler preferencesHandler = new PreferencesHandler(getContext());
             if (preferencesHandler.getCount(this) >= getShowCount()) {
                 Log.w(TAG, "showCount reached, TutorialTooltip will not be shown");
                 return;
@@ -673,7 +674,6 @@ public class TutorialTooltipView extends LinearLayout {
             removeFromParent();
         }
 
-        PreferencesHandler preferencesHandler = new PreferencesHandler(getContext());
         if (showCount != null && preferencesHandler.getCount(this) < showCount) {
             preferencesHandler.increaseCount(this);
         }

@@ -19,6 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.support.annotation.Nullable;
 
 /**
@@ -42,5 +43,13 @@ public class ViewHelper {
 
     static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 }

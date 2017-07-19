@@ -18,6 +18,7 @@ package de.markusressel.android.library.tutorialtooltip.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
 import de.markusressel.android.library.tutorialtooltip.R;
@@ -51,6 +52,7 @@ public class PreferencesHandler {
      * @param tutorialTooltipView the TutorialTooltip to get the count for
      * @return the show count
      */
+    @CheckResult
     public int getCount(@NonNull TutorialTooltipView tutorialTooltipView) {
         return sharedPref.getInt(keyPrefix + tutorialTooltipView.getTutorialTooltipId(), 0);
     }

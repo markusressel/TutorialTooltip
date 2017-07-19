@@ -157,6 +157,7 @@ public class CardMessageView extends FrameLayout implements TutorialTooltipMessa
      *
      * @param thickness width in pixel
      */
+    @SuppressWarnings("unused")
     public void setBorderThickness(int thickness) {
         this.borderThickness = thickness;
         cardShape.setStroke(borderThickness, borderColor);
@@ -169,6 +170,7 @@ public class CardMessageView extends FrameLayout implements TutorialTooltipMessa
      *
      * @param radius radius in pixel
      */
+    @SuppressWarnings("unused")
     public void setCornerRadius(float radius) {
         cornerRadius = radius;
         cardShape.setCornerRadii(new float[]{
