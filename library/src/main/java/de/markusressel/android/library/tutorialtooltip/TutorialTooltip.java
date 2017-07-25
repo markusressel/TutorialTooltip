@@ -41,7 +41,7 @@ import de.markusressel.android.library.tutorialtooltip.view.ViewHelper;
  * <p>
  * Created by Markus on 17.11.2016.
  */
-public class TutorialTooltip {
+public final class TutorialTooltip {
 
     private static final String TAG = "TutorialTooltip";
 

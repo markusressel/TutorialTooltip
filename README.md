@@ -8,7 +8,8 @@ A simple and easy way to add targeted tutorial messages to your app.
 
 | Master       | Beta | Dev               |
 |--------------|------|-------------------|
-| ![Master](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=master) | ![Beta](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=beta) | ![Dev](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=dev) |
+| [![Master](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=master)](https://travis-ci.org/markusressel/TutorialTooltip/branches) | [![Beta](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=beta)](https://travis-ci.org/markusressel/TutorialTooltip/branches) | [![Dev](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=dev)](https://travis-ci.org/markusressel/TutorialTooltip/branches) |
+| [![codebeat badge](https://codebeat.co/badges/edc7ad8f-912b-4784-80eb-40d5cc7eec98)](https://codebeat.co/projects/github-com-markusressel-tutorialtooltip-master) | [![codebeat badge](https://codebeat.co/badges/a1c96375-e850-49bb-a391-c98213d5db1a)](https://codebeat.co/projects/github-com-markusressel-tutorialtooltip-beta) | [![codebeat badge](https://codebeat.co/badges/bab43456-4ef2-4adf-ba0d-868a83553ccd)](https://codebeat.co/projects/github-com-markusressel-tutorialtooltip-dev) |
 
 # Why?
 

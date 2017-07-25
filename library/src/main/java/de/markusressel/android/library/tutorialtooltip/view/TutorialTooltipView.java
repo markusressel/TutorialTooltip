@@ -204,7 +204,7 @@ public class TutorialTooltipView extends LinearLayout {
                 false);
 
         if (indicatorView == null) {
-            indicatorView = (TutorialTooltipIndicator) indicatorLayout.findViewById(R.id.indicator);
+            indicatorView = indicatorLayout.findViewById(R.id.indicator);
         } else {
             indicatorLayout.removeAllViews();
             indicatorLayout.addView((View) indicatorView,
@@ -530,7 +530,7 @@ public class TutorialTooltipView extends LinearLayout {
 //                "onTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
 //                .show();
 
-        Log.d(TAG, "onTouchEvent: " + event.getX() + "," + event.getY());
+        Log.v(TAG, "onTouchEvent: " + event.getX() + "," + event.getY());
 
         return onTouchEvent;
     }
@@ -556,7 +556,7 @@ public class TutorialTooltipView extends LinearLayout {
 //                "onInterceptTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
 //                .show();
 
-        Log.d(TAG, "onInterceptTouchEvent: " + event.getX() + "," + event.getY());
+        Log.v(TAG, "onInterceptTouchEvent: " + event.getX() + "," + event.getY());
 
         boolean onInterceptTouchEvent = super.onInterceptTouchEvent(event);
         return onInterceptTouchEvent;
