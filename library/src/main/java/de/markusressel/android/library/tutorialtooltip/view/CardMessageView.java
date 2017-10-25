@@ -18,16 +18,21 @@ package de.markusressel.android.library.tutorialtooltip.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.StyleableRes;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.markusressel.android.library.tutorialtooltip.R;
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
 
 /**
@@ -60,7 +65,7 @@ public class CardMessageView extends FrameLayout implements TutorialTooltipMessa
 
         linearLayout = new LinearLayout(context, attrs, defStyleAttr);
         textView = new TextView(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs, defStyleAttr);
     }
 
     @TargetApi(21)
@@ -72,10 +77,12 @@ public class CardMessageView extends FrameLayout implements TutorialTooltipMessa
         linearLayout = new LinearLayout(context, attrs, defStyleAttr, defStyleRes);
         textView = new TextView(context, attrs, defStyleAttr, defStyleRes);
 
-        init();
+        init(context, attrs, defStyleAttr);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        readAttributes(context, attrs);
+
         cornerRadius = (int) ViewHelper.pxFromDp(getContext(), 12);
         defaultPadding = (int) ViewHelper.pxFromDp(getContext(), 8);
 
@@ -118,6 +125,46 @@ public class CardMessageView extends FrameLayout implements TutorialTooltipMessa
             setPadding(padding, padding, padding, padding);
             setClipToPadding(false);
         }
+    }
+
+    private void readAttributes(Context context, AttributeSet attrs) {
+        // read XML attributes
+        TypedArray a = context.getTheme()
+                .obtainStyledAttributes(attrs, R.styleable.TutorialTooltipMessage, 0, 0);
+
+        try {
+
+            @ColorInt
+            int textColor = getColor(context,
+                    a,
+                    R.styleable.TutorialTooltipMessage_ttm_textColor,
+                    android.R.attr.textColorPrimary,
+                    Color.rgb(0, 0, 0));
+
+            setTextColor(textColor);
+
+        } finally {
+            a.recycle();
+        }
+    }
+
+    @ColorInt
+    private int getColor(Context context, TypedArray attributes, @StyleableRes int stylableRes,
+            @AttrRes int attrRes, @ColorInt int fallback) {
+        return attributes.getColor(stylableRes, getSystemColor(context, attrRes, fallback));
+    }
+
+    @ColorInt
+    private int getSystemColor(Context context, @AttrRes int attrRes, @ColorInt int fallback) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = context.obtainStyledAttributes(typedValue.data,
+                new int[]{attrRes});
+        int color = a.getColor(0, fallback);
+
+        a.recycle();
+
+        return color;
     }
 
     @Override

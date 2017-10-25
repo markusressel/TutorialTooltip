@@ -46,6 +46,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // external libraries
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
     compile 'com.rarepebble:colorpicker:2.0.0'
 
     compile project(':library')
