@@ -36,6 +36,7 @@ class PreferencesHandler
  * @param context application context
  */
 (context: Context) {
+
     private val sharedPref: SharedPreferences = context.getSharedPreferences(
             context.getString(R.string.preference_file_key),
             Context.MODE_PRIVATE)

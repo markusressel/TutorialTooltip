@@ -32,7 +32,6 @@ import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
-import kotlinx.android.synthetic.main.dialog_test.*
 
 /**
  * Dialog for testing purpose
@@ -42,12 +41,15 @@ import kotlinx.android.synthetic.main.dialog_test.*
  */
 class DialogFragmentTest : DialogFragment() {
 
+    lateinit var testButton: View
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.dialog_test, container)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme)
 
-        testButton!!.setOnClickListener { showTutorialTooltip() }
+        testButton = rootView.findViewById(R.id.testButton)
+        testButton.setOnClickListener { showTutorialTooltip() }
 
         return rootView
     }
@@ -63,7 +65,7 @@ class DialogFragmentTest : DialogFragment() {
         waveIndicatorView.strokeWidth = 10f // customization that is not included in the IndicatorBuilder
 
         val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
-                .anchor(testButton!!)
+                .anchor(testButton)
                 .attachToDialog(dialog)
                 .message(MessageBuilder(context)
                         .customView(cardMessageView)

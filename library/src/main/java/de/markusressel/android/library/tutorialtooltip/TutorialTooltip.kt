@@ -74,7 +74,7 @@ object TutorialTooltip {
      */
     fun show(tutorialTooltipView: TutorialTooltipView): TooltipId {
         tutorialTooltipView.show()
-        return tutorialTooltipView.tutorialTooltipId!!
+        return tutorialTooltipView.tutorialTooltipId
     }
 
     /**
@@ -94,7 +94,7 @@ object TutorialTooltip {
         val act = ViewHelper.getActivity(context)
         if (act != null) {
             val rootView = act.window.decorView as ViewGroup
-            for (i in 0..rootView.childCount - 1) {
+            for (i in 0 until rootView.childCount) {
                 val child = rootView.getChildAt(i)
                 if (child is TutorialTooltipView) {
                     if (child.tutorialTooltipId == id) {
@@ -170,7 +170,7 @@ object TutorialTooltip {
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     private fun removeChild(id: TooltipId, parent: ViewGroup, animated: Boolean): Boolean {
-        for (i in 0..parent.childCount - 1) {
+        for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
             if (child is TutorialTooltipView) {
                 val tutorialTooltipView = child
@@ -182,7 +182,7 @@ object TutorialTooltip {
             }
         }
 
-        for (i in 0..parent.childCount - 1) {
+        for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
             if (child is ViewGroup) {
                 if (removeChild(id, child, animated)) {
@@ -223,7 +223,7 @@ object TutorialTooltip {
 
             val childrenToRemove = LinkedList<Int>()
 
-            for (i in 0..rootView.childCount - 1) {
+            for (i in 0 until rootView.childCount) {
                 val child = rootView.getChildAt(i)
                 if (child is TutorialTooltipView) {
                     val tutorialTooltipView = child

@@ -34,14 +34,14 @@ import com.rarepebble.colorpicker.ColorPreference
  * Created by Markus on 10.11.2016.
  */
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
-    private var startColor: ColorPreference? = null
-    private var endColor: ColorPreference? = null
-    private var startDiameter: EditTextPreference? = null
-    private var targetDiameter: EditTextPreference? = null
-    private var strokeWidth: EditTextPreference? = null
-    private var delayBetweenWaves: EditTextPreference? = null
-    private var duration: EditTextPreference? = null
-    private var waveCount: EditTextPreference? = null
+    private lateinit var startColor: ColorPreference
+    private lateinit var endColor: ColorPreference
+    private lateinit var startDiameter: EditTextPreference
+    private lateinit var targetDiameter: EditTextPreference
+    private lateinit var strokeWidth: EditTextPreference
+    private lateinit var delayBetweenWaves: EditTextPreference
+    private lateinit var duration: EditTextPreference
+    private lateinit var waveCount: EditTextPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,19 +74,19 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun updateSummaries() {
-        startColor!!.summary = colorToHex(startColor!!.color!!)
-        endColor!!.summary = colorToHex(endColor!!.color!!)
+        startColor.summary = colorToHex(startColor.color)
+        endColor.summary = colorToHex(endColor.color)
 
-        startDiameter!!.summary = getString(R.string.summary_dp_value, startDiameter!!.text)
-        targetDiameter!!.summary = getString(R.string.summary_dp_value, targetDiameter!!.text)
+        startDiameter.summary = getString(R.string.summary_dp_value, startDiameter.text)
+        targetDiameter.summary = getString(R.string.summary_dp_value, targetDiameter.text)
 
-        strokeWidth!!.summary = getString(R.string.summary_dp_value, strokeWidth!!.text)
+        strokeWidth.summary = getString(R.string.summary_dp_value, strokeWidth.text)
 
-        delayBetweenWaves!!.summary = getString(R.string.summary_ms_value,
-                delayBetweenWaves!!.text)
-        duration!!.summary = getString(R.string.summary_ms_value, duration!!.text)
+        delayBetweenWaves.summary = getString(R.string.summary_ms_value,
+                delayBetweenWaves.text)
+        duration.summary = getString(R.string.summary_ms_value, duration.text)
 
-        waveCount!!.summary = waveCount!!.text
+        waveCount.summary = waveCount.text
     }
 
     /**

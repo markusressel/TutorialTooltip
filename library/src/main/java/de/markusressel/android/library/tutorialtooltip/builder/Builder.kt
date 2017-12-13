@@ -48,8 +48,6 @@ abstract class Builder<out T> {
     /**
      * Complete the build process
      *
-     *
-
      * @return T The extending Builder class
      */
     open fun build(): T {

@@ -42,16 +42,12 @@ class TutorialTooltipBuilder
  * @param context activity context that the TutorialTooltip will be added to.
  * *                Application context will not suffice!
  */
-(
-        /**
-         * Activity context
-         */
-        val context: Context) : Builder<TutorialTooltipBuilder>() {
+(val context: Context) : Builder<TutorialTooltipBuilder>() {
 
     /**
      * AttachMode used to distinguish between activity, dialog and window scope
      */
-    var attachMode: AttachMode? = null
+    var attachMode: AttachMode
         private set
 
     /**
@@ -62,7 +58,7 @@ class TutorialTooltipBuilder
     /**
      * ID the TutorialTooltip will get
      */
-    var tooltipId: TooltipId? = null
+    var tooltipId: TooltipId
         private set
     /**
      * The amount of times to show this TutorialTooltip
@@ -88,12 +84,12 @@ class TutorialTooltipBuilder
     /**
      * IndicatorBuilder
      */
-    var indicatorBuilder: IndicatorBuilder? = null
+    var indicatorBuilder: IndicatorBuilder
         private set
     /**
      * MessageBuilder
      */
-    var messageBuilder: MessageBuilder? = null
+    var messageBuilder: MessageBuilder
         private set
     /**
      * OnClick listener for the whole TutorialTooltipView
@@ -155,8 +151,9 @@ class TutorialTooltipBuilder
      * *
      * @return TutorialTooltipBuilder
      */
-    @JvmOverloads fun anchor(view: View,
-                             gravity: TutorialTooltipView.Gravity = TutorialTooltipView.Gravity.CENTER): TutorialTooltipBuilder {
+    @JvmOverloads
+    fun anchor(view: View,
+               gravity: TutorialTooltipView.Gravity = TutorialTooltipView.Gravity.CENTER): TutorialTooltipBuilder {
         throwIfCompleted()
         this.anchorPoint = null
         this.anchorView = view

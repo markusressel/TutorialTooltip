@@ -39,13 +39,13 @@ import kotlinx.android.synthetic.main.activity_test.*
 
 class TouchActivity : AppCompatActivity() {
 
-    private var tutorialId1: TooltipId? = null
-    private var tutorialId2: TooltipId? = null
-    private var tutorialId3: TooltipId? = null
+    private var tutorialId1: TooltipId = TooltipId("")
+    private var tutorialId2: TooltipId = TooltipId("")
+    private var tutorialId3: TooltipId = TooltipId("")
 
     private var tutorialTooltipView: TutorialTooltipView? = null
-    private var tutorialId4: TooltipId? = null
-    private var onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener? = null
+    private var tutorialId4: TooltipId = TooltipId("")
+    private lateinit var onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener
 
     private fun pxFromDp(context: Context, dp: Float): Float {
         return dp * context.resources.displayMetrics.density
@@ -59,19 +59,19 @@ class TouchActivity : AppCompatActivity() {
         animator.duration = 2000
         animator.repeatCount = ValueAnimator.INFINITE
         animator.repeatMode = ValueAnimator.REVERSE
-        animator.addUpdateListener { animation -> buttonHideLayout?.x = animation.animatedValue as Float }
+        animator.addUpdateListener { animation -> buttonHideLayout.x = animation.animatedValue as Float }
 
-        buttonShowLayout?.setOnClickListener {
+        buttonShowLayout.setOnClickListener {
             linear_layout_right_bottom.visibility = View.VISIBLE
             animator.start()
         }
-        buttonHideLayout?.setOnClickListener {
+        buttonHideLayout.setOnClickListener {
             linear_layout_right_bottom.visibility = View.INVISIBLE
             animator.end()
         }
         animator.start()
 
-        TutorialTooltip.show(TutorialTooltipBuilder(this).anchor(buttonHideLayout!!).build())
+        TutorialTooltip.show(TutorialTooltipBuilder(this).anchor(buttonHideLayout).build())
 
         val activity = this
 
@@ -81,10 +81,10 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        button_count?.setOnClickListener {
+        buttonCount.setOnClickListener {
             TutorialTooltip.show(
                     TutorialTooltipBuilder(activity)
-                            .anchor(button_count!!, TutorialTooltipView.Gravity.TOP)
+                            .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
                             .onClick(onTutorialTooltipClickedListener)
                             .indicator(IndicatorBuilder()
                                     .onClick(
@@ -102,9 +102,9 @@ class TouchActivity : AppCompatActivity() {
                             .build())
         }
 
-        buttonTop?.setOnClickListener {
-            if (TutorialTooltip.exists(activity, tutorialId1!!)) {
-                TutorialTooltip.remove(activity, tutorialId1!!, true)
+        buttonTop.setOnClickListener {
+            if (TutorialTooltip.exists(activity, tutorialId1)) {
+                TutorialTooltip.remove(activity, tutorialId1, true)
             } else {
                 val waveIndicatorView = WaveIndicatorView(activity)
                 waveIndicatorView.startColor = Color.argb(255, 255, 0, 0)
@@ -114,7 +114,7 @@ class TouchActivity : AppCompatActivity() {
 
                 tutorialId1 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
-                                .anchor(buttonTop!!, TutorialTooltipView.Gravity.TOP)
+                                .anchor(buttonTop, TutorialTooltipView.Gravity.TOP)
                                 .indicator(IndicatorBuilder()
                                         .customView(waveIndicatorView)
                                         .offset(50, 50)
@@ -143,9 +143,9 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonCenter?.setOnClickListener {
-            if (TutorialTooltip.exists(activity, tutorialId4!!)) {
-                TutorialTooltip.remove(activity, tutorialId4!!, true)
+        buttonCenter.setOnClickListener {
+            if (TutorialTooltip.exists(activity, tutorialId4)) {
+                TutorialTooltip.remove(activity, tutorialId4, true)
             } else {
                 tutorialId4 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
@@ -155,15 +155,15 @@ class TouchActivity : AppCompatActivity() {
                                         .size(pxFromDp(applicationContext, 150f).toInt(),
                                                 MessageBuilder.WRAP_CONTENT)
                                         .build())
-                                .anchor(buttonCenter!!)
+                                .anchor(buttonCenter)
                                 .onClick(onTutorialTooltipClickedListener)
                                 .build())
             }
         }
 
-        buttonBottom?.setOnClickListener {
-            if (TutorialTooltip.exists(activity, tutorialId2!!)) {
-                TutorialTooltip.remove(activity, tutorialId2!!, true)
+        buttonBottom.setOnClickListener {
+            if (TutorialTooltip.exists(activity, tutorialId2)) {
+                TutorialTooltip.remove(activity, tutorialId2, true)
             } else {
                 tutorialId2 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
@@ -171,16 +171,16 @@ class TouchActivity : AppCompatActivity() {
                                 .message(MessageBuilder(this@TouchActivity)
                                         .text(getString(R.string.tutorial_message_2))
                                         //                                            .anchor(new Point(300, 500))
-                                        .anchor(buttonDialog!!)
+                                        .anchor(buttonDialog)
                                         .gravity(TutorialTooltipView.Gravity.BOTTOM)
                                         .build())
-                                .anchor(buttonBottom!!, TutorialTooltipView.Gravity.BOTTOM)
+                                .anchor(buttonBottom, TutorialTooltipView.Gravity.BOTTOM)
                                 .onClick(onTutorialTooltipClickedListener)
                                 .build())
             }
         }
 
-        buttonFab?.setOnClickListener {
+        buttonFab.setOnClickListener {
             if (tutorialTooltipView != null && tutorialTooltipView!!.isShown) {
                 tutorialTooltipView?.remove(true)
             } else {
@@ -209,7 +209,7 @@ class TouchActivity : AppCompatActivity() {
                                         .backgroundColor(Color.BLACK)
                                         .textColor(Color.WHITE)
                                         .build())
-                                .anchor(buttonFab!!)
+                                .anchor(buttonFab)
                                 .attachToWindow()
                                 .onClick(object : OnTutorialTooltipClickedListener {
                                     override fun onTutorialTooltipClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
@@ -222,20 +222,20 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonClearAll?.setOnClickListener {
+        buttonClearAll.setOnClickListener {
             TutorialTooltip.removeAll(activity, true)
             TutorialTooltip.resetAllShowCount(applicationContext)
         }
 
-        buttonDialog?.setOnClickListener {
+        buttonDialog.setOnClickListener {
             val dialogFragmentTest = DialogFragmentTest.newInstance()
             dialogFragmentTest.show(supportFragmentManager, null)
         }
 
-        buttonChain?.setOnClickListener {
+        buttonChain.setOnClickListener {
             val tutorialTooltipChainBuilder = TutorialTooltipChainBuilder()
 
-            val anchorViews = arrayOf<View>(buttonTop!!, buttonCenter!!, buttonBottom!!, buttonFab!!, buttonDialog!!, buttonChain!!, buttonClearAll!!)
+            val anchorViews = arrayOf<View>(buttonTop, buttonCenter, buttonBottom, buttonFab, buttonDialog, buttonChain, buttonClearAll)
 
             for (i in anchorViews.indices) {
                 tutorialTooltipChainBuilder.addItem(TutorialTooltipBuilder(activity)

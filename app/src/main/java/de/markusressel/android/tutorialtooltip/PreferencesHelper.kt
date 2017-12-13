@@ -57,7 +57,7 @@ object PreferencesHelper {
         if (dimenAsString == null) {
             return dpFromPx(context, context.resources.getDimension(defaultValue))
         } else {
-            return java.lang.Float.valueOf(dimenAsString)!!
+            return java.lang.Float.valueOf(dimenAsString)
         }
     }
 
@@ -81,7 +81,7 @@ object PreferencesHelper {
         if (integerAsString == null) {
             return context.resources.getInteger(defaultValue)
         } else {
-            return Integer.valueOf(integerAsString)!!
+            return Integer.valueOf(integerAsString)
         }
     }
 

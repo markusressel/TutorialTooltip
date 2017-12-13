@@ -46,7 +46,7 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
      * Chain methods and call ".build()" as your last step to make this object immutable.
      */
     init {
-        tooltips = ArrayList<TutorialTooltipBuilder>()
+        tooltips = ArrayList()
     }
 
     /**
@@ -75,9 +75,8 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
             build()
         }
 
-        for (i in tooltips.indices) {
-            val currentIndex = i
-            val tooltipBuilder = tooltips[i]
+        for (currentIndex in tooltips.indices) {
+            val tooltipBuilder = tooltips[currentIndex]
 
             tooltipBuilder.onRemoved(object : OnTutorialTooltipRemovedListener {
                 override fun onRemove(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
