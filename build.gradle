@@ -18,13 +18,26 @@
 
 buildscript {
 
-    ext.kotlin_version = '1.2.0'
+    ext {
+        kotlin_version = '1.2.0'
+
+        minSdkVersion = 14
+        versionName = "1.1.0"
+
+        compileSdkVersion = 26
+        targetSdkVersion = 26
+        buildToolsVersion = "27.0.0"
+
+        supportLibVersion = "27.0.2"
+        lombokVersion = "1.16.18"
+    }
 
     repositories {
         jcenter()
 
         maven {
-            url 'https://maven.google.com'
+            url 'https://maven.google.com/'
+            name 'Google'
         }
     }
 
@@ -41,6 +54,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
 

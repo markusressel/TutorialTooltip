@@ -46,13 +46,11 @@ public class TooltipId {
         this.identifier = identifier
     }
 
-    override fun equals(obj: Any?): Boolean {
-        if (obj is TooltipId) {
-            return identifier == obj.identifier
-        } else if (obj is String) {
-            return identifier == obj
-        } else {
-            return super.equals(obj)
+    override fun equals(other: Any?): Boolean {
+        return when (other) {
+            is TooltipId -> identifier == other.identifier
+            is String -> identifier == other
+            else -> super.equals(other)
         }
     }
 

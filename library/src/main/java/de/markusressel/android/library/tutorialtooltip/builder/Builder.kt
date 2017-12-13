@@ -50,6 +50,7 @@ abstract class Builder<out T> {
      *
      * @return T The extending Builder class
      */
+    @Suppress("UNCHECKED_CAST")
     open fun build(): T {
         throwIfCompleted()
         this.isCompleted = true

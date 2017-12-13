@@ -56,18 +56,18 @@ class DialogFragmentTest : DialogFragment() {
 
     private fun showTutorialTooltip() {
         // custom message view
-        val cardMessageView = CardMessageView(activity)
+        val cardMessageView = CardMessageView(activity!!)
         @ColorInt val transparentWhite = Color.argb(255, 255, 255, 255)
         cardMessageView.setBorderColor(Color.BLACK)
 
         // custom indicator view
-        val waveIndicatorView = WaveIndicatorView(activity)
+        val waveIndicatorView = WaveIndicatorView(activity!!)
         waveIndicatorView.strokeWidth = 10f // customization that is not included in the IndicatorBuilder
 
-        val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
+        val tutorialTooltipBuilder = TutorialTooltipBuilder(activity!!)
                 .anchor(testButton)
                 .attachToDialog(dialog)
-                .message(MessageBuilder(context)
+                .message(MessageBuilder(context!!)
                         .customView(cardMessageView)
                         .offset(0, 0)
                         .text("This is a tutorial message!\nNow with two lines!")
@@ -183,7 +183,7 @@ class DialogFragmentTest : DialogFragment() {
 
 
         TutorialTooltip.show(
-                TutorialTooltipBuilder(activity)
+                TutorialTooltipBuilder(activity!!)
                         .anchor(Point(x.toInt(), y.toInt()))
                         .attachToDialog(dialog)
                         .onClick(object : OnTutorialTooltipClickedListener {
@@ -191,7 +191,7 @@ class DialogFragmentTest : DialogFragment() {
                                 tutorialTooltipView.remove(true)
                             }
                         })
-                        .message(MessageBuilder(context)
+                        .message(MessageBuilder(context!!)
                                 .gravity(messageGravity)
                                 .size(200, MessageBuilder.WRAP_CONTENT)
                                 .text("You touched the dialog right here!")

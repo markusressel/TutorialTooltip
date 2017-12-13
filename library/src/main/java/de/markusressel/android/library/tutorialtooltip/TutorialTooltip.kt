@@ -96,10 +96,8 @@ object TutorialTooltip {
             val rootView = act.window.decorView as ViewGroup
             for (i in 0 until rootView.childCount) {
                 val child = rootView.getChildAt(i)
-                if (child is TutorialTooltipView) {
-                    if (child.tutorialTooltipId == id) {
-                        return true
-                    }
+                if (child is TutorialTooltipView && child.tutorialTooltipId == id) {
+                    return true
                 }
             }
         }
@@ -122,9 +120,10 @@ object TutorialTooltip {
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     fun remove(context: Context, id: TooltipId, animated: Boolean): Boolean {
-        val act = ViewHelper.getActivity(context)
-        if (act != null) {
-            val rootView = act.window.decorView as ViewGroup
+        val activity = ViewHelper.getActivity(context)
+
+        activity?.let {
+            val rootView = it.window.decorView as ViewGroup
             return removeChild(id, rootView, animated)
         }
 
@@ -148,8 +147,8 @@ object TutorialTooltip {
      * @return true if a TutorialTooltip was found and removed, false otherwise
      */
     fun remove(dialog: Dialog?, id: TooltipId, animated: Boolean): Boolean {
-        if (dialog != null) {
-            val rootView = dialog.window!!.decorView as ViewGroup
+        dialog?.let {
+            val rootView = it.window!!.decorView as ViewGroup
             return removeChild(id, rootView, animated)
         }
 
@@ -172,13 +171,9 @@ object TutorialTooltip {
     private fun removeChild(id: TooltipId, parent: ViewGroup, animated: Boolean): Boolean {
         for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
-            if (child is TutorialTooltipView) {
-                val tutorialTooltipView = child
-
-                if (tutorialTooltipView.tutorialTooltipId == id) {
-                    tutorialTooltipView.remove(animated)
-                    return true
-                }
+            if (child is TutorialTooltipView && child.tutorialTooltipId == id) {
+                child.remove(animated)
+                return true
             }
         }
 
@@ -217,9 +212,10 @@ object TutorialTooltip {
      * @param animated true fades out, false removes immediately
      */
     fun removeAll(context: Context, animated: Boolean) {
-        val act = ViewHelper.getActivity(context)
-        if (act != null) {
-            val rootView = act.window.decorView as ViewGroup
+        val activity = ViewHelper.getActivity(context)
+
+        activity?.let {
+            val rootView = it.window.decorView as ViewGroup
 
             val childrenToRemove = LinkedList<Int>()
 
@@ -231,7 +227,7 @@ object TutorialTooltip {
                 }
             }
 
-            Collections.sort(childrenToRemove) { o1, o2 -> o2!!.compareTo(o1) }
+            childrenToRemove.reverse()
 
             childrenToRemove
                     .map { rootView.getChildAt(it) as TutorialTooltipView }

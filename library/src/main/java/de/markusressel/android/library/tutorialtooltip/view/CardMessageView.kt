@@ -44,9 +44,9 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     private var cornerRadius: Float = 0.toFloat()
     private var defaultPadding: Int = 0
 
-    private var linearLayout: LinearLayout? = null
-    private var textView: TextView? = null
-    private var cardShape: GradientDrawable? = null
+    private var linearLayout: LinearLayout
+    private var textView: TextView
+    private lateinit var cardShape: GradientDrawable
 
     @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
 
@@ -69,34 +69,34 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
         cornerRadius = ViewHelper.pxFromDp(context, 12f).toInt().toFloat()
         defaultPadding = ViewHelper.pxFromDp(context, 8f).toInt()
 
-        textView!!.gravity = Gravity.CENTER
-        textView!!.setBackgroundColor(Color.argb(0, 0, 0, 0))
+        textView.gravity = Gravity.CENTER
+        textView.setBackgroundColor(Color.argb(0, 0, 0, 0))
 
-        linearLayout!!.addView(textView)
+        linearLayout.addView(textView)
         addView(linearLayout)
 
 
         cardShape = GradientDrawable()
-        cardShape!!.mutate()
-        cardShape!!.shape = GradientDrawable.RECTANGLE
-        cardShape!!.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        cardShape!!.setColor(backgroundColor)
-        cardShape!!.setStroke(borderThickness, borderColor)
+        cardShape.mutate()
+        cardShape.shape = GradientDrawable.RECTANGLE
+        cardShape.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        cardShape.setColor(backgroundColor)
+        cardShape.setStroke(borderThickness, borderColor)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            linearLayout!!.background = cardShape
+            linearLayout.background = cardShape
         } else {
-            linearLayout!!.setBackgroundDrawable(cardShape)
+            linearLayout.setBackgroundDrawable(cardShape)
         }
 
-        linearLayout!!.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
+        linearLayout.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val elevation = ViewHelper.pxFromDp(context, 6f)
             val padding = ViewHelper.pxFromDp(context, 6f).toInt()
 
-            linearLayout!!.elevation = elevation
-            linearLayout!!.clipToPadding = false
+            linearLayout.elevation = elevation
+            linearLayout.clipToPadding = false
 
             setPadding(padding, padding, padding, padding)
             clipToPadding = false
@@ -104,18 +104,18 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     }
 
     override fun setText(text: CharSequence) {
-        textView!!.text = text
+        textView.text = text
     }
 
     override fun setTextColor(@ColorInt color: Int) {
-        textView!!.setTextColor(color)
+        textView.setTextColor(color)
     }
 
-    override fun setBackgroundColor(backgroundColor: Int) {
-        this.backgroundColor = backgroundColor
-        this.borderColor = backgroundColor
-        cardShape!!.setColor(this.backgroundColor)
-        cardShape!!.setStroke(borderThickness, borderColor)
+    override fun setBackgroundColor(color: Int) {
+        this.backgroundColor = color
+        this.borderColor = color
+        cardShape.setColor(this.backgroundColor)
+        cardShape.setStroke(borderThickness, borderColor)
 
         invalidate()
     }
@@ -127,7 +127,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
      */
     fun setBorderColor(@ColorInt color: Int) {
         this.borderColor = color
-        cardShape!!.setStroke(borderThickness, borderColor)
+        cardShape.setStroke(borderThickness, borderColor)
 
         invalidate()
     }
@@ -139,7 +139,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
      */
     fun setBorderThickness(thickness: Int) {
         this.borderThickness = thickness
-        cardShape!!.setStroke(borderThickness, borderColor)
+        cardShape.setStroke(borderThickness, borderColor)
 
         invalidate()
     }
@@ -151,7 +151,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
      */
     fun setCornerRadius(radius: Float) {
         cornerRadius = radius
-        cardShape!!.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        cardShape.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
 
         invalidate()
     }

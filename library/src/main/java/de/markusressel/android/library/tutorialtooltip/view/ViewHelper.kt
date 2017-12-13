@@ -29,14 +29,12 @@ import android.content.ContextWrapper
 object ViewHelper {
 
     fun getActivity(context: Context?): Activity? {
-        if (context == null) {
-            return null
-        } else if (context is Activity) {
-            return context
-        } else if (context is ContextWrapper) {
-            return getActivity(context.baseContext)
+        return when (context) {
+            null -> null
+            is Activity -> context
+            is ContextWrapper -> getActivity(context.baseContext)
+            else -> null
         }
-        return null
     }
 
     internal fun pxFromDp(context: Context, dp: Float): Float {

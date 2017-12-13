@@ -270,10 +270,10 @@ class TutorialTooltipBuilder
     }
 
     override fun build(): TutorialTooltipBuilder {
-        if (!indicatorBuilder!!.isCompleted) {
+        if (!indicatorBuilder.isCompleted) {
             throw IllegalStateException("IndicatorBuilder was not built!")
         }
-        if (!messageBuilder!!.isCompleted) {
+        if (!messageBuilder.isCompleted) {
             throw IllegalStateException("MessageBuilder was not built!")
         }
 
@@ -300,10 +300,3 @@ class TutorialTooltipBuilder
         private val TAG = "TutorialTooltipBuilder"
     }
 }
-/**
- * Set the anchor for the TutorialTooltip
-
- * @param view view which will be used as an anchor
- * *
- * @return TutorialTooltipBuilder
- */

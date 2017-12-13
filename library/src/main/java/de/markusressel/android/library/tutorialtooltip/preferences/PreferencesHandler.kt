@@ -73,7 +73,7 @@ class PreferencesHandler
      * @param count               the count to set
      */
     private fun setCount(tutorialTooltipView: TutorialTooltipView, count: Int) {
-        setCount(tutorialTooltipView.tutorialTooltipId!!, count)
+        setCount(tutorialTooltipView.tutorialTooltipId, count)
     }
 
     /**
@@ -100,7 +100,7 @@ class PreferencesHandler
      * @param tutorialTooltipView the TutorialTooltip to reset count for
      */
     fun resetCount(tutorialTooltipView: TutorialTooltipView) {
-        setCount(tutorialTooltipView.tutorialTooltipId!!, 0)
+        setCount(tutorialTooltipView.tutorialTooltipId, 0)
     }
 
     /**
