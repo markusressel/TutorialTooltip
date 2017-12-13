@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
 import android.view.*
-import android.widget.Button
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder
 import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder
@@ -33,6 +32,7 @@ import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
+import kotlinx.android.synthetic.main.dialog_test.*
 
 /**
  * Dialog for testing purpose
@@ -42,15 +42,12 @@ import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
  */
 class DialogFragmentTest : DialogFragment() {
 
-    private var button: Button? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.dialog_test, container)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme)
 
-        button = rootView.findViewById(R.id.testbutton) as Button
-        button!!.setOnClickListener { showTutorialTooltip() }
+        testButton!!.setOnClickListener { showTutorialTooltip() }
 
         return rootView
     }
@@ -66,7 +63,7 @@ class DialogFragmentTest : DialogFragment() {
         waveIndicatorView.strokeWidth = 10f // customization that is not included in the IndicatorBuilder
 
         val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
-                .anchor(button!!)
+                .anchor(testButton!!)
                 .attachToDialog(dialog)
                 .message(MessageBuilder(context)
                         .customView(cardMessageView)

@@ -21,12 +21,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder
@@ -38,6 +35,7 @@ import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
+import kotlinx.android.synthetic.main.activity_test.*
 
 class TouchActivity : AppCompatActivity() {
 
@@ -45,21 +43,9 @@ class TouchActivity : AppCompatActivity() {
     private var tutorialId2: TooltipId? = null
     private var tutorialId3: TooltipId? = null
 
-    private var buttonCount: Button? = null
-    private var buttonTop: Button? = null
-    private var buttonBottom: Button? = null
-    private var buttonFab: FloatingActionButton? = null
-    private var buttonClear: Button? = null
-    private var buttonCenter: Button? = null
-
-    private var buttonShowLayout: Button? = null
-    private var buttonHideLayout: Button? = null
-
     private var tutorialTooltipView: TutorialTooltipView? = null
     private var tutorialId4: TooltipId? = null
-    private var buttonDialog: Button? = null
     private var onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener? = null
-    private var buttonChain: Button? = null
 
     private fun pxFromDp(context: Context, dp: Float): Float {
         return dp * context.resources.displayMetrics.density
@@ -67,18 +53,7 @@ class TouchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_test)
-
-        buttonCount = findViewById(R.id.button_count) as Button
-        buttonTop = findViewById(R.id.button_top) as Button
-        buttonBottom = findViewById(R.id.button_bottom) as Button
-        buttonFab = findViewById(R.id.button_fab) as FloatingActionButton
-        buttonCenter = findViewById(R.id.button_center) as Button
-        buttonDialog = findViewById(R.id.button_dialog) as Button
-        buttonChain = findViewById(R.id.button_chain) as Button
-        buttonClear = findViewById(R.id.button_clear_all) as Button
-
 
         val animator = ValueAnimator.ofFloat(0f, 200f)
         animator.duration = 2000
@@ -86,15 +61,12 @@ class TouchActivity : AppCompatActivity() {
         animator.repeatMode = ValueAnimator.REVERSE
         animator.addUpdateListener { animation -> buttonHideLayout?.x = animation.animatedValue as Float }
 
-        val layout = findViewById(R.id.linear_layout_right_bottom) as LinearLayout
-        buttonShowLayout = findViewById(R.id.button_show_layout) as Button
         buttonShowLayout?.setOnClickListener {
-            layout.visibility = View.VISIBLE
+            linear_layout_right_bottom.visibility = View.VISIBLE
             animator.start()
         }
-        buttonHideLayout = findViewById(R.id.button_hide_layout) as Button
         buttonHideLayout?.setOnClickListener {
-            layout.visibility = View.INVISIBLE
+            linear_layout_right_bottom.visibility = View.INVISIBLE
             animator.end()
         }
         animator.start()
@@ -109,10 +81,10 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonCount?.setOnClickListener {
+        button_count?.setOnClickListener {
             TutorialTooltip.show(
                     TutorialTooltipBuilder(activity)
-                            .anchor(buttonCount!!, TutorialTooltipView.Gravity.TOP)
+                            .anchor(button_count!!, TutorialTooltipView.Gravity.TOP)
                             .onClick(onTutorialTooltipClickedListener)
                             .indicator(IndicatorBuilder()
                                     .onClick(
@@ -126,7 +98,7 @@ class TouchActivity : AppCompatActivity() {
                                             }
                                     )
                                     .build())
-                            .showCount("buttonCount", 3)
+                            .showCount("button_count", 3)
                             .build())
         }
 
@@ -250,7 +222,7 @@ class TouchActivity : AppCompatActivity() {
             }
         }
 
-        buttonClear?.setOnClickListener {
+        buttonClearAll?.setOnClickListener {
             TutorialTooltip.removeAll(activity, true)
             TutorialTooltip.resetAllShowCount(applicationContext)
         }
@@ -263,7 +235,7 @@ class TouchActivity : AppCompatActivity() {
         buttonChain?.setOnClickListener {
             val tutorialTooltipChainBuilder = TutorialTooltipChainBuilder()
 
-            val anchorViews = arrayOf<View>(buttonTop!!, buttonCenter!!, buttonBottom!!, buttonFab!!, buttonDialog!!, buttonChain!!, buttonClear!!)
+            val anchorViews = arrayOf<View>(buttonTop!!, buttonCenter!!, buttonBottom!!, buttonFab!!, buttonDialog!!, buttonChain!!, buttonClearAll!!)
 
             for (i in anchorViews.indices) {
                 tutorialTooltipChainBuilder.addItem(TutorialTooltipBuilder(activity)
