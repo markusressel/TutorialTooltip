@@ -14,52 +14,52 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.view;
+package de.markusressel.android.library.tutorialtooltip.view
 
 /**
  * ID of a TutorialTooltip
- * <p>
+ *
+ *
  * Created by Markus on 22.04.2017.
  */
 public class TooltipId {
 
-    private static int lastId = 1;
-
-    private String identifier;
+    private var identifier: String? = null
 
     /**
      * Create a new random ID
      */
-    public TooltipId() {
-        identifier = "TooltipID-" + lastId++;
+    constructor() {
+        identifier = "TooltipID-" + lastId++
     }
 
     /**
      * Create an ID from the given parameter
-     *
+
      * @param identifier the string to use as ID
      */
-    public TooltipId(String identifier) {
+    constructor(identifier: String?) {
         if (identifier == null) {
-            throw new IllegalArgumentException("TutorialTooltip idenfier must not be null!");
+            throw IllegalArgumentException("TutorialTooltip idenfier must not be null!")
         }
 
-        this.identifier = identifier;
+        this.identifier = identifier
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof TooltipId) {
-            return identifier.equals(((TooltipId) obj).identifier);
-        } else if (obj instanceof String) {
-            return identifier.equals(obj);
-        } else {
-            return super.equals(obj);
+    override fun equals(other: Any?): Boolean {
+        return when (other) {
+            is TooltipId -> identifier == other.identifier
+            is String -> identifier == other
+            else -> super.equals(other)
         }
     }
 
-    @Override
-    public String toString() {
-        return String.valueOf(identifier);
+    override fun toString(): String {
+        return identifier.toString()
+    }
+
+    companion object {
+
+        private var lastId = 1
     }
 }

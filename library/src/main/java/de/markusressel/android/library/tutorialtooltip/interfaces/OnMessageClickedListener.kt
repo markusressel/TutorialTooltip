@@ -14,31 +14,33 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.interfaces;
+package de.markusressel.android.library.tutorialtooltip.interfaces
 
-import android.view.View;
+import android.view.View
 
-import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
-import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 
 /**
  * OnClick listener for a TutorialTooltip
- * <p>
- * If you override any of the on*Clicked methods remember to return <code>true</code>
+ *
+ *
+ * If you override any of the on*Clicked methods remember to return `true`
  * in the corresponding is*Clickable() methods.
- * <p>
+ *
+ *
  * Created by Markus on 28.11.2016.
  */
-public interface OnIndicatorClickedListener {
+interface OnMessageClickedListener {
 
     /**
-     * This method is called when the indicator view is clicked
+     * This method is called when the message view is clicked
      *
      * @param id                  ID of the TutorialTooltip
      * @param tutorialTooltipView TutorialTooltipView
-     * @param indicator           indicator
-     * @param indicatorView       the same object as the indicator, but cast to View
+     * @param message             message
+     * @param messageView         the same object as the message, but cast to View
      */
-    void onIndicatorClicked(TooltipId id, TutorialTooltipView tutorialTooltipView,
-            TutorialTooltipIndicator indicator, View indicatorView);
+    fun onMessageClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView,
+                         message: TutorialTooltipMessage, messageView: View)
 }

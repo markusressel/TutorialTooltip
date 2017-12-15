@@ -14,30 +14,32 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.interfaces;
+package de.markusressel.android.library.tutorialtooltip.interfaces
 
-import de.markusressel.android.library.tutorialtooltip.view.TooltipId;
-import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView;
+import de.markusressel.android.library.tutorialtooltip.view.TooltipId
+import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 
 /**
  * Created by Markus on 24.12.2016.
  */
-public interface OnTutorialTooltipRemovedListener {
+interface OnTutorialTooltipRemovedListener {
 
     /**
      * This method is called when remove() is called on the TutorialTooltipView and the view will begin to close/fade out
-     *
+
      * @param id                  TutorialTooltip id
+     * *
      * @param tutorialTooltipView TutorialTooltipView
      */
-    void onRemove(TooltipId id, TutorialTooltipView tutorialTooltipView);
+    fun onRemove(id: TooltipId, tutorialTooltipView: TutorialTooltipView)
 
     /**
      * This method is called when the TutorialTooltipView is completely removed from the view
-     *
+
      * @param id                  TutorialTooltip id
+     * *
      * @param tutorialTooltipView TutorialTooltipView
      */
-    void postRemove(TooltipId id, TutorialTooltipView tutorialTooltipView);
+    fun postRemove(id: TooltipId, tutorialTooltipView: TutorialTooltipView)
 
 }
