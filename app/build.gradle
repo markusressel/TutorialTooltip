@@ -41,17 +41,17 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    compile "com.android.support:preference-v14:${rootProject.ext.supportLibVersion}"
-    compile "com.android.support:support-v13:${rootProject.ext.supportLibVersion}"
-    compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:preference-v14:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:support-v13:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
     testCompile 'junit:junit:4.12'
 
     // external libraries
     annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
 
-    compile 'com.rarepebble:colorpicker:2.0.0'
+    implementation 'com.rarepebble:colorpicker:2.0.0'
 
-    compile project(':library')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation project(':library')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
