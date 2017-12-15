@@ -19,6 +19,7 @@ package de.markusressel.android.tutorialtooltip
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
@@ -42,10 +43,11 @@ import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
 class DialogFragmentTest : DialogFragment() {
 
     lateinit var testButton: View
+    lateinit var rootView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.dialog_test, container)
+        rootView = inflater.inflate(R.layout.dialog_test, container)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme)
 
         testButton = rootView.findViewById(R.id.testButton)
@@ -75,7 +77,10 @@ class DialogFragmentTest : DialogFragment() {
                         .backgroundColor(Color.WHITE)
                         .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
                         .onClick(object : OnMessageClickedListener {
-                            override fun onMessageClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, message: TutorialTooltipMessage, messageView: View) {
+                            override fun onMessageClicked(id: TooltipId,
+                                                          tutorialTooltipView: TutorialTooltipView,
+                                                          message: TutorialTooltipMessage,
+                                                          messageView: View) {
                                 // this will intercept touches only for the message view
                                 // if you don't want the main OnTutorialTooltipClickedListener listener
                                 // to react to touches here just specify an empty OnMessageClickedListener
@@ -92,7 +97,10 @@ class DialogFragmentTest : DialogFragment() {
                         .size(IndicatorBuilder.MATCH_ANCHOR, IndicatorBuilder.MATCH_ANCHOR)
                         .color(Color.BLUE)
                         .onClick(object : OnIndicatorClickedListener {
-                            override fun onIndicatorClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, indicator: TutorialTooltipIndicator, indicatorView: View) {
+                            override fun onIndicatorClicked(id: TooltipId,
+                                                            tutorialTooltipView: TutorialTooltipView,
+                                                            indicator: TutorialTooltipIndicator,
+                                                            indicatorView: View) {
                                 // this will intercept touches only for the indicator view
                                 // if you don't want the main OnTutorialTooltipClickedListener listener
                                 // to react to touches here just specify an empty OnIndicatorClickedListener
@@ -102,7 +110,8 @@ class DialogFragmentTest : DialogFragment() {
                         })
                         .build())
                 .onClick(object : OnTutorialTooltipClickedListener {
-                    override fun onTutorialTooltipClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
+                    override fun onTutorialTooltipClicked(id: TooltipId,
+                                                          tutorialTooltipView: TutorialTooltipView) {
                         // this will intercept touches of the complete window
                         // if you don't specify additional listeners for the indicator or
                         // message view they will be included
@@ -127,7 +136,17 @@ class DialogFragmentTest : DialogFragment() {
                         // Getting Y Coordinate
                         val y = event.y
 
-                        createTutorialTooltip(x, y)
+                        // calculate dialog view bounds
+                        val r = Rect(rootView.paddingLeft,
+                                rootView.paddingTop,
+                                rootView.width + rootView.paddingLeft,
+                                rootView.height + rootView.paddingTop)
+
+                        // check if the tapped position is within the bounds of the dialog
+                        if (r.contains(x.toInt(), y.toInt())) {
+                            createTutorialTooltip(x, y)
+                        }
+
                         return true
                     }
                 }
@@ -187,7 +206,8 @@ class DialogFragmentTest : DialogFragment() {
                         .anchor(Point(x.toInt(), y.toInt()))
                         .attachToDialog(dialog)
                         .onClick(object : OnTutorialTooltipClickedListener {
-                            override fun onTutorialTooltipClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
+                            override fun onTutorialTooltipClicked(id: TooltipId,
+                                                                  tutorialTooltipView: TutorialTooltipView) {
                                 tutorialTooltipView.remove(true)
                             }
                         })

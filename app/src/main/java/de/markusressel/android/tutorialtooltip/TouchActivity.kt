@@ -76,7 +76,8 @@ class TouchActivity : AppCompatActivity() {
         val activity = this
 
         onTutorialTooltipClickedListener = object : OnTutorialTooltipClickedListener {
-            override fun onTutorialTooltipClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
+            override fun onTutorialTooltipClicked(id: TooltipId,
+                                                  tutorialTooltipView: TutorialTooltipView) {
                 TutorialTooltip.remove(activity, id, true)
             }
         }
@@ -89,7 +90,10 @@ class TouchActivity : AppCompatActivity() {
                             .indicator(IndicatorBuilder()
                                     .onClick(
                                             object : OnIndicatorClickedListener {
-                                                override fun onIndicatorClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, indicator: TutorialTooltipIndicator, indicatorView: View) {
+                                                override fun onIndicatorClicked(id: TooltipId,
+                                                                                tutorialTooltipView: TutorialTooltipView,
+                                                                                indicator: TutorialTooltipIndicator,
+                                                                                indicatorView: View) {
                                                     Toast.makeText(applicationContext,
                                                             "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                             Toast.LENGTH_SHORT).show()
@@ -120,7 +124,10 @@ class TouchActivity : AppCompatActivity() {
                                         .offset(50, 50)
                                         .size(300, 300)
                                         .onClick(object : OnIndicatorClickedListener {
-                                            override fun onIndicatorClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, indicator: TutorialTooltipIndicator, indicatorView: View) {
+                                            override fun onIndicatorClicked(id: TooltipId,
+                                                                            tutorialTooltipView: TutorialTooltipView,
+                                                                            indicator: TutorialTooltipIndicator,
+                                                                            indicatorView: View) {
                                                 Toast.makeText(applicationContext,
                                                         "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                         Toast.LENGTH_SHORT).show()
@@ -131,7 +138,10 @@ class TouchActivity : AppCompatActivity() {
                                         .text(getString(R.string.tutorial_message_1))
                                         .gravity(TutorialTooltipView.Gravity.TOP)
                                         .onClick(object : OnMessageClickedListener {
-                                            override fun onMessageClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, message: TutorialTooltipMessage, messageView: View) {
+                                            override fun onMessageClicked(id: TooltipId,
+                                                                          tutorialTooltipView: TutorialTooltipView,
+                                                                          message: TutorialTooltipMessage,
+                                                                          messageView: View) {
                                                 Toast.makeText(applicationContext,
                                                         "Message " + id + " " + messageView.width + " clicked!",
                                                         Toast.LENGTH_SHORT).show()
@@ -195,7 +205,10 @@ class TouchActivity : AppCompatActivity() {
                                 .indicator(IndicatorBuilder()
                                         .customView(waveIndicatorView)
                                         .onClick(object : OnIndicatorClickedListener {
-                                            override fun onIndicatorClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView, indicator: TutorialTooltipIndicator, indicatorView: View) {
+                                            override fun onIndicatorClicked(id: TooltipId,
+                                                                            tutorialTooltipView: TutorialTooltipView,
+                                                                            indicator: TutorialTooltipIndicator,
+                                                                            indicatorView: View) {
                                                 Toast.makeText(applicationContext,
                                                         "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                         Toast.LENGTH_SHORT).show()
@@ -212,7 +225,8 @@ class TouchActivity : AppCompatActivity() {
                                 .anchor(buttonFab)
                                 .attachToWindow()
                                 .onClick(object : OnTutorialTooltipClickedListener {
-                                    override fun onTutorialTooltipClicked(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
+                                    override fun onTutorialTooltipClicked(id: TooltipId,
+                                                                          tutorialTooltipView: TutorialTooltipView) {
                                         tutorialTooltipView.remove(true)
                                     }
                                 })
@@ -235,7 +249,13 @@ class TouchActivity : AppCompatActivity() {
         buttonChain.setOnClickListener {
             val tutorialTooltipChainBuilder = TutorialTooltipChainBuilder()
 
-            val anchorViews = arrayOf<View>(buttonTop, buttonCenter, buttonBottom, buttonFab, buttonDialog, buttonChain, buttonClearAll)
+            val anchorViews = arrayOf<View>(buttonTop,
+                    buttonCenter,
+                    buttonBottom,
+                    buttonFab,
+                    buttonDialog,
+                    buttonChain,
+                    buttonClearAll)
 
             for (i in anchorViews.indices) {
                 tutorialTooltipChainBuilder.addItem(TutorialTooltipBuilder(activity)

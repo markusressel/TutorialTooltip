@@ -48,7 +48,9 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     private var textView: TextView
     private lateinit var cardShape: GradientDrawable
 
-    @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
+    @JvmOverloads constructor(context: Context,
+                              attrs: AttributeSet? = null,
+                              defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
 
         linearLayout = LinearLayout(context, attrs, defStyleAttr)
         textView = TextView(context, attrs, defStyleAttr)
@@ -79,7 +81,14 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
         cardShape = GradientDrawable()
         cardShape.mutate()
         cardShape.shape = GradientDrawable.RECTANGLE
-        cardShape.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        cardShape.cornerRadii = floatArrayOf(cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius)
         cardShape.setColor(backgroundColor)
         cardShape.setStroke(borderThickness, borderColor)
 
@@ -151,7 +160,14 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
      */
     fun setCornerRadius(radius: Float) {
         cornerRadius = radius
-        cardShape.cornerRadii = floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        cardShape.cornerRadii = floatArrayOf(cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                cornerRadius)
 
         invalidate()
     }

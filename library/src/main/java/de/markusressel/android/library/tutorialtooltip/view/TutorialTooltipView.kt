@@ -79,7 +79,9 @@ class TutorialTooltipView : LinearLayout {
 
     private lateinit var attachMode: TutorialTooltipBuilder.AttachMode
 
-    @JvmOverloads protected constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+    @JvmOverloads protected constructor(context: Context,
+                                        attrs: AttributeSet? = null,
+                                        defStyleAttr: Int = 0)
             : super(context, attrs, defStyleAttr)
 
     @TargetApi(21)
@@ -141,7 +143,8 @@ class TutorialTooltipView : LinearLayout {
 
         tutorialTooltipBuilder.onTutorialTooltipClickedListener?.let {
             setOnClickListener {
-                tutorialTooltipBuilder.onTutorialTooltipClickedListener?.onTutorialTooltipClicked(tutorialTooltipId,
+                tutorialTooltipBuilder.onTutorialTooltipClickedListener?.onTutorialTooltipClicked(
+                        tutorialTooltipId,
                         tutorialTooltipView)
             }
         }
@@ -188,8 +191,10 @@ class TutorialTooltipView : LinearLayout {
             }
         }
 
-        val indicatorWidth: Int = indicatorBuilder.width ?: ViewHelper.pxFromDp(context, 50f).toInt()
-        val indicatorHeight: Int = indicatorBuilder.height ?: ViewHelper.pxFromDp(context, 50f).toInt()
+        val indicatorWidth: Int = indicatorBuilder.width ?: ViewHelper.pxFromDp(context,
+                50f).toInt()
+        val indicatorHeight: Int = indicatorBuilder.height ?: ViewHelper.pxFromDp(context,
+                50f).toInt()
 
         // remove reference to anchorView if an anchorPoint is specified
         anchorPoint?.let {
