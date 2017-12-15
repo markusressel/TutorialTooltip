@@ -274,7 +274,7 @@ class TouchActivity : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
         // When user touches the screen
-            MotionEvent.ACTION_DOWN -> {
+            MotionEvent.ACTION_UP -> {
                 // Getting X coordinate
                 val x = event.x
                 // Getting Y Coordinate
