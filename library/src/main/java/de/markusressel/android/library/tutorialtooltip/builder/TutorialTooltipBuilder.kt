@@ -22,7 +22,6 @@ import android.graphics.Point
 import android.support.annotation.StringRes
 import android.util.Log
 import android.view.View
-
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
 import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
@@ -82,14 +81,14 @@ class TutorialTooltipBuilder
     var anchorPoint: Point? = null
         private set
     /**
-     * IndicatorBuilder
+     * Indicator configuration
      */
-    var indicatorBuilder: IndicatorBuilder
+    var indicatorConfiguration: IndicatorConfiguration
         private set
     /**
-     * MessageBuilder
+     * Message configuration
      */
-    var messageBuilder: MessageBuilder
+    var messageConfiguration: MessageConfiguration
         private set
     /**
      * OnClick listener for the whole TutorialTooltipView
@@ -106,8 +105,8 @@ class TutorialTooltipBuilder
 
         // set default values
         this.attachMode = AttachMode.Activity
-        this.indicatorBuilder = IndicatorBuilder().build()
-        this.messageBuilder = MessageBuilder(context).build()
+        this.indicatorConfiguration = IndicatorConfiguration()
+        this.messageConfiguration = MessageConfiguration()
 
         this.tooltipId = TooltipId()
     }
@@ -176,28 +175,28 @@ class TutorialTooltipBuilder
     }
 
     /**
-     * Set the indicator using an `IndicatorBuilder`
+     * Set the indicator using a `IndicatorConfiguration`
 
-     * @param indicatorBuilder IndicatorBuilder
+     * @param indicatorConfiguration MessageBuilder
      * *
      * @return TutorialTooltipBuilder
      */
-    fun indicator(indicatorBuilder: IndicatorBuilder): TutorialTooltipBuilder {
+    fun indicator(indicatorConfiguration: IndicatorConfiguration): TutorialTooltipBuilder {
         throwIfCompleted()
-        this.indicatorBuilder = indicatorBuilder
+        this.indicatorConfiguration = indicatorConfiguration
         return this
     }
 
     /**
      * Set the message using a `MessageBuilder`
 
-     * @param messageBuilder MessageBuilder
+     * @param messageConfiguration MessageBuilder
      * *
      * @return TutorialTooltipBuilder
      */
-    fun message(messageBuilder: MessageBuilder): TutorialTooltipBuilder {
+    fun message(messageConfiguration: MessageConfiguration): TutorialTooltipBuilder {
         throwIfCompleted()
-        this.messageBuilder = messageBuilder
+        this.messageConfiguration = messageConfiguration
         return this
     }
 
@@ -255,7 +254,7 @@ class TutorialTooltipBuilder
     /**
      * Set an OnClick listener for the TutorialTooltip
 
-     * @param onTutorialTooltipClickedListener onClick listener
+     * @param onTutorialTooltipClickedListener onIndicatorClicked listener
      * *
      * @return TutorialTooltipBuilder
      */
@@ -270,13 +269,6 @@ class TutorialTooltipBuilder
     }
 
     override fun build(): TutorialTooltipBuilder {
-        if (!indicatorBuilder.isCompleted) {
-            throw IllegalStateException("IndicatorBuilder was not built!")
-        }
-        if (!messageBuilder.isCompleted) {
-            throw IllegalStateException("MessageBuilder was not built!")
-        }
-
         if (anchorView == null && anchorPoint == null) {
             Log.w(TAG,
                     "You did not specify an anchor or anchor position! The view will be positioned at [0,0].")

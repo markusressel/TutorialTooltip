@@ -26,11 +26,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
-import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder
-import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
+import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipChainBuilder
-import de.markusressel.android.library.tutorialtooltip.interfaces.*
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
@@ -87,21 +87,13 @@ class TouchActivity : AppCompatActivity() {
                     TutorialTooltipBuilder(activity)
                             .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
                             .onClick(onTutorialTooltipClickedListener)
-                            .indicator(IndicatorBuilder()
-                                    .onClick(
-                                            object : OnIndicatorClickedListener {
-                                                override fun onIndicatorClicked(id: TooltipId,
-                                                                                tutorialTooltipView: TutorialTooltipView,
-                                                                                indicator: TutorialTooltipIndicator,
-                                                                                indicatorView: View) {
-                                                    Toast.makeText(applicationContext,
-                                                            "Indicator " + id + " " + indicatorView.width + " clicked!",
-                                                            Toast.LENGTH_SHORT).show()
-                                                }
-
-                                            }
-                                    )
-                                    .build())
+                            .indicator(IndicatorConfiguration(
+                                    onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                                        Toast.makeText(applicationContext,
+                                                "Indicator " + id + " " + indicatorView.width + " clicked!",
+                                                Toast.LENGTH_SHORT).show()
+                                    }
+                            ))
                             .showCount("button_count", 3)
                             .build())
         }
@@ -119,35 +111,28 @@ class TouchActivity : AppCompatActivity() {
                 tutorialId1 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
                                 .anchor(buttonTop, TutorialTooltipView.Gravity.TOP)
-                                .indicator(IndicatorBuilder()
-                                        .customView(waveIndicatorView)
-                                        .offset(50, 50)
-                                        .size(300, 300)
-                                        .onClick(object : OnIndicatorClickedListener {
-                                            override fun onIndicatorClicked(id: TooltipId,
-                                                                            tutorialTooltipView: TutorialTooltipView,
-                                                                            indicator: TutorialTooltipIndicator,
-                                                                            indicatorView: View) {
-                                                Toast.makeText(applicationContext,
-                                                        "Indicator " + id + " " + indicatorView.width + " clicked!",
-                                                        Toast.LENGTH_SHORT).show()
-                                            }
-                                        })
-                                        .build())
-                                .message(MessageBuilder(this@TouchActivity)
-                                        .text(getString(R.string.tutorial_message_1))
-                                        .gravity(TutorialTooltipView.Gravity.TOP)
-                                        .onClick(object : OnMessageClickedListener {
-                                            override fun onMessageClicked(id: TooltipId,
-                                                                          tutorialTooltipView: TutorialTooltipView,
-                                                                          message: TutorialTooltipMessage,
-                                                                          messageView: View) {
-                                                Toast.makeText(applicationContext,
-                                                        "Message " + id + " " + messageView.width + " clicked!",
-                                                        Toast.LENGTH_SHORT).show()
-                                            }
-                                        })
-                                        .build())
+                                .indicator(IndicatorConfiguration(
+                                        customView = waveIndicatorView,
+                                        offsetX = 50,
+                                        offsetY = 50,
+                                        width = 300,
+                                        height = 300,
+                                        onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                                            Toast.makeText(applicationContext,
+                                                    "Indicator " + id + " " + indicatorView.width + " clicked!",
+                                                    Toast.LENGTH_SHORT).show()
+                                        }
+
+
+                                ))
+                                .message(MessageConfiguration(
+                                        text = getString(R.string.tutorial_message_1),
+                                        gravity = TutorialTooltipView.Gravity.TOP,
+                                        onMessageClicked = { id, tutorialTooltipView, message, messageView ->
+                                            Toast.makeText(applicationContext,
+                                                    "Message " + id + " " + messageView.width + " clicked!",
+                                                    Toast.LENGTH_SHORT).show()
+                                        }))
                                 .onClick(onTutorialTooltipClickedListener)
                                 .build())
             }
@@ -159,12 +144,11 @@ class TouchActivity : AppCompatActivity() {
             } else {
                 tutorialId4 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
-                                .message(MessageBuilder(this@TouchActivity)
-                                        .text(getString(R.string.tutorial_message_3))
-                                        .gravity(TutorialTooltipView.Gravity.RIGHT)
-                                        .size(pxFromDp(applicationContext, 150f).toInt(),
-                                                MessageBuilder.WRAP_CONTENT)
-                                        .build())
+                                .message(MessageConfiguration(
+                                        text = getString(R.string.tutorial_message_3),
+                                        gravity = TutorialTooltipView.Gravity.RIGHT,
+                                        width = pxFromDp(applicationContext, 150f).toInt(),
+                                        height = MessageConfiguration.WRAP_CONTENT))
                                 .anchor(buttonCenter)
                                 .onClick(onTutorialTooltipClickedListener)
                                 .build())
@@ -177,13 +161,13 @@ class TouchActivity : AppCompatActivity() {
             } else {
                 tutorialId2 = TutorialTooltip.show(
                         TutorialTooltipBuilder(activity)
-                                .indicator(IndicatorBuilder().color(Color.WHITE).build())
-                                .message(MessageBuilder(this@TouchActivity)
-                                        .text(getString(R.string.tutorial_message_2))
-                                        //                                            .anchor(new Point(300, 500))
-                                        .anchor(buttonDialog)
-                                        .gravity(TutorialTooltipView.Gravity.BOTTOM)
-                                        .build())
+                                .indicator(IndicatorConfiguration(
+                                        color = Color.WHITE
+                                ))
+                                .message(MessageConfiguration(
+                                        text = getString(R.string.tutorial_message_2),
+                                        gravity = TutorialTooltipView.Gravity.BOTTOM,
+                                        anchorView = buttonDialog))
                                 .anchor(buttonBottom, TutorialTooltipView.Gravity.BOTTOM)
                                 .onClick(onTutorialTooltipClickedListener)
                                 .build())
@@ -202,26 +186,20 @@ class TouchActivity : AppCompatActivity() {
 
                 tutorialTooltipView = TutorialTooltip.make(
                         TutorialTooltipBuilder(activity)
-                                .indicator(IndicatorBuilder()
-                                        .customView(waveIndicatorView)
-                                        .onClick(object : OnIndicatorClickedListener {
-                                            override fun onIndicatorClicked(id: TooltipId,
-                                                                            tutorialTooltipView: TutorialTooltipView,
-                                                                            indicator: TutorialTooltipIndicator,
-                                                                            indicatorView: View) {
-                                                Toast.makeText(applicationContext,
-                                                        "Indicator " + id + " " + indicatorView.width + " clicked!",
-                                                        Toast.LENGTH_SHORT).show()
-                                            }
-                                        })
-                                        .build())
-                                .message(MessageBuilder(this@TouchActivity)
-                                        .customView(CardMessageView(activity))
-                                        .text(getString(R.string.tutorial_message_fab))
-                                        .gravity(TutorialTooltipView.Gravity.BOTTOM)
-                                        .backgroundColor(Color.BLACK)
-                                        .textColor(Color.WHITE)
-                                        .build())
+                                .indicator(IndicatorConfiguration(
+                                        customView = waveIndicatorView,
+                                        onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                                            Toast.makeText(applicationContext,
+                                                    "Indicator " + id + " " + indicatorView.width + " clicked!",
+                                                    Toast.LENGTH_SHORT).show()
+                                        }
+                                ))
+                                .message(MessageConfiguration(
+                                        customView = CardMessageView(activity),
+                                        text = getString(R.string.tutorial_message_fab),
+                                        gravity = TutorialTooltipView.Gravity.BOTTOM,
+                                        backgroundColor = Color.BLACK,
+                                        textColor = Color.WHITE))
                                 .anchor(buttonFab)
                                 .attachToWindow()
                                 .onClick(object : OnTutorialTooltipClickedListener {
@@ -260,8 +238,8 @@ class TouchActivity : AppCompatActivity() {
             for (i in anchorViews.indices) {
                 tutorialTooltipChainBuilder.addItem(TutorialTooltipBuilder(activity)
                         .anchor(anchorViews[i])
-                        .message(MessageBuilder(this@TouchActivity).text("${i + 1}/${anchorViews.size}: Message")
-                                .build())
+                        .message(MessageConfiguration(
+                                text = "${i + 1}/${anchorViews.size}: Message"))
                         .onClick(onTutorialTooltipClickedListener)
                         .build())
             }
@@ -300,13 +278,11 @@ class TouchActivity : AppCompatActivity() {
                 TutorialTooltipBuilder(this)
                         .anchor(Point(x.toInt(), y.toInt()))
                         .onClick(onTutorialTooltipClickedListener)
-                        .message(MessageBuilder(this@TouchActivity)
-                                .text("You touched right here!")
-                                .backgroundColor(Color.parseColor("#FFF3E0"))
-                                .size(resources.getDimension(R.dimen.messageWidth).toInt(),
-                                        MessageBuilder.WRAP_CONTENT)
-                                //                                .sizeDimen(this, R.dimen.messageWidth, MessageBuilder.WRAP_CONTENT)
-                                .build())
+                        .message(MessageConfiguration(
+                                text = "You touched right here!",
+                                backgroundColor = Color.parseColor("#FFF3E0"),
+                                width = resources.getDimension(R.dimen.messageWidth).toInt(),
+                                height = MessageConfiguration.WRAP_CONTENT))
                         .build())
     }
 }

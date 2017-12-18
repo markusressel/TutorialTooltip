@@ -25,10 +25,10 @@ import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
 import android.view.*
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
-import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder
-import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
+import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder
-import de.markusressel.android.library.tutorialtooltip.interfaces.*
+import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
@@ -69,46 +69,34 @@ class DialogFragmentTest : DialogFragment() {
         val tutorialTooltipBuilder = TutorialTooltipBuilder(activity!!)
                 .anchor(testButton)
                 .attachToDialog(dialog)
-                .message(MessageBuilder(context!!)
-                        .customView(cardMessageView)
-                        .offset(0, 0)
-                        .text("This is a tutorial message!\nNow with two lines!")
-                        .textColor(Color.BLACK)
-                        .backgroundColor(Color.WHITE)
-                        .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
-                        .onClick(object : OnMessageClickedListener {
-                            override fun onMessageClicked(id: TooltipId,
-                                                          tutorialTooltipView: TutorialTooltipView,
-                                                          message: TutorialTooltipMessage,
-                                                          messageView: View) {
-                                // this will intercept touches only for the message view
-                                // if you don't want the main OnTutorialTooltipClickedListener listener
-                                // to react to touches here just specify an empty OnMessageClickedListener
+                .message(MessageConfiguration(
+                        customView = cardMessageView,
+                        text = "This is a tutorial message!\nNow with two lines!",
+                        textColor = Color.BLACK,
+                        backgroundColor = Color.WHITE,
+                        gravity = TutorialTooltipView.Gravity.TOP,
+                        onMessageClicked = { id, tutorialTooltipView, message, messageView ->
+                            // this will intercept touches only for the message view
+                            // if you don't want the main OnTutorialTooltipClickedListener listener
+                            // to react to touches here just specify an empty OnMessageClickedListener
 
-                                TutorialTooltip.remove(dialog, id, true)
-                            }
-                        })
-                        .size(MessageBuilder.WRAP_CONTENT, MessageBuilder.WRAP_CONTENT)
-                        .build()
-                )
-                .indicator(IndicatorBuilder()
-                        .customView(waveIndicatorView)
-                        .offset(0, 0)
-                        .size(IndicatorBuilder.MATCH_ANCHOR, IndicatorBuilder.MATCH_ANCHOR)
-                        .color(Color.BLUE)
-                        .onClick(object : OnIndicatorClickedListener {
-                            override fun onIndicatorClicked(id: TooltipId,
-                                                            tutorialTooltipView: TutorialTooltipView,
-                                                            indicator: TutorialTooltipIndicator,
-                                                            indicatorView: View) {
-                                // this will intercept touches only for the indicator view
-                                // if you don't want the main OnTutorialTooltipClickedListener listener
-                                // to react to touches here just specify an empty OnIndicatorClickedListener
+                            TutorialTooltip.remove(dialog, id, true)
+                        },
+                        height = MessageConfiguration.WRAP_CONTENT,
+                        width = MessageConfiguration.WRAP_CONTENT))
+                .indicator(
+                        IndicatorConfiguration(
+                                customView = waveIndicatorView,
+                                height = IndicatorConfiguration.MATCH_ANCHOR,
+                                width = IndicatorConfiguration.MATCH_ANCHOR,
+                                color = Color.BLUE,
+                                onIndicatorClicked = { id, tutorialTooltipView, message, messageView ->
+                                    // this will intercept touches only for the indicator view
+                                    // if you don't want the main OnTutorialTooltipClickedListener listener
+                                    // to react to touches here just specify an empty OnIndicatorClickedListener
 
-                                TutorialTooltip.remove(dialog, id, true)
-                            }
-                        })
-                        .build())
+                                    TutorialTooltip.remove(dialog, id, true)
+                                }))
                 .onClick(object : OnTutorialTooltipClickedListener {
                     override fun onTutorialTooltipClicked(id: TooltipId,
                                                           tutorialTooltipView: TutorialTooltipView) {
@@ -211,11 +199,11 @@ class DialogFragmentTest : DialogFragment() {
                                 tutorialTooltipView.remove(true)
                             }
                         })
-                        .message(MessageBuilder(context!!)
-                                .gravity(messageGravity)
-                                .size(200, MessageBuilder.WRAP_CONTENT)
-                                .text("You touched the dialog right here!")
-                                .build())
+                        .message(MessageConfiguration(
+                                text = "You touched the dialog right here!",
+                                width = 200,
+                                height = MessageConfiguration.WRAP_CONTENT,
+                                gravity = messageGravity))
                         .build())
     }
 

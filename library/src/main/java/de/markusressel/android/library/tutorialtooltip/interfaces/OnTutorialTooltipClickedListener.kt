@@ -31,7 +31,7 @@ interface OnTutorialTooltipClickedListener {
      * This method is called when the TutorialTooltip Overlay is clicked
      *
      *
-     * If your indicator or message also have an onClick listener, they will called instead of this listener.
+     * If your indicator or message also have an onIndicatorClicked listener, they will called instead of this listener.
 
      * @param id                  ID of the TutorialTooltip
      * @param tutorialTooltipView TutorialTooltipView

@@ -29,8 +29,8 @@ import android.view.animation.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import de.markusressel.android.library.tutorialtooltip.R
-import de.markusressel.android.library.tutorialtooltip.builder.IndicatorBuilder
-import de.markusressel.android.library.tutorialtooltip.builder.MessageBuilder
+import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
+import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
@@ -64,8 +64,8 @@ class TutorialTooltipView : LinearLayout {
     private var dialog: Dialog? = null
 
     private lateinit var tutorialTooltipBuilder: TutorialTooltipBuilder
-    private lateinit var indicatorBuilder: IndicatorBuilder
-    private lateinit var messageBuilder: MessageBuilder
+    private lateinit var indicatorConfiguration: IndicatorConfiguration
+    private lateinit var messageConfiguration: MessageConfiguration
 
     private var anchorGravity: Gravity? = Gravity.CENTER
     private var anchorView: WeakReference<View?>? = null
@@ -122,20 +122,15 @@ class TutorialTooltipView : LinearLayout {
         }
         anchorPoint = tutorialTooltipBuilder.anchorPoint
 
-        indicatorBuilder = tutorialTooltipBuilder.indicatorBuilder
-        when (indicatorBuilder.type) {
-            IndicatorBuilder.Type.Custom -> indicatorView = indicatorBuilder.customView as TutorialTooltipIndicator
-            else -> {
-            }
+        indicatorConfiguration = tutorialTooltipBuilder.indicatorConfiguration
+        indicatorConfiguration.customView?.let {
+            indicatorView = it as TutorialTooltipIndicator
         }
 
-        messageBuilder = tutorialTooltipBuilder.messageBuilder
-        when (messageBuilder.type) {
-            MessageBuilder.Type.Custom -> messageView = messageBuilder.customView as TutorialTooltipMessage
-            else -> {
-            }
+        messageConfiguration = tutorialTooltipBuilder.messageConfiguration
+        messageConfiguration.customView?.let {
+            messageView = it as TutorialTooltipMessage
         }
-
     }
 
     private fun initializeViews() {
@@ -177,23 +172,25 @@ class TutorialTooltipView : LinearLayout {
                     LinearLayout.LayoutParams.MATCH_PARENT)
         }
 
-        indicatorBuilder.color?.let {
+        indicatorConfiguration.color?.let {
             indicatorView!!.setColor(it)
         }
 
-        // Set onClick listeners
-        indicatorBuilder.onIndicatorClickedListener?.let {
+        // Set onIndicatorClicked listeners
+        indicatorConfiguration.onIndicatorClicked?.let {
             indicatorLayout.setOnClickListener {
-                indicatorBuilder.onIndicatorClickedListener?.onIndicatorClicked(tutorialTooltipId,
+                indicatorConfiguration.onIndicatorClicked?.invoke(
+                        tutorialTooltipId,
                         tutorialTooltipView,
                         indicatorView!!,
-                        indicatorView as View)
+                        indicatorView as View
+                )
             }
         }
 
-        val indicatorWidth: Int = indicatorBuilder.width ?: ViewHelper.pxFromDp(context,
+        val indicatorWidth: Int = indicatorConfiguration.width ?: ViewHelper.pxFromDp(context,
                 50f).toInt()
-        val indicatorHeight: Int = indicatorBuilder.height ?: ViewHelper.pxFromDp(context,
+        val indicatorHeight: Int = indicatorConfiguration.height ?: ViewHelper.pxFromDp(context,
                 50f).toInt()
 
         // remove reference to anchorView if an anchorPoint is specified
@@ -220,31 +217,31 @@ class TutorialTooltipView : LinearLayout {
             messageView = messageViewTemp as TutorialTooltipMessage
         }
 
-        messageBuilder.textColor?.let {
+        messageConfiguration.textColor?.let {
             messageView!!.setTextColor(it)
         }
 
-        messageBuilder.backgroundColor?.let {
+        messageConfiguration.backgroundColor?.let {
             messageView!!.setBackgroundColor(it)
         }
 
-        messageBuilder.onMessageClickedListener?.let {
+        messageConfiguration.onMessageClicked?.let {
             messageLayout.setOnClickListener {
-                messageBuilder.onMessageClickedListener?.onMessageClicked(tutorialTooltipId,
+                messageConfiguration.onMessageClicked?.invoke(tutorialTooltipId,
                         tutorialTooltipView,
                         messageView!!,
                         messageView as View)
             }
         }
 
-        addView(messageLayout, messageBuilder.width, messageBuilder.height)
+        addView(messageLayout, messageConfiguration.width, messageConfiguration.height)
 
         // hide at the beginning to prevent flickering upon fadein
         messageLayout.visibility = View.INVISIBLE
     }
 
     private fun updateValues() {
-        setTutorialMessage(Html.fromHtml(messageBuilder.text))
+        setTutorialMessage(Html.fromHtml(messageConfiguration.text))
 
         //        float targetDiameter = 200;
         //        circleWaveAlertView.setTargetDiameter(targetDiameter);
@@ -272,8 +269,8 @@ class TutorialTooltipView : LinearLayout {
     private fun updateIndicatorSize() {
         val indicatorParams = indicatorLayout.layoutParams as LinearLayout.LayoutParams
 
-        indicatorBuilder.width?.let {
-            if (it == IndicatorBuilder.MATCH_ANCHOR && anchorView != null) {
+        indicatorConfiguration.width?.let {
+            if (it == IndicatorConfiguration.MATCH_ANCHOR && anchorView != null) {
                 val view = anchorView!!.get()
                 if (view != null) {
                     indicatorParams.width = view.width
@@ -281,8 +278,8 @@ class TutorialTooltipView : LinearLayout {
             }
         }
 
-        indicatorBuilder.height?.let {
-            if (it == IndicatorBuilder.MATCH_ANCHOR && anchorView != null) {
+        indicatorConfiguration.height?.let {
+            if (it == IndicatorConfiguration.MATCH_ANCHOR && anchorView != null) {
                 val view = anchorView!!.get()
                 if (view != null) {
                     indicatorParams.height = view.height
@@ -310,11 +307,11 @@ class TutorialTooltipView : LinearLayout {
 
         updateMessagePosition(WeakReference<View?>(indicatorLayout))
 
-        messageBuilder.anchorView?.let {
+        messageConfiguration.anchorView?.let {
             updateMessagePosition(WeakReference(it))
         }
 
-        messageBuilder.anchorPoint?.let {
+        messageConfiguration.anchorPoint?.let {
             updateMessagePosition(it)
         }
     }
@@ -355,16 +352,16 @@ class TutorialTooltipView : LinearLayout {
             }
         }
 
-        x += indicatorBuilder.offsetX.toFloat()
-        y += indicatorBuilder.offsetY.toFloat()
+        x += indicatorConfiguration.offsetX.toFloat()
+        y += indicatorConfiguration.offsetY.toFloat()
 
         indicatorLayout.x = x
         indicatorLayout.y = y
     }
 
     private fun updateIndicatorPosition(anchorPoint: Point) {
-        val x: Float = (anchorPoint.x - indicatorLayout.width / 2 + indicatorBuilder.offsetX - rootView.paddingLeft).toFloat()
-        val y: Float = (anchorPoint.y - indicatorLayout.height / 2 + indicatorBuilder.offsetY - rootView.paddingTop).toFloat()
+        val x: Float = (anchorPoint.x - indicatorLayout.width / 2 + indicatorConfiguration.offsetX - rootView.paddingLeft).toFloat()
+        val y: Float = (anchorPoint.y - indicatorLayout.height / 2 + indicatorConfiguration.offsetY - rootView.paddingTop).toFloat()
 
         indicatorLayout.x = x
         indicatorLayout.y = y
@@ -382,7 +379,7 @@ class TutorialTooltipView : LinearLayout {
         var messageX: Float
         var messageY: Float
 
-        when (messageBuilder.gravity) {
+        when (messageConfiguration.gravity) {
             TutorialTooltipView.Gravity.TOP -> {
                 messageX = anchorX + view.width / 2 - messageLayout.width / 2
                 messageY = anchorY - messageLayout.height
@@ -408,8 +405,8 @@ class TutorialTooltipView : LinearLayout {
         messageX -= rootView.paddingLeft.toFloat()
         messageY -= rootView.paddingTop.toFloat()
 
-        messageX += messageBuilder.offsetX.toFloat()
-        messageY += messageBuilder.offsetY.toFloat()
+        messageX += messageConfiguration.offsetX.toFloat()
+        messageY += messageConfiguration.offsetY.toFloat()
 
         messageLayout.x = messageX
         messageLayout.y = messageY
@@ -419,7 +416,7 @@ class TutorialTooltipView : LinearLayout {
         var messageX: Float
         var messageY: Float
 
-        when (messageBuilder.gravity) {
+        when (messageConfiguration.gravity) {
             TutorialTooltipView.Gravity.TOP -> {
                 messageX = (anchorPoint.x - messageLayout.width / 2).toFloat()
                 messageY = (anchorPoint.y - messageLayout.height).toFloat()
@@ -446,8 +443,8 @@ class TutorialTooltipView : LinearLayout {
         messageX -= rootView.paddingLeft.toFloat()
         messageY -= rootView.paddingTop.toFloat()
 
-        messageX += messageBuilder.offsetX.toFloat()
-        messageY += messageBuilder.offsetY.toFloat()
+        messageX += messageConfiguration.offsetX.toFloat()
+        messageY += messageConfiguration.offsetY.toFloat()
 
         messageLayout.x = messageX
         messageLayout.y = messageY
@@ -562,7 +559,7 @@ class TutorialTooltipView : LinearLayout {
      * @param animated true fades out, false removes immediately
      */
     fun remove(animated: Boolean) {
-        // prevent calling onClick when fading out
+        // prevent calling onIndicatorClicked when fading out
         setOnClickListener(null)
 
         tutorialTooltipBuilder.onTutorialTooltipRemovedListener?.onRemove(tutorialTooltipId, this)
