@@ -136,11 +136,12 @@ class TutorialTooltipView : LinearLayout {
     private fun initializeViews() {
         val inflater = LayoutInflater.from(context)
 
-        tutorialTooltipBuilder.onTutorialTooltipClickedListener?.let {
+        tutorialTooltipBuilder.onClick?.let {
             setOnClickListener {
-                tutorialTooltipBuilder.onTutorialTooltipClickedListener?.onTutorialTooltipClicked(
+                tutorialTooltipBuilder.onClick?.invoke(
                         tutorialTooltipId,
-                        tutorialTooltipView)
+                        tutorialTooltipView
+                )
             }
         }
 
@@ -176,10 +177,10 @@ class TutorialTooltipView : LinearLayout {
             indicatorView!!.setColor(it)
         }
 
-        // Set onIndicatorClicked listeners
-        indicatorConfiguration.onIndicatorClicked?.let {
+        // Set onClick listeners
+        indicatorConfiguration.onClick?.let {
             indicatorLayout.setOnClickListener {
-                indicatorConfiguration.onIndicatorClicked?.invoke(
+                indicatorConfiguration.onClick?.invoke(
                         tutorialTooltipId,
                         tutorialTooltipView,
                         indicatorView!!,
@@ -225,9 +226,9 @@ class TutorialTooltipView : LinearLayout {
             messageView!!.setBackgroundColor(it)
         }
 
-        messageConfiguration.onMessageClicked?.let {
+        messageConfiguration.onClick?.let {
             messageLayout.setOnClickListener {
-                messageConfiguration.onMessageClicked?.invoke(tutorialTooltipId,
+                messageConfiguration.onClick?.invoke(tutorialTooltipId,
                         tutorialTooltipView,
                         messageView!!,
                         messageView as View)
@@ -536,7 +537,7 @@ class TutorialTooltipView : LinearLayout {
                     mParams.flags = activity!!.window.attributes.flags or
                             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
 
-                    if (tutorialTooltipBuilder.onTutorialTooltipClickedListener == null) {
+                    if (tutorialTooltipBuilder.onClick == null) {
                         mParams.flags = mParams.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                     }
                     wm.addView(this, mParams)
@@ -559,10 +560,10 @@ class TutorialTooltipView : LinearLayout {
      * @param animated true fades out, false removes immediately
      */
     fun remove(animated: Boolean) {
-        // prevent calling onIndicatorClicked when fading out
+        // prevent calling onClick when fading out
         setOnClickListener(null)
 
-        tutorialTooltipBuilder.onTutorialTooltipRemovedListener?.onRemove(tutorialTooltipId, this)
+        tutorialTooltipBuilder.onPreRemove?.invoke(tutorialTooltipId, this)
 
 
         if (animated) {
@@ -576,7 +577,7 @@ class TutorialTooltipView : LinearLayout {
             preferencesHandler.increaseCount(this)
         }
 
-        tutorialTooltipBuilder.onTutorialTooltipRemovedListener?.postRemove(tutorialTooltipId, this)
+        tutorialTooltipBuilder.onPostRemove?.invoke(tutorialTooltipId, this)
     }
 
     private fun fadeIn() {

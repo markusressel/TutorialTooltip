@@ -35,7 +35,7 @@ interface TutorialTooltipIndicator {
     fun setColor(@ColorInt color: Int)
 
     /**
-     * Set an onIndicatorClicked listener for this indicator
+     * Set an onClick listener for this indicator
 
      * @param listener
      */

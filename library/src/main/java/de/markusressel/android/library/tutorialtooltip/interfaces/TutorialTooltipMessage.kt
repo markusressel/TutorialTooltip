@@ -49,7 +49,7 @@ interface TutorialTooltipMessage {
     fun setTextColor(@ColorInt color: Int)
 
     /**
-     * Set an onIndicatorClicked listener for this message
+     * Set an onClick listener for this message
 
      * @param listener
      */

@@ -33,21 +33,21 @@ class IndicatorConfiguration(
         /**
          * Custom indicator view
          */
-        val customView: View? = null,
+        internal val customView: View? = null,
 
         /**
          * Indicator x axis offset from anchor position
          * x-axis offset in pixel (positive is right, negative is left)
          */
         @Dimension(unit = Dimension.PX)
-        val offsetX: Int = 0,
+        internal val offsetX: Int = 0,
 
         /**
          * Indicator y axis offset from anchor position
          * y-axis offset in pixel (positive is down, negative is up)
          */
         @Dimension(unit = Dimension.PX)
-        val offsetY: Int = 0,
+        internal val offsetY: Int = 0,
 
         /**
          * Indicator x axis size (width)
@@ -58,7 +58,7 @@ class IndicatorConfiguration(
          * If no value is specified, the view itself will be used for size measuring.
          */
         @Dimension(unit = Dimension.PX)
-        val width: Int? = null,
+        internal val width: Int? = null,
 
         /**
          * Indicator y axis size (height)
@@ -69,25 +69,23 @@ class IndicatorConfiguration(
          * If no value is specified, the view itself will be used for size measuring.
          */
         @Dimension(unit = Dimension.PX)
-        val height: Int? = null,
+        internal val height: Int? = null,
 
         /**
          * Main indicator color
          */
         @ColorInt
-        val color: Int? = null,
+        internal val color: Int? = null,
 
         /**
          * OnClick listener
          */
-        val onIndicatorClicked: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView,
-                                  indicator: TutorialTooltipIndicator, indicatorView: View) -> Unit)? = null
+        internal val onClick: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView,
+                                indicator: TutorialTooltipIndicator, indicatorView: View) -> Unit)? = null
 
 ) {
 
     init {
-        // TODO: Validate configuration
-        // no check necessary
     }
 
     companion object {

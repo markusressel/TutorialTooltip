@@ -32,7 +32,7 @@ class MessageConfiguration(
         /**
          * Message text
          */
-        val text: String = "Your Tutorial Message is shown right here.",
+        internal val text: String = "Your Tutorial Message is shown right here.",
 
         /**
          * Anchor point if no view is used
@@ -40,7 +40,7 @@ class MessageConfiguration(
          * If no anchor view or point is specified
          * the message will be positioned relative to the indicator view.
          */
-        val anchorPoint: Point? = null,
+        internal val anchorPoint: Point? = null,
 
         /**
          * Anchor view
@@ -48,58 +48,58 @@ class MessageConfiguration(
          * If no anchor view or point is specified
          * the message will be positioned relative to the indicator view.
          */
-        val anchorView: View? = null,
+        internal val anchorView: View? = null,
 
         /**
          * Custom message view
          */
-        val customView: View? = null,
+        internal val customView: View? = null,
 
         /**
          * Message gravity
          */
-        val gravity: TutorialTooltipView.Gravity = TutorialTooltipView.Gravity.TOP,
+        internal val gravity: TutorialTooltipView.Gravity = TutorialTooltipView.Gravity.TOP,
 
         /**
          * Message x axis offset from anchor position
          */
         @Dimension(unit = Dimension.PX)
-        val offsetX: Int = 0,
+        internal val offsetX: Int = 0,
 
         /**
          * Message y axis offset from anchor position
          */
         @Dimension(unit = Dimension.PX)
-        val offsetY: Int = 0,
+        internal val offsetY: Int = 0,
 
         /**
          * Message x axis size (width)
          */
         @Dimension(unit = Dimension.PX)
-        val width: Int = WRAP_CONTENT,
+        internal val width: Int = WRAP_CONTENT,
 
         /**
          * Message y axis size (height)
          */
         @Dimension(unit = Dimension.PX)
-        val height: Int = WRAP_CONTENT,
+        internal val height: Int = WRAP_CONTENT,
 
         /**
          * Text color
          */
         @ColorInt
-        val textColor: Int? = null,
+        internal val textColor: Int? = null,
 
         /**
          * Background color
          */
         @ColorInt
-        val backgroundColor: Int? = null,
+        internal val backgroundColor: Int? = null,
 
         /**
          * OnClick listener
          */
-        val onMessageClicked: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView,
+        internal val onClick: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView,
                                 message: TutorialTooltipMessage, messageView: View) -> Unit)? = null
 
 ) {

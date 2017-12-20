@@ -28,9 +28,7 @@ import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
-import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 import de.markusressel.android.library.tutorialtooltip.view.WaveIndicatorView
 
@@ -66,16 +64,15 @@ class DialogFragmentTest : DialogFragment() {
         val waveIndicatorView = WaveIndicatorView(activity!!)
         waveIndicatorView.strokeWidth = 10f // customization that is not included in the IndicatorBuilder
 
-        val tutorialTooltipBuilder = TutorialTooltipBuilder(activity!!)
-                .anchor(testButton)
-                .attachToDialog(dialog)
-                .message(MessageConfiguration(
+        val tutorialTooltipBuilder = TutorialTooltipBuilder(
+                context = activity!!,
+                messageConfiguration = MessageConfiguration(
                         customView = cardMessageView,
                         text = "This is a tutorial message!\nNow with two lines!",
                         textColor = Color.BLACK,
                         backgroundColor = Color.WHITE,
                         gravity = TutorialTooltipView.Gravity.TOP,
-                        onMessageClicked = { id, tutorialTooltipView, message, messageView ->
+                        onClick = { id, tutorialTooltipView, message, messageView ->
                             // this will intercept touches only for the message view
                             // if you don't want the main OnTutorialTooltipClickedListener listener
                             // to react to touches here just specify an empty OnMessageClickedListener
@@ -83,30 +80,28 @@ class DialogFragmentTest : DialogFragment() {
                             TutorialTooltip.remove(dialog, id, true)
                         },
                         height = MessageConfiguration.WRAP_CONTENT,
-                        width = MessageConfiguration.WRAP_CONTENT))
-                .indicator(
-                        IndicatorConfiguration(
-                                customView = waveIndicatorView,
-                                height = IndicatorConfiguration.MATCH_ANCHOR,
-                                width = IndicatorConfiguration.MATCH_ANCHOR,
-                                color = Color.BLUE,
-                                onIndicatorClicked = { id, tutorialTooltipView, message, messageView ->
-                                    // this will intercept touches only for the indicator view
-                                    // if you don't want the main OnTutorialTooltipClickedListener listener
-                                    // to react to touches here just specify an empty OnIndicatorClickedListener
+                        width = MessageConfiguration.WRAP_CONTENT),
+                indicatorConfiguration = IndicatorConfiguration(
+                        customView = waveIndicatorView,
+                        height = IndicatorConfiguration.MATCH_ANCHOR,
+                        width = IndicatorConfiguration.MATCH_ANCHOR,
+                        color = Color.BLUE,
+                        onClick = { id, tutorialTooltipView, message, messageView ->
+                            // this will intercept touches only for the indicator view
+                            // if you don't want the main OnTutorialTooltipClickedListener listener
+                            // to react to touches here just specify an empty OnIndicatorClickedListener
 
-                                    TutorialTooltip.remove(dialog, id, true)
-                                }))
-                .onClick(object : OnTutorialTooltipClickedListener {
-                    override fun onTutorialTooltipClicked(id: TooltipId,
-                                                          tutorialTooltipView: TutorialTooltipView) {
-                        // this will intercept touches of the complete window
-                        // if you don't specify additional listeners for the indicator or
-                        // message view they will be included
+                            TutorialTooltip.remove(dialog, id, true)
+                        }),
+                onClick = { id, view ->
+                    // this will intercept touches of the complete window
+                    // if you don't specify additional listeners for the indicator or
+                    // message view they will be included
 
-                        TutorialTooltip.remove(dialog, id, true)
-                    }
+                    TutorialTooltip.remove(dialog, id, true)
                 })
+                .anchor(testButton)
+                .attachToDialog(dialog)
                 .build()
 
         TutorialTooltip.show(tutorialTooltipBuilder)
@@ -190,20 +185,18 @@ class DialogFragmentTest : DialogFragment() {
 
 
         TutorialTooltip.show(
-                TutorialTooltipBuilder(activity!!)
-                        .anchor(Point(x.toInt(), y.toInt()))
-                        .attachToDialog(dialog)
-                        .onClick(object : OnTutorialTooltipClickedListener {
-                            override fun onTutorialTooltipClicked(id: TooltipId,
-                                                                  tutorialTooltipView: TutorialTooltipView) {
-                                tutorialTooltipView.remove(true)
-                            }
-                        })
-                        .message(MessageConfiguration(
+                TutorialTooltipBuilder(
+                        context = activity!!,
+                        onClick = { id, view ->
+                            view.remove(true)
+                        },
+                        messageConfiguration = MessageConfiguration(
                                 text = "You touched the dialog right here!",
                                 width = 200,
                                 height = MessageConfiguration.WRAP_CONTENT,
-                                gravity = messageGravity))
+                                gravity = messageGravity)
+                ).anchor(Point(x.toInt(), y.toInt()))
+                        .attachToDialog(dialog)
                         .build())
     }
 

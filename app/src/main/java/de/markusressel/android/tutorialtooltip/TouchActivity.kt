@@ -22,6 +22,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
@@ -30,7 +31,6 @@ import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfigur
 import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipBuilder
 import de.markusressel.android.library.tutorialtooltip.builder.TutorialTooltipChainBuilder
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
 import de.markusressel.android.library.tutorialtooltip.view.CardMessageView
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
@@ -45,7 +45,6 @@ class TouchActivity : AppCompatActivity() {
 
     private var tutorialTooltipView: TutorialTooltipView? = null
     private var tutorialId4: TooltipId = TooltipId("")
-    private lateinit var onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener
 
     private fun pxFromDp(context: Context, dp: Float): Float {
         return dp * context.resources.displayMetrics.density
@@ -75,25 +74,22 @@ class TouchActivity : AppCompatActivity() {
 
         val activity = this
 
-        onTutorialTooltipClickedListener = object : OnTutorialTooltipClickedListener {
-            override fun onTutorialTooltipClicked(id: TooltipId,
-                                                  tutorialTooltipView: TutorialTooltipView) {
-                TutorialTooltip.remove(activity, id, true)
-            }
+        val listener: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView) -> Unit) = { id, view ->
+            TutorialTooltip.remove(activity, id, true)
         }
 
         buttonCount.setOnClickListener {
             TutorialTooltip.show(
-                    TutorialTooltipBuilder(activity)
-                            .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
-                            .onClick(onTutorialTooltipClickedListener)
-                            .indicator(IndicatorConfiguration(
-                                    onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                    TutorialTooltipBuilder(
+                            context = activity,
+                            onClick = listener,
+                            indicatorConfiguration = IndicatorConfiguration(
+                                    onClick = { id, tutorialTooltipView, indicator, indicatorView ->
                                         Toast.makeText(applicationContext,
                                                 "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                 Toast.LENGTH_SHORT).show()
-                                    }
-                            ))
+                                    }))
+                            .anchor(buttonCount, TutorialTooltipView.Gravity.TOP)
                             .showCount("button_count", 3)
                             .build())
         }
@@ -109,31 +105,29 @@ class TouchActivity : AppCompatActivity() {
                 //                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
 
                 tutorialId1 = TutorialTooltip.show(
-                        TutorialTooltipBuilder(activity)
-                                .anchor(buttonTop, TutorialTooltipView.Gravity.TOP)
-                                .indicator(IndicatorConfiguration(
+                        TutorialTooltipBuilder(
+                                context = activity,
+                                indicatorConfiguration = IndicatorConfiguration(
                                         customView = waveIndicatorView,
                                         offsetX = 50,
                                         offsetY = 50,
                                         width = 300,
                                         height = 300,
-                                        onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                                        onClick = { id, tutorialTooltipView, indicator, indicatorView ->
                                             Toast.makeText(applicationContext,
                                                     "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                     Toast.LENGTH_SHORT).show()
-                                        }
-
-
-                                ))
-                                .message(MessageConfiguration(
+                                        }),
+                                messageConfiguration = MessageConfiguration(
                                         text = getString(R.string.tutorial_message_1),
                                         gravity = TutorialTooltipView.Gravity.TOP,
-                                        onMessageClicked = { id, tutorialTooltipView, message, messageView ->
+                                        onClick = { id, tutorialTooltipView, message, messageView ->
                                             Toast.makeText(applicationContext,
                                                     "Message " + id + " " + messageView.width + " clicked!",
                                                     Toast.LENGTH_SHORT).show()
-                                        }))
-                                .onClick(onTutorialTooltipClickedListener)
+                                        }),
+                                onClick = listener)
+                                .anchor(buttonTop, TutorialTooltipView.Gravity.TOP)
                                 .build())
             }
         }
@@ -143,14 +137,15 @@ class TouchActivity : AppCompatActivity() {
                 TutorialTooltip.remove(activity, tutorialId4, true)
             } else {
                 tutorialId4 = TutorialTooltip.show(
-                        TutorialTooltipBuilder(activity)
-                                .message(MessageConfiguration(
+                        TutorialTooltipBuilder(
+                                context = activity,
+                                messageConfiguration = MessageConfiguration(
                                         text = getString(R.string.tutorial_message_3),
                                         gravity = TutorialTooltipView.Gravity.RIGHT,
                                         width = pxFromDp(applicationContext, 150f).toInt(),
-                                        height = MessageConfiguration.WRAP_CONTENT))
+                                        height = MessageConfiguration.WRAP_CONTENT),
+                                onClick = listener)
                                 .anchor(buttonCenter)
-                                .onClick(onTutorialTooltipClickedListener)
                                 .build())
             }
         }
@@ -160,17 +155,19 @@ class TouchActivity : AppCompatActivity() {
                 TutorialTooltip.remove(activity, tutorialId2, true)
             } else {
                 tutorialId2 = TutorialTooltip.show(
-                        TutorialTooltipBuilder(activity)
-                                .indicator(IndicatorConfiguration(
+                        TutorialTooltipBuilder(
+                                context = activity,
+                                indicatorConfiguration = IndicatorConfiguration(
                                         color = Color.WHITE
-                                ))
-                                .message(MessageConfiguration(
+                                ),
+                                messageConfiguration = MessageConfiguration(
                                         text = getString(R.string.tutorial_message_2),
                                         gravity = TutorialTooltipView.Gravity.BOTTOM,
-                                        anchorView = buttonDialog))
+                                        anchorView = buttonDialog),
+                                onClick = listener)
                                 .anchor(buttonBottom, TutorialTooltipView.Gravity.BOTTOM)
-                                .onClick(onTutorialTooltipClickedListener)
-                                .build())
+                                .build()
+                )
             }
         }
 
@@ -185,29 +182,27 @@ class TouchActivity : AppCompatActivity() {
                 waveIndicatorView.targetDiameter = pxFromDp(activity, 50f)
 
                 tutorialTooltipView = TutorialTooltip.make(
-                        TutorialTooltipBuilder(activity)
-                                .indicator(IndicatorConfiguration(
+                        TutorialTooltipBuilder(
+                                context = activity,
+                                indicatorConfiguration = IndicatorConfiguration(
                                         customView = waveIndicatorView,
-                                        onIndicatorClicked = { id, tutorialTooltipView, indicator, indicatorView ->
+                                        onClick = { id, tutorialTooltipView, indicator, indicatorView ->
                                             Toast.makeText(applicationContext,
                                                     "Indicator " + id + " " + indicatorView.width + " clicked!",
                                                     Toast.LENGTH_SHORT).show()
                                         }
-                                ))
-                                .message(MessageConfiguration(
+                                ),
+                                messageConfiguration = MessageConfiguration(
                                         customView = CardMessageView(activity),
                                         text = getString(R.string.tutorial_message_fab),
                                         gravity = TutorialTooltipView.Gravity.BOTTOM,
                                         backgroundColor = Color.BLACK,
-                                        textColor = Color.WHITE))
+                                        textColor = Color.WHITE),
+                                onClick = { id, view ->
+                                    view.remove(true)
+                                })
                                 .anchor(buttonFab)
                                 .attachToWindow()
-                                .onClick(object : OnTutorialTooltipClickedListener {
-                                    override fun onTutorialTooltipClicked(id: TooltipId,
-                                                                          tutorialTooltipView: TutorialTooltipView) {
-                                        tutorialTooltipView.remove(true)
-                                    }
-                                })
                                 .build())
 
                 tutorialId3 = TutorialTooltip.show(tutorialTooltipView!!)
@@ -236,12 +231,14 @@ class TouchActivity : AppCompatActivity() {
                     buttonClearAll)
 
             for (i in anchorViews.indices) {
-                tutorialTooltipChainBuilder.addItem(TutorialTooltipBuilder(activity)
-                        .anchor(anchorViews[i])
-                        .message(MessageConfiguration(
-                                text = "${i + 1}/${anchorViews.size}: Message"))
-                        .onClick(onTutorialTooltipClickedListener)
-                        .build())
+                tutorialTooltipChainBuilder.addItem(
+                        TutorialTooltipBuilder(
+                                context = activity,
+                                messageConfiguration = MessageConfiguration(
+                                        text = "${i + 1}/${anchorViews.size}: Message"),
+                                onClick = listener)
+                                .anchor(anchorViews[i])
+                                .build())
             }
 
             tutorialTooltipChainBuilder.execute()
@@ -274,15 +271,23 @@ class TouchActivity : AppCompatActivity() {
      * @param y y coordinate of touch
      */
     private fun createTutorialTooltip(x: Float, y: Float) {
+        val activity = this
+
         TutorialTooltip.show(
-                TutorialTooltipBuilder(this)
-                        .anchor(Point(x.toInt(), y.toInt()))
-                        .onClick(onTutorialTooltipClickedListener)
-                        .message(MessageConfiguration(
+                TutorialTooltipBuilder(
+                        context = this,
+                        onClick = { id, view ->
+                            TutorialTooltip.remove(activity, id, true)
+                        },
+                        messageConfiguration = MessageConfiguration(
                                 text = "You touched right here!",
                                 backgroundColor = Color.parseColor("#FFF3E0"),
                                 width = resources.getDimension(R.dimen.messageWidth).toInt(),
-                                height = MessageConfiguration.WRAP_CONTENT))
+                                height = MessageConfiguration.WRAP_CONTENT),
+                        onPostRemove = { id, view ->
+                            Log.d("Test", "Test")
+                        })
+                        .anchor(Point(x.toInt(), y.toInt()))
                         .build())
     }
 }

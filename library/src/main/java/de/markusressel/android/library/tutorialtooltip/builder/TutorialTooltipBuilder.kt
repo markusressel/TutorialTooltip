@@ -22,8 +22,6 @@ import android.graphics.Point
 import android.support.annotation.StringRes
 import android.util.Log
 import android.view.View
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipClickedListener
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 
@@ -37,11 +35,39 @@ class TutorialTooltipBuilder
 /**
  * Constructor for the builder.
  * Chain methods and call ".build()" as your last step to make this object immutable.
-
- * @param context activity context that the TutorialTooltip will be added to.
- * *                Application context will not suffice!
  */
-(val context: Context) : Builder<TutorialTooltipBuilder>() {
+(
+        /**
+         * activity context that the TutorialTooltip will be added to.
+         * Application context will not suffice!
+         */
+        internal val context: Context,
+
+        /**
+         * Indicator configuration
+         */
+        internal val indicatorConfiguration: IndicatorConfiguration = IndicatorConfiguration(),
+
+        /**
+         * Message configuration
+         */
+        internal val messageConfiguration: MessageConfiguration = MessageConfiguration(),
+
+        /**
+         * OnClick listener for the whole TutorialTooltipView
+         */
+        internal val onClick: ((id: TooltipId, tutorialTooltipView: TutorialTooltipView) -> Unit)? = null,
+        /**
+         * Listener for TutorialTooltip remove() events, called before the view is removed
+         */
+        internal val onPreRemove: ((id: TooltipId, view: TutorialTooltipView) -> Unit)? = null,
+
+        /**
+         * Listener for TutorialTooltip remove() events, called after the view is removed
+         */
+        internal var onPostRemove: ((id: TooltipId, view: TutorialTooltipView) -> Unit)? = null
+
+) : Builder<TutorialTooltipBuilder>() {
 
     /**
      * AttachMode used to distinguish between activity, dialog and window scope
@@ -80,35 +106,12 @@ class TutorialTooltipBuilder
      */
     var anchorPoint: Point? = null
         private set
-    /**
-     * Indicator configuration
-     */
-    var indicatorConfiguration: IndicatorConfiguration
-        private set
-    /**
-     * Message configuration
-     */
-    var messageConfiguration: MessageConfiguration
-        private set
-    /**
-     * OnClick listener for the whole TutorialTooltipView
-     */
-    var onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener? = null
-        private set
-    /**
-     * Listener for TutorialTooltip remove() events
-     */
-    var onTutorialTooltipRemovedListener: OnTutorialTooltipRemovedListener? = null
-        private set
 
     init {
+        this.tooltipId = TooltipId()
 
         // set default values
         this.attachMode = AttachMode.Activity
-        this.indicatorConfiguration = IndicatorConfiguration()
-        this.messageConfiguration = MessageConfiguration()
-
-        this.tooltipId = TooltipId()
     }
 
     /**
@@ -175,32 +178,6 @@ class TutorialTooltipBuilder
     }
 
     /**
-     * Set the indicator using a `IndicatorConfiguration`
-
-     * @param indicatorConfiguration MessageBuilder
-     * *
-     * @return TutorialTooltipBuilder
-     */
-    fun indicator(indicatorConfiguration: IndicatorConfiguration): TutorialTooltipBuilder {
-        throwIfCompleted()
-        this.indicatorConfiguration = indicatorConfiguration
-        return this
-    }
-
-    /**
-     * Set the message using a `MessageBuilder`
-
-     * @param messageConfiguration MessageBuilder
-     * *
-     * @return TutorialTooltipBuilder
-     */
-    fun message(messageConfiguration: MessageConfiguration): TutorialTooltipBuilder {
-        throwIfCompleted()
-        this.messageConfiguration = messageConfiguration
-        return this
-    }
-
-    /**
      * Call this to show this TutorialTooltip only once.
      *
      *
@@ -249,23 +226,6 @@ class TutorialTooltipBuilder
         this.tooltipId = TooltipId(identifier)
         this.showCount = count
         return this
-    }
-
-    /**
-     * Set an OnClick listener for the TutorialTooltip
-
-     * @param onTutorialTooltipClickedListener onIndicatorClicked listener
-     * *
-     * @return TutorialTooltipBuilder
-     */
-    fun onClick(onTutorialTooltipClickedListener: OnTutorialTooltipClickedListener?): TutorialTooltipBuilder {
-        throwIfCompleted()
-        this.onTutorialTooltipClickedListener = onTutorialTooltipClickedListener
-        return this
-    }
-
-    fun onRemoved(onTutorialTooltipRemovedListener: OnTutorialTooltipRemovedListener) {
-        this.onTutorialTooltipRemovedListener = onTutorialTooltipRemovedListener
     }
 
     override fun build(): TutorialTooltipBuilder {

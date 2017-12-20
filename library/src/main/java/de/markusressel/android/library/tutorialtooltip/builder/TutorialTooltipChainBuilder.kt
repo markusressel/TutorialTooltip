@@ -18,9 +18,6 @@ package de.markusressel.android.library.tutorialtooltip.builder
 
 import android.util.Log
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
-import de.markusressel.android.library.tutorialtooltip.interfaces.OnTutorialTooltipRemovedListener
-import de.markusressel.android.library.tutorialtooltip.view.TooltipId
-import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
 import java.util.*
 
 /**
@@ -78,18 +75,17 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
         for (currentIndex in tooltips.indices) {
             val tooltipBuilder = tooltips[currentIndex]
 
-            tooltipBuilder.onRemoved(object : OnTutorialTooltipRemovedListener {
-                override fun onRemove(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
+            val userListener = tooltipBuilder.onPostRemove
 
-                }
+            tooltipBuilder.onPostRemove = { id, view ->
+                // call user defined listener
+                userListener?.invoke(id, view)
 
-                override fun postRemove(id: TooltipId, tutorialTooltipView: TutorialTooltipView) {
-                    // open the next TutorialTooltip in the chain (if one exists)
-                    if (currentIndex >= 0 && currentIndex < tooltips.size - 1) {
-                        TutorialTooltip.show(tooltips[currentIndex + 1])
-                    }
+                // open the next TutorialTooltip in the chain (if one exists)
+                if (currentIndex >= 0 && currentIndex < tooltips.size - 1) {
+                    TutorialTooltip.show(tooltips[currentIndex + 1])
                 }
-            })
+            }
         }
 
         // show the first TutorialTooltip
@@ -97,7 +93,6 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
     }
 
     companion object {
-
         private val TAG = "ChainBuilder"
     }
 
