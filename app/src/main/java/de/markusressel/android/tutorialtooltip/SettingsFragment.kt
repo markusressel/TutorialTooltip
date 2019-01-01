@@ -23,7 +23,7 @@ import android.os.Bundle
 import android.preference.EditTextPreference
 import android.preference.PreferenceFragment
 import androidx.annotation.ColorInt
-import androidx.core.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 import com.rarepebble.colorpicker.ColorPreference
 

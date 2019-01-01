@@ -21,9 +21,9 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.annotation.ColorInt
-import androidx.core.app.DialogFragment
 import android.view.*
+import androidx.annotation.ColorInt
+import androidx.fragment.app.DialogFragment
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
@@ -101,7 +101,7 @@ class DialogFragmentTest : DialogFragment() {
                     TutorialTooltip.remove(dialog, id, true)
                 })
                 .anchor(testButton)
-                .attachToDialog(dialog)
+                .attachToDialog(dialog!!)
                 .build()
 
         TutorialTooltip.show(tutorialTooltipBuilder)
@@ -109,7 +109,7 @@ class DialogFragmentTest : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // ask to really close
-        val dialog = object : Dialog(activity) {
+        val dialog = object : Dialog(activity!!) {
             override fun onTouchEvent(event: MotionEvent): Boolean {
                 when (event.action) {
                 // When user touches the screen
@@ -167,20 +167,16 @@ class DialogFragmentTest : DialogFragment() {
         val borderSize = 200
 
         val leftBorder = borderSize
-        val rightBorder = dialog.window!!.decorView.width - borderSize
+        val rightBorder = dialog!!.window!!.decorView.width - borderSize
         val topBorder = borderSize
-        val bottomBorder = dialog.window!!.decorView.height - borderSize
+        val bottomBorder = dialog!!.window!!.decorView.height - borderSize
 
-        if (x > rightBorder) {
-            messageGravity = TutorialTooltipView.Gravity.LEFT
-        } else if (x < leftBorder) {
-            messageGravity = TutorialTooltipView.Gravity.RIGHT
-        } else if (y < topBorder) {
-            messageGravity = TutorialTooltipView.Gravity.BOTTOM
-        } else if (y > bottomBorder) {
-            messageGravity = TutorialTooltipView.Gravity.TOP
-        } else {
-            messageGravity = TutorialTooltipView.Gravity.CENTER
+        messageGravity = when {
+            x > rightBorder -> TutorialTooltipView.Gravity.LEFT
+            x < leftBorder -> TutorialTooltipView.Gravity.RIGHT
+            y < topBorder -> TutorialTooltipView.Gravity.BOTTOM
+            y > bottomBorder -> TutorialTooltipView.Gravity.TOP
+            else -> TutorialTooltipView.Gravity.CENTER
         }
 
 
@@ -196,7 +192,7 @@ class DialogFragmentTest : DialogFragment() {
                                 height = MessageConfiguration.WRAP_CONTENT,
                                 gravity = messageGravity)
                 ).anchor(Point(x.toInt(), y.toInt()))
-                        .attachToDialog(dialog)
+                        .attachToDialog(dialog!!)
                         .build())
     }
 
