@@ -21,8 +21,8 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.annotation.ColorInt
-import android.support.v4.app.DialogFragment
+import androidx.annotation.ColorInt
+import androidx.core.app.DialogFragment
 import android.view.*
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration

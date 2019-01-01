@@ -19,7 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.builder
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.util.Log
 import android.view.View
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId

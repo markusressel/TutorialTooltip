@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-//    testCompile 'junit:junit:4.12'
+//    testImplementation 'junit:junit:4.12'
 
     api('com.github.markusressel:CircleWaveView:v0.1.2') {
         exclude module: 'app'

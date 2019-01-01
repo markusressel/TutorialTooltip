@@ -16,7 +16,7 @@
 
 package de.markusressel.android.library.tutorialtooltip.interfaces
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.view.View
 
 /**

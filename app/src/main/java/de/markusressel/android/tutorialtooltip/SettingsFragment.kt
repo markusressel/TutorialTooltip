@@ -22,8 +22,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.EditTextPreference
 import android.preference.PreferenceFragment
-import android.support.annotation.ColorInt
-import android.support.v4.content.LocalBroadcastManager
+import androidx.annotation.ColorInt
+import androidx.core.content.LocalBroadcastManager
 
 import com.rarepebble.colorpicker.ColorPreference
 

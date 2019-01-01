@@ -19,7 +19,7 @@ package de.markusressel.android.library.tutorialtooltip.view
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Color
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.util.AttributeSet
 
 import de.markusressel.android.library.circlewaveview.CircleWaveView

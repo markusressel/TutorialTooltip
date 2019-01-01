@@ -17,8 +17,8 @@
 package de.markusressel.android.library.tutorialtooltip.builder
 
 import android.graphics.Point
-import android.support.annotation.ColorInt
-import android.support.annotation.Dimension
+import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import android.view.View
 import android.widget.LinearLayout
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
