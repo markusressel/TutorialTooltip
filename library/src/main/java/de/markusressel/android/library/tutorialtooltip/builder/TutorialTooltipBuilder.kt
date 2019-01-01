@@ -248,7 +248,6 @@ class TutorialTooltipBuilder
     }
 
     companion object {
-
-        private val TAG = "TutorialTooltipBuilder"
+        private const val TAG = "TutorialTooltipBuilder"
     }
 }

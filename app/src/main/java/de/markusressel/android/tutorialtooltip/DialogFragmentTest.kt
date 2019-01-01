@@ -94,9 +94,9 @@ class DialogFragmentTest : DialogFragment() {
                             TutorialTooltip.remove(dialog, id, true)
                         }),
                 onClick = { id, view ->
-                    // this will intercept touches of the complete window
+                    // this will intercept touches of the complete window.
                     // if you don't specify additional listeners for the indicator or
-                    // message view they will be included
+                    // message view their screen area will be included
 
                     TutorialTooltip.remove(dialog, id, true)
                 })

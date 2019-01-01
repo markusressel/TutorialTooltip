@@ -93,7 +93,7 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
     }
 
     companion object {
-        private val TAG = "ChainBuilder"
+        private const val TAG = "ChainBuilder"
     }
 
 }

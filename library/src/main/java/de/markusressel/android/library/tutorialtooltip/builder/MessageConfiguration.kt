@@ -17,10 +17,10 @@
 package de.markusressel.android.library.tutorialtooltip.builder
 
 import android.graphics.Point
-import androidx.annotation.ColorInt
-import androidx.annotation.Dimension
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
 import de.markusressel.android.library.tutorialtooltip.view.TooltipId
 import de.markusressel.android.library.tutorialtooltip.view.TutorialTooltipView
@@ -103,24 +103,22 @@ class MessageConfiguration(
                                 message: TutorialTooltipMessage, messageView: View) -> Unit)? = null
 
 ) {
-    init {
-    }
 
     companion object {
 
         /**
          * Constant size value to wrap the views content
          */
-        val WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT
+        const val WRAP_CONTENT = LinearLayout.LayoutParams.WRAP_CONTENT
 
         /**
          * Constant size value to match the parents size
          */
-        val MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT
+        const val MATCH_PARENT = LinearLayout.LayoutParams.MATCH_PARENT
 
         /**
          * Constant size value to match the anchors view size
          */
-        val MATCH_ANCHOR = -5
+        const val MATCH_ANCHOR = -5
     }
 }

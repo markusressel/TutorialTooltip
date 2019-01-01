@@ -45,7 +45,7 @@ class PreferencesHandler
      * Get a preference value by key
 
      * @param tutorialTooltipView the TutorialTooltip to get the count for
-     * *
+     *
      * @return the show count
      */
     fun getCount(tutorialTooltipView: TutorialTooltipView): Int {
@@ -113,8 +113,7 @@ class PreferencesHandler
     }
 
     companion object {
-
-        private val keyPrefix = "TutorialTooltip_"
+        private const val keyPrefix = "TutorialTooltip_"
     }
 
 }

@@ -22,7 +22,7 @@ package de.markusressel.android.library.tutorialtooltip.view
  *
  * Created by Markus on 22.04.2017.
  */
-public class TooltipId {
+class TooltipId {
 
     private var identifier: String? = null
 
@@ -58,8 +58,11 @@ public class TooltipId {
         return identifier.toString()
     }
 
-    companion object {
+    override fun hashCode(): Int {
+        return identifier?.hashCode() ?: 0
+    }
 
+    companion object {
         private var lastId = 1
     }
 }
