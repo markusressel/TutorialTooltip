@@ -39,7 +39,8 @@ import kotlin.math.roundToInt
 class CardMessageView : FrameLayout, TutorialTooltipMessage {
 
     private var backgroundColor = Color.parseColor("#FFFFFFFF")
-    private var borderColor = Color.parseColor("#FFFFFFFF")
+
+    var borderColor = Color.parseColor("#FFFFFFFF")
         /**
          * Set the card border color
 
@@ -52,7 +53,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
             invalidate()
         }
 
-    private var borderThickness = 3
+    var borderThickness = 3
         /**
          * Set the card border thickness
 
@@ -65,7 +66,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
             invalidate()
 
         }
-    private var cornerRadius: Float = 0.toFloat()
+    var cornerRadius: Float = 0F
         /**
          * Set the card corner radius
 
@@ -88,7 +89,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
 
     private var linearLayout: LinearLayout
     private var textView: TextView
-    private lateinit var cardShape: GradientDrawable
+    private val cardShape: GradientDrawable = GradientDrawable()
 
     @JvmOverloads
     constructor(context: Context,
@@ -121,7 +122,6 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
         addView(linearLayout)
 
 
-        cardShape = GradientDrawable()
         cardShape.mutate()
         cardShape.shape = GradientDrawable.RECTANGLE
         cardShape.cornerRadii = floatArrayOf(cornerRadius,

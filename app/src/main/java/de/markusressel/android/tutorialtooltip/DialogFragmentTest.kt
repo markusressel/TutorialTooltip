@@ -58,7 +58,8 @@ class DialogFragmentTest : DialogFragment() {
         // custom message view
         val cardMessageView = CardMessageView(activity!!)
         @ColorInt val transparentWhite = Color.argb(255, 255, 255, 255)
-        cardMessageView.setBorderColor(Color.BLACK)
+        cardMessageView.borderColor = Color.BLACK
+        cardMessageView.borderThickness = 0
 
         // custom indicator view
         val waveIndicatorView = WaveIndicatorView(activity!!)
@@ -112,7 +113,7 @@ class DialogFragmentTest : DialogFragment() {
         val dialog = object : Dialog(activity!!) {
             override fun onTouchEvent(event: MotionEvent): Boolean {
                 when (event.action) {
-                // When user touches the screen
+                    // When user touches the screen
                     MotionEvent.ACTION_UP -> {
                         // Getting X coordinate
                         val x = event.x
