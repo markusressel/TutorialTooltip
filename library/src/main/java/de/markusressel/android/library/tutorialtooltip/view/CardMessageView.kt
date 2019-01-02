@@ -21,14 +21,14 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
-import androidx.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-
+import androidx.annotation.ColorInt
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
+import kotlin.math.roundToInt
 
 /**
  * Basic Message view implementation
@@ -40,17 +40,60 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
 
     private var backgroundColor = Color.parseColor("#FFFFFFFF")
     private var borderColor = Color.parseColor("#FFFFFFFF")
+        /**
+         * Set the card border color
+
+         * @param color color as int
+         */
+        set(color) {
+            field = color
+            cardShape.setStroke(borderThickness, field)
+
+            invalidate()
+        }
+
     private var borderThickness = 3
+        /**
+         * Set the card border thickness
+
+         * @param thickness width in pixel
+         */
+        set(thickness) {
+            field = thickness
+            cardShape.setStroke(field, borderColor)
+
+            invalidate()
+
+        }
     private var cornerRadius: Float = 0.toFloat()
+        /**
+         * Set the card corner radius
+
+         * @param radius radius in pixel
+         */
+        set(radius) {
+            field = radius
+            cardShape.cornerRadii = floatArrayOf(field,
+                    field,
+                    field,
+                    field,
+                    field,
+                    field,
+                    field,
+                    field)
+
+            invalidate()
+        }
     private var defaultPadding: Int = 0
 
     private var linearLayout: LinearLayout
     private var textView: TextView
     private lateinit var cardShape: GradientDrawable
 
-    @JvmOverloads constructor(context: Context,
-                              attrs: AttributeSet? = null,
-                              defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
+    @JvmOverloads
+    constructor(context: Context,
+                attrs: AttributeSet? = null,
+                defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
 
         linearLayout = LinearLayout(context, attrs, defStyleAttr)
         textView = TextView(context, attrs, defStyleAttr)
@@ -68,8 +111,8 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     }
 
     private fun init() {
-        cornerRadius = ViewHelper.pxFromDp(context, 12f).toInt().toFloat()
-        defaultPadding = ViewHelper.pxFromDp(context, 8f).toInt()
+        cornerRadius = ViewHelper.pxFromDp(context, 12f).roundToInt().toFloat()
+        defaultPadding = ViewHelper.pxFromDp(context, 8f).roundToInt()
 
         textView.gravity = Gravity.CENTER
         textView.setBackgroundColor(Color.argb(0, 0, 0, 0))
@@ -129,46 +172,4 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
         invalidate()
     }
 
-    /**
-     * Set the card border color
-
-     * @param color color as int
-     */
-    fun setBorderColor(@ColorInt color: Int) {
-        this.borderColor = color
-        cardShape.setStroke(borderThickness, borderColor)
-
-        invalidate()
-    }
-
-    /**
-     * Set the card border thickness
-
-     * @param thickness width in pixel
-     */
-    fun setBorderThickness(thickness: Int) {
-        this.borderThickness = thickness
-        cardShape.setStroke(borderThickness, borderColor)
-
-        invalidate()
-    }
-
-    /**
-     * Set the card corner radius
-
-     * @param radius radius in pixel
-     */
-    fun setCornerRadius(radius: Float) {
-        cornerRadius = radius
-        cardShape.cornerRadii = floatArrayOf(cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                cornerRadius)
-
-        invalidate()
-    }
 }
