@@ -19,9 +19,8 @@ package de.markusressel.android.library.tutorialtooltip.view
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Color
-import androidx.annotation.ColorInt
 import android.util.AttributeSet
-
+import androidx.annotation.ColorInt
 import de.markusressel.android.library.circlewaveview.CircleWaveView
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipIndicator
 
@@ -36,11 +35,8 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  */
 class WaveIndicatorView : CircleWaveView, TutorialTooltipIndicator {
 
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context,
+    @JvmOverloads
+    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context,
             attrs,
             defStyleAttr)
 

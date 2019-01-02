@@ -79,10 +79,10 @@ class TutorialTooltipView : LinearLayout {
 
     private lateinit var attachMode: TutorialTooltipBuilder.AttachMode
 
-    @JvmOverloads protected constructor(context: Context,
-                                        attrs: AttributeSet? = null,
-                                        defStyleAttr: Int = 0)
-            : super(context, attrs, defStyleAttr)
+    @JvmOverloads
+    protected constructor(context: Context,
+                          attrs: AttributeSet? = null,
+                          defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr)
 
     @TargetApi(21)
     protected constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int,
@@ -481,14 +481,8 @@ class TutorialTooltipView : LinearLayout {
     //    }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        //        Toast.makeText(getContext(),
-        //                "onInterceptTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
-        //                .show();
-
         Log.d(TAG, "onInterceptTouchEvent: " + event.x + "," + event.y)
-
-        val onInterceptTouchEvent = super.onInterceptTouchEvent(event)
-        return onInterceptTouchEvent
+        return super.onInterceptTouchEvent(event)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -711,7 +705,6 @@ class TutorialTooltipView : LinearLayout {
     }
 
     companion object {
-
-        private val TAG = "TutorialTooltipView"
+        private const val TAG = "TutorialTooltipView"
     }
 }

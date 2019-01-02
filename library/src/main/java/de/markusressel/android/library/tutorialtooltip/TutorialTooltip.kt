@@ -37,8 +37,6 @@ import java.util.*
  */
 object TutorialTooltip {
 
-    private val TAG = "TutorialTooltip"
-
     /**
      * Create the TutorialTooltip
 

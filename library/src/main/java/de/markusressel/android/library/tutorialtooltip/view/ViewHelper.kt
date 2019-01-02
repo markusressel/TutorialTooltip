@@ -28,6 +28,12 @@ import android.content.ContextWrapper
  */
 object ViewHelper {
 
+    /**
+     * Find the parent activity from a given context
+     *
+     * @param context the context to search in
+     * @return the closest parent activity, if any
+     */
     fun getActivity(context: Context?): Activity? {
         return when (context) {
             null -> null
@@ -37,6 +43,13 @@ object ViewHelper {
         }
     }
 
+    /**
+     * Get the pixel value for a dp value
+     *
+     * @param context application context
+     * @param dp the dp value to convert to pixel
+     * @return pixel value
+     */
     internal fun pxFromDp(context: Context, dp: Float): Float {
         return dp * context.resources.displayMetrics.density
     }
