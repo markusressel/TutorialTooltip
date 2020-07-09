@@ -13,7 +13,7 @@ A simple and easy way to add targeted tutorial messages to your app.
 
 # Why?
 
-I needed a better way to create step by step tutorials for my app(s) and even though there were existing libraries to help with this they didn't offer the flexibility I was looking for. I could have taken an existing library and customize it for my needs, but it was just a pain to get through the existing code and I didnt learn much about how to build stuff like this. So I thought to myself - why dont you build it yourself from the ground up? And here I am.
+I needed a better way to create step by step tutorials for my app(s) and, even though there were existing libraries to help with this, they didn't offer the flexibility I was looking for. I could have taken an existing library and customize it for my needs, but it was just a pain to get through the existing code and I didnt learn much about how to build stuff like this. So I thought to myself - why dont you build it yourself from the ground up? And here I am.
 
 # Usage
 
@@ -35,12 +35,12 @@ in your desired module build.gradle file.
 
 ## Create a TutorialTooltip
 
-To create a ```TutorialTooltip``` you can use the builder pattern:
+To create a `TutorialTooltip` use the `TutorialTooltipBuilder`:
 
 ##### Using an Anchor View
 
 ```kotlin
-val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
+val tutorialTooltipBuilder = TutorialTooltipBuilder(this)
     .anchor(button1, TutorialTooltipView.Gravity.CENTER)
     .build()
 ```
@@ -48,22 +48,22 @@ val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
 ##### Using an Anchor Point
 
 ```kotlin
-val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
+val tutorialTooltipBuilder = TutorialTooltipBuilder(this)
     .anchor(Point(200, 300))
     .build()
 ```
 
-This is the most basic ```TutorialTooltip``` you can create.
+This is the most basic `TutorialTooltip` you can create.
 
 ## Show a TutorialTooltip
 
-If you used the builder to create your ```TutorialTooltip``` you can afterwards show it very easily by calling:
+After you used the builder to create your `TutorialTooltip` you can show it very easily by calling:
 
 ```kotlin
 val tutorialTooltipId = TutorialTooltip.show(tutorialTooltipBuilder)
 ```
 
-If you used ```TutorialTooltip.make(tutorialTooltipBuilder)``` you can show it using:
+If you used `TutorialTooltip.make(tutorialTooltipBuilder)` you can show it using:
 
 ```kotlin
 val tutorialTooltipId = TutorialTooltip.show(tutorialTooltipView)
@@ -71,7 +71,7 @@ val tutorialTooltipId = TutorialTooltip.show(tutorialTooltipView)
 
 ## Remove a TutorialTooltip
 
-To remove a ```TutorialTooltip``` either hold a reference to its view and call:
+To remove a `TutorialTooltip` either hold a reference to its view and call:
 
 ```kotlin
 tutorialTooltipView.remove()
@@ -87,17 +87,21 @@ TutorialTooltip.remove(activity, tutorialTooltipId)
 
 ## Customization
 
-The first example will show a default ```TutorialTooltipIndicator``` and default ```TutorialTooltipMessage``` so you can test things without getting to much into the details.
-Of course this small example is not enough for everyday usage, so let's start with some more advanced ones and increase complexity down the road.
+The first example will show a default `TutorialTooltipIndicator` and default `TutorialTooltipMessage` 
+so you can test things without getting to much into the details. Of course this small example 
+is not enough for everyday usage, so let's start with some more advanced ones and 
+increase complexity down the road.
 
-FYI: In it's current state you can only create and customize TutorialTooltips in code. Styling via theme attributes or xml views may be added at a later stage.
+FYI: In it's current state you can only create and customize TutorialTooltips in code. 
+Styling via theme attributes or xml views may be added at a later stage.
 
 ### Message
 
 ##### Basic
 ---
 
-The ```TutorialTooltip``` library allows you to customize the message in a fast and easy way using the builder pattern (again). To customize the look of the message use something like this in your ```TutorialTooltipBuilder```:
+The `TutorialTooltip` library allows you to customize the message using the `MessageConfiguration`. 
+To customize the look of the message use something like this in your `TutorialTooltipBuilder`:
 
 ```kotlin
 messageConfiguration = MessageConfiguration(
@@ -108,7 +112,7 @@ messageConfiguration = MessageConfiguration(
 ##### Advanced
 ---
 
-There are other builder methods you can use to further customize the look of the message. Just have a look at the ```MessageBuilder``` class.
+There are other builder methods you can use to further customize the look of the message. Just have a look at the `MessageBuilder` class.
 
 A more complex example would look something like this:
 
@@ -128,14 +132,16 @@ messageConfiguration = MessageConfiguration(
 ##### Geek
 ---
 
-If you don't like the look of the included message you can override it completely with a custom view. To use a custom view as a message you have to make it:
+If you don't like the look of the included message you can override it completely with a 
+custom view. To use a custom view as a message you have to make it:
 
-1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
-2. implement the ```TutorialTooltipMessage``` interface included in this library
+1. extend `android.view.View` (at least indirectly like with f.ex. `LinearLayout`)
+2. implement the `TutorialTooltipMessage` interface included in this library
 
-This makes it possible to use the ```MessageBuilder``` even when using a completely self written ```TutorialTooltipMessage``` view which hopefully cleans up the code quite a bit.
+This makes it possible to use the `MessageBuilder` even when using a completely self written 
+`TutorialTooltipMessage` view which hopefully cleans up the code quite a bit.
 
-Just add this line to your  ```MessageBuilder ```:
+Just add this line to your `MessageBuilder`:
 
 ```kotlin
     customView = CardMessageView(activity)
@@ -147,7 +153,7 @@ Just add this line to your  ```MessageBuilder ```:
 ---
 
 The indicator view can be customized in the same way as the message.
-Customize the indicator using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so::
+Customize the indicator using the `MessageBuilder` in your `TutorialTooltipBuilder` like so::
 
 ```kotlin
     indicatorConfiguration = IndicatorConfiguration(
@@ -172,19 +178,21 @@ Just like with the message you can further customize the indicator with somethin
         })
 ```
 
-Have a look at the ```MessageBuilder``` class for a full list of options.
+Have a look at the `MessageBuilder` class for a full list of options.
 
 ##### Geek
 ---
 
-If you don't like the look of the included indicator you can override it completely with a custom view. To use a custom view as an indicator you have to make it:
+If you don't like the look of the included indicator you can override it completely with a custom view. 
+To use a custom view as an indicator you have to make it:
 
-1. extend ```android.view.View``` (at least indirectly like with f.ex. ```LinearLayout```)
-2. implement the ```TutorialTooltipIndicator``` interface included in this library
+1. extend `android.view.View` (at least indirectly like with f.ex. `LinearLayout`)
+2. implement the `TutorialTooltipIndicator` interface included in this library
 
-This makes it possible to use the ```IndicatorBuilder``` even when using a completely self written ```TutorialTooltipIndicator``` view which hopefully cleans up the code quite a bit.
+This makes it possible to use the `IndicatorBuilder` even when using a completely self written 
+`TutorialTooltipIndicator` view which hopefully cleans up the code quite a bit.
 
-Just add this line to your  ```IndicatorBuilder ```:
+Just add this line to your  `IndicatorBuilder`:
 
 ```kotlin
     customView = WaveIndicatorView(activity)
@@ -244,35 +252,41 @@ TutorialTooltip.show(tutorialTooltipBuilder)
 ### .build()
 ---
 
-Always remember to finish your builder with the ```.build()``` call. This makes sure you don't change your builder after already using it.
-This is necessary for all builders including ```TutorialTooltipBuilder```, ```MessageBuilder``` and ```IndicatorBuilder```.
+Always remember to finish your builder with the `.build()` call. This makes sure you don't change your builder after already using it.
+This is necessary for all builders including `TutorialTooltipBuilder`, `MessageBuilder` and `IndicatorBuilder`.
 
 ### Dialogs
 ---
 
-If the ```TutorialTooltip``` is used in a ```Dialog``` (f.ex. ```DialogFragment```) you have to additionally call:
+If the `TutorialTooltip` is used in a `Dialog` (f.ex. `DialogFragment`) you have to additionally call:
 
 ```kotlin
     .attachToDialog(getDialog())
 ```
 
-in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instead of the ```Activity```.
+in the `TutorialTooltipBuilder`. This will attach the `TutorialTooltip` to the `DecorView` 
+of the `Dialog` instead of the `Activity`.
 
 ### Attach to Window
 ---
 
-If somehow the ```TutorialTooltip``` is still not rendered above the content you want it to, you can attach it to the ```Window``` instead of the ```Activity``` using:
+If somehow the `TutorialTooltip` is still not rendered above the content you want it to, you can 
+attach it to the `Window` instead of the `Activity` using:
 
 ```kotlin
     .attachToWindow()
 ```
 
-This will create a dedicated ```Window``` just for the ```TutorialTooltip``` and (should) always render above other content.
-When using this method you can only show one ```TutorialTooltip``` at a time though and onClick handling works a little different, so you should only use this as a last resort.
+This will create a dedicated `Window` just for the `TutorialTooltip` and (should) always 
+render above other content. When using this method you can only show one `TutorialTooltip` at a time 
+though and onClick handling works a little different, so you should only use this as a last resort.
 
 # Attributions
 
-I want to give a big shoutout to Alessandro Crugnola ([sephiroth74](https://github.com/sephiroth74 "sephiroth74 GitHub Profile")) who has built his great [android-target-tooltip](https://github.com/sephiroth74/android-target-tooltip "android-target-tooltip on GitHub") library that adresses the same issue. His work greatly impacted the way I am building this library and really helped me figure out how to do things right.
+I want to give a big shoutout to Alessandro Crugnola ([sephiroth74](https://github.com/sephiroth74 "sephiroth74 GitHub Profile")) 
+who has built his great [android-target-tooltip](https://github.com/sephiroth74/android-target-tooltip "android-target-tooltip on GitHub") 
+library that adresses the same issue. His work greatly impacted the way I am building this 
+library and really helped me figure out how to do things right.
 
 
 # License
