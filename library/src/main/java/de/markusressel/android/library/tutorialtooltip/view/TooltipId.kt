@@ -38,11 +38,7 @@ class TooltipId {
 
      * @param identifier the string to use as ID
      */
-    constructor(identifier: String?) {
-        if (identifier == null) {
-            throw IllegalArgumentException("TutorialTooltip idenfier must not be null!")
-        }
-
+    constructor(identifier: String) {
         this.identifier = identifier
     }
 

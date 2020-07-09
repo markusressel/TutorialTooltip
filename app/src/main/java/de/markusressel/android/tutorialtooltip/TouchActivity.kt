@@ -39,12 +39,12 @@ import kotlinx.android.synthetic.main.activity_test.*
 
 class TouchActivity : AppCompatActivity() {
 
-    private var tutorialId1: TooltipId = TooltipId("")
-    private var tutorialId2: TooltipId = TooltipId("")
-    private var tutorialId3: TooltipId = TooltipId("")
+    private var tutorialId1: TooltipId = TooltipId()
+    private var tutorialId2: TooltipId = TooltipId()
+    private var tutorialId3: TooltipId = TooltipId()
 
     private var tutorialTooltipView: TutorialTooltipView? = null
-    private var tutorialId4: TooltipId = TooltipId("")
+    private var tutorialId4: TooltipId = TooltipId()
 
     private fun pxFromDp(context: Context, dp: Float): Float {
         return dp * context.resources.displayMetrics.density
@@ -58,7 +58,9 @@ class TouchActivity : AppCompatActivity() {
         animator.duration = 2000
         animator.repeatCount = ValueAnimator.INFINITE
         animator.repeatMode = ValueAnimator.REVERSE
-        animator.addUpdateListener { animation -> buttonHideLayout.x = animation.animatedValue as Float }
+        animator.addUpdateListener { animation ->
+            buttonHideLayout.x = animation.animatedValue as Float
+        }
 
         buttonShowLayout.setOnClickListener {
             linear_layout_right_bottom.visibility = View.VISIBLE
@@ -98,11 +100,11 @@ class TouchActivity : AppCompatActivity() {
             if (TutorialTooltip.exists(activity, tutorialId1)) {
                 TutorialTooltip.remove(activity, tutorialId1, true)
             } else {
-                val waveIndicatorView = WaveIndicatorView(activity)
-                waveIndicatorView.startColor = Color.argb(255, 255, 0, 0)
-                waveIndicatorView.endColor = Color.argb(0, 255, 0, 0)
-                waveIndicatorView.strokeWidth = pxFromDp(activity, 5f)
-                //                    waveIndicatorView.setTargetDiameter(pxFromDp(activity, 50));
+                val waveIndicatorView = WaveIndicatorView(activity).apply {
+                    startColor = Color.argb(255, 255, 0, 0)
+                    endColor = Color.argb(0, 255, 0, 0)
+                    strokeWidth = pxFromDp(activity, 5f)
+                }
 
                 tutorialId1 = TutorialTooltip.show(
                         TutorialTooltipBuilder(
@@ -175,11 +177,12 @@ class TouchActivity : AppCompatActivity() {
             if (tutorialTooltipView != null && tutorialTooltipView!!.isShown) {
                 tutorialTooltipView?.remove(true)
             } else {
-                val waveIndicatorView = WaveIndicatorView(activity)
-                waveIndicatorView.startColor = Color.argb(255, 255, 255, 255)
-                waveIndicatorView.endColor = Color.argb(0, 255, 255, 255)
-                waveIndicatorView.strokeWidth = pxFromDp(activity, 5f)
-                waveIndicatorView.endDiameter = pxFromDp(activity, 50f)
+                val waveIndicatorView = WaveIndicatorView(activity).apply {
+                    startColor = Color.argb(255, 255, 255, 255)
+                    endColor = Color.argb(0, 255, 255, 255)
+                    strokeWidth = pxFromDp(activity, 5f)
+                    endDiameter = pxFromDp(activity, 50f)
+                }
 
                 tutorialTooltipView = TutorialTooltip.make(
                         TutorialTooltipBuilder(
@@ -248,7 +251,7 @@ class TouchActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
-        // When user touches the screen
+            // When user touches the screen
             MotionEvent.ACTION_UP -> {
                 // Getting X coordinate
                 val x = event.x
