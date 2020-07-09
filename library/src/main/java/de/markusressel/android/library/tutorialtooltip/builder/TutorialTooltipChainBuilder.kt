@@ -74,7 +74,6 @@ class TutorialTooltipChainBuilder : Builder<TutorialTooltipChainBuilder>() {
 
         for (currentIndex in tooltips.indices) {
             val tooltipBuilder = tooltips[currentIndex]
-
             val userListener = tooltipBuilder.onPostRemove
 
             tooltipBuilder.onPostRemove = { id, view ->
