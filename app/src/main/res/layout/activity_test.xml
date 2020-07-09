@@ -32,56 +32,56 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button_count"
+            android:id="@+id/buttonCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/tree_times"/>
 
         <Button
-            android:id="@+id/button_top"
+            android:id="@+id/buttonTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/top"/>
 
         <Button
-            android:id="@+id/button_center"
+            android:id="@+id/buttonCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/center"/>
 
         <Button
-            android:id="@+id/button_bottom"
+            android:id="@+id/buttonBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/bottom"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_fab"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:src="@mipmap/ic_launcher"/>
 
         <Button
-            android:id="@+id/button_dialog"
+            android:id="@+id/buttonDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/dialog_test"/>
 
         <Button
-            android:id="@+id/button_chain"
+            android:id="@+id/buttonChain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/chain"/>
 
         <Button
-            android:id="@+id/button_clear_all"
+            android:id="@+id/buttonClearAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -102,7 +102,7 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/button_show_layout"
+                android:id="@+id/buttonShowLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Show Layout"/>
@@ -117,7 +117,7 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/button_hide_layout"
+                android:id="@+id/buttonHideLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hide Layout"/>

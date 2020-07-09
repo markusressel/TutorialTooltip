@@ -14,31 +14,29 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.view;
+package de.markusressel.android.library.tutorialtooltip.view
 
-import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
-import android.util.AttributeSet;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 
-import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage;
+import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
 
 /**
  * Basic Message view implementation
- * <p>
+ *
+ *
  * Created by Markus on 24.11.2016.
  */
-public class BasicMessageView extends AppCompatTextView implements TutorialTooltipMessage {
+class BasicMessageView : AppCompatTextView, TutorialTooltipMessage {
 
-    public BasicMessageView(Context context) {
-        super(context);
-    }
+    constructor(context: Context) : super(context) {}
 
-    public BasicMessageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
-    public BasicMessageView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context,
+            attrs,
+            defStyleAttr) {
     }
 
 }

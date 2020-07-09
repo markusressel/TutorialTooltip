@@ -30,7 +30,7 @@
         android:text="Hello, this is a demo text.\n\nTo make this dialog look bigger than it would just with a single button this text is here.\n\nThis should make it look more realistic."/>
 
     <Button
-        android:id="@+id/testbutton"
+        android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"

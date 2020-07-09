@@ -14,46 +14,48 @@
  * limitations under the License.
  */
 
-package de.markusressel.android.library.tutorialtooltip.builder;
-
-import lombok.Getter;
+package de.markusressel.android.library.tutorialtooltip.builder
 
 /**
  * Base class for builders
- * <p>
+ *
+ *
  * Use T to pass in the class that extends this Builder.
- * f.ex.: <code>MessageBuilder extends Builder<MessageBuilder></code>
- * <p>
+ * f.ex.: `MessageBuilder extends Builder<MessageBuilder></MessageBuilder>`
+ *
+ *
  * Created by Markus on 01.12.2016.
  */
-abstract class Builder<T> {
+abstract class Builder<out T> {
 
     /**
-     * true if the Builder has been built, false otherwise
+     * Checks if this TutorialTooltipBuilder is already complete
+
+     * @return true if completed, false otherwise
      */
-    @Getter
-    private boolean completed;
+    var isCompleted: Boolean = false
+        private set
 
     /**
      * Checks if this Builder was already build and therefore cant be modified anymore
      */
-    void throwIfCompleted() {
-        if (completed) {
-            throw new IllegalStateException("Builder was already built!");
+    fun throwIfCompleted() {
+        if (isCompleted) {
+            throw IllegalStateException("Builder was already built!")
         }
     }
 
     /**
      * Complete the build process
-     * <p>
      *
      * @return T The extending Builder class
      */
-    public T build() {
-        throwIfCompleted();
-        this.completed = true;
+    @Suppress("UNCHECKED_CAST")
+    open fun build(): T {
+        throwIfCompleted()
+        this.isCompleted = true
 
-        return (T) this;
+        return this as T
     }
 
 }

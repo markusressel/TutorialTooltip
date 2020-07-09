@@ -6,9 +6,10 @@ A simple and easy way to add targeted tutorial messages to your app.
 
 # Build Status
 
-| Master       | Beta | Dev               |
-|--------------|------|-------------------|
-| ![Master](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=master) | ![Beta](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=beta) | ![Dev](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=dev) |
+| Master       | Dev               |
+|--------------|-------------------|
+| [![Master](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=master)](https://travis-ci.org/markusressel/TutorialTooltip/branches) | [![Dev](https://travis-ci.org/markusressel/TutorialTooltip.svg?branch=dev)](https://travis-ci.org/markusressel/TutorialTooltip/branches) |
+| [![codebeat badge](https://codebeat.co/badges/edc7ad8f-912b-4784-80eb-40d5cc7eec98)](https://codebeat.co/projects/github-com-markusressel-tutorialtooltip-master) | [![codebeat badge](https://codebeat.co/badges/bab43456-4ef2-4adf-ba0d-868a83553ccd)](https://codebeat.co/projects/github-com-markusressel-tutorialtooltip-dev) |
 
 # Why?
 
