@@ -25,7 +25,7 @@
     <string name="library_tutorialtooltip_libraryName">TutorialTooltip</string>
     <string name="library_tutorialtooltip_libraryDescription">A simple and easy way to add targeted tutorial messages to your app</string>
     <string name="library_tutorialtooltip_libraryWebsite">https://github.com/markusressel/TutorialTooltip</string>
-    <string name="library_tutorialtooltip_libraryVersion">2.0.0</string>
+    <string name="library_tutorialtooltip_libraryVersion">2.0.1</string>
     <!-- OpenSource section -->
     <string name="library_tutorialtooltip_isOpenSource">true</string>
     <string name="library_tutorialtooltip_repositoryLink">https://github.com/markusressel/TutorialTooltip</string>
