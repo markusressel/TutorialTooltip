@@ -268,7 +268,7 @@ class TutorialTooltipView : LinearLayout {
     }
 
     private fun updateIndicatorSize() {
-        val indicatorParams = indicatorLayout.layoutParams as LinearLayout.LayoutParams
+        val indicatorParams = indicatorLayout.layoutParams as LayoutParams
 
         indicatorConfiguration.width?.let {
             if (it == IndicatorConfiguration.MATCH_ANCHOR && anchorView != null) {
@@ -503,7 +503,7 @@ class TutorialTooltipView : LinearLayout {
 
         if (parent == null) {
             val activity = ViewHelper.getActivity(context)
-            val params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+            val params = LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT)
 
             when (attachMode) {

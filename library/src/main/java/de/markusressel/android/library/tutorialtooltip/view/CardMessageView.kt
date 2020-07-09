@@ -33,7 +33,6 @@ import kotlin.math.roundToInt
 /**
  * Basic Message view implementation
  *
- *
  * Created by Markus on 24.11.2016.
  */
 class CardMessageView : FrameLayout, TutorialTooltipMessage {
@@ -43,7 +42,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     var borderColor = Color.parseColor("#FFFFFFFF")
         /**
          * Set the card border color
-
+         *
          * @param color color as int
          */
         set(color) {
@@ -56,7 +55,7 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
     var borderThickness = 3
         /**
          * Set the card border thickness
-
+         *
          * @param thickness width in pixel
          */
         set(thickness) {
@@ -64,27 +63,23 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
             cardShape.setStroke(field, borderColor)
 
             invalidate()
-
         }
+
     var cornerRadius: Float = 0F
         /**
          * Set the card corner radius
-
+         *
          * @param radius radius in pixel
          */
         set(radius) {
             field = radius
-            cardShape.cornerRadii = floatArrayOf(field,
-                    field,
-                    field,
-                    field,
-                    field,
-                    field,
-                    field,
-                    field)
-
+            cardShape.cornerRadii = floatArrayOf(
+                    field, field, field, field,
+                    field, field, field, field
+            )
             invalidate()
         }
+
     private var defaultPadding: Int = 0
 
     private var linearLayout: LinearLayout
@@ -107,7 +102,6 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
 
         linearLayout = LinearLayout(context, attrs, defStyleAttr, defStyleRes)
         textView = TextView(context, attrs, defStyleAttr, defStyleRes)
-
         init()
     }
 
@@ -120,7 +114,6 @@ class CardMessageView : FrameLayout, TutorialTooltipMessage {
 
         linearLayout.addView(textView)
         addView(linearLayout)
-
 
         cardShape.mutate()
         cardShape.shape = GradientDrawable.RECTANGLE
