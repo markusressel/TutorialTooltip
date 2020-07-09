@@ -3,9 +3,6 @@ A simple and easy way to add targeted tutorial messages to your app.
 
 ![TurorialTooltip Demo](demo.gif)
 
-# Work in progress
-*This library is still very much a work in progress and not ready to use.*
-
 # Build Status
 
 | Master       |
