@@ -169,8 +169,8 @@ class TutorialTooltipView : LinearLayout {
         } else {
             indicatorLayout.removeAllViews()
             indicatorLayout.addView(indicatorView as View?,
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT)
         }
 
         indicatorConfiguration.color?.let {
@@ -211,8 +211,8 @@ class TutorialTooltipView : LinearLayout {
         messageView?.let {
             messageLayout.removeAllViews()
             messageLayout.addView(messageView as View?,
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT)
         } ?: let {
             val messageViewTemp: View? = messageLayout.findViewById(R.id.messageView)
             messageView = messageViewTemp as TutorialTooltipMessage
@@ -331,23 +331,23 @@ class TutorialTooltipView : LinearLayout {
         position[1] -= rootView.paddingTop
 
         when (anchorGravity) {
-            TutorialTooltipView.Gravity.TOP -> {
+            Gravity.TOP -> {
                 x = (position[0] + view.width / 2 - indicatorLayout.width / 2).toFloat()
                 y = (position[1] - indicatorLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.BOTTOM -> {
+            Gravity.BOTTOM -> {
                 x = (position[0] + view.width / 2 - indicatorLayout.width / 2).toFloat()
                 y = (position[1] + view.height - indicatorLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.LEFT -> {
+            Gravity.LEFT -> {
                 x = (position[0] - indicatorLayout.width / 2).toFloat()
                 y = (position[1] + view.height / 2 - indicatorLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.RIGHT -> {
+            Gravity.RIGHT -> {
                 x = (position[0] + view.width - indicatorLayout.width / 2).toFloat()
                 y = (position[1] + view.height / 2 - indicatorLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.CENTER -> {
+            Gravity.CENTER -> {
                 x = (position[0] + view.width / 2 - indicatorLayout.width / 2).toFloat()
                 y = (position[1] + view.height / 2 - indicatorLayout.height / 2).toFloat()
             }
@@ -381,23 +381,23 @@ class TutorialTooltipView : LinearLayout {
         var messageY: Float
 
         when (messageConfiguration.gravity) {
-            TutorialTooltipView.Gravity.TOP -> {
+            Gravity.TOP -> {
                 messageX = anchorX + view.width / 2 - messageLayout.width / 2
                 messageY = anchorY - messageLayout.height
             }
-            TutorialTooltipView.Gravity.LEFT -> {
+            Gravity.LEFT -> {
                 messageX = anchorX - messageLayout.width
                 messageY = anchorY + view.height / 2 - messageLayout.height / 2
             }
-            TutorialTooltipView.Gravity.RIGHT -> {
+            Gravity.RIGHT -> {
                 messageX = anchorX + view.width
                 messageY = anchorY + view.height / 2 - messageLayout.height / 2
             }
-            TutorialTooltipView.Gravity.CENTER -> {
+            Gravity.CENTER -> {
                 messageX = anchorX + view.width / 2 - messageLayout.width / 2
                 messageY = anchorY + view.height / 2 - messageLayout.height / 2
             }
-            TutorialTooltipView.Gravity.BOTTOM -> {
+            Gravity.BOTTOM -> {
                 messageX = anchorX + view.width / 2 - messageLayout.width / 2
                 messageY = anchorY + view.height
             }
@@ -418,23 +418,23 @@ class TutorialTooltipView : LinearLayout {
         var messageY: Float
 
         when (messageConfiguration.gravity) {
-            TutorialTooltipView.Gravity.TOP -> {
+            Gravity.TOP -> {
                 messageX = (anchorPoint.x - messageLayout.width / 2).toFloat()
                 messageY = (anchorPoint.y - messageLayout.height).toFloat()
             }
-            TutorialTooltipView.Gravity.LEFT -> {
+            Gravity.LEFT -> {
                 messageX = (anchorPoint.x - messageLayout.width).toFloat()
                 messageY = (anchorPoint.y - messageLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.RIGHT -> {
+            Gravity.RIGHT -> {
                 messageX = anchorPoint.x.toFloat()
                 messageY = (anchorPoint.y - messageLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.CENTER -> {
+            Gravity.CENTER -> {
                 messageX = (anchorPoint.x - messageLayout.width / 2).toFloat()
                 messageY = (anchorPoint.y - messageLayout.height / 2).toFloat()
             }
-            TutorialTooltipView.Gravity.BOTTOM -> {
+            Gravity.BOTTOM -> {
                 messageX = (anchorPoint.x - messageLayout.width / 2).toFloat()
                 messageY = anchorPoint.y.toFloat()
             }
@@ -451,18 +451,6 @@ class TutorialTooltipView : LinearLayout {
         messageLayout.y = messageY
 
         //        updateMessageSize(messageX, messageY);
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        val onTouchEvent = super.onTouchEvent(event)
-
-        //        Toast.makeText(getContext(),
-        //                "onTouchEvent: " + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT)
-        //                .show();
-
-        Log.d(TAG, "onTouchEvent: " + event.x + "," + event.y)
-
-        return onTouchEvent
     }
 
     //    private void updateMessageSize(float messageX, float messageY) {
@@ -515,8 +503,8 @@ class TutorialTooltipView : LinearLayout {
 
         if (parent == null) {
             val activity = ViewHelper.getActivity(context)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
+            val params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT)
 
             when (attachMode) {
                 TutorialTooltipBuilder.AttachMode.Window -> {
