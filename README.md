@@ -89,8 +89,7 @@ TutorialTooltip.remove(activity, tutorialTooltipId)
 
 The first example will show a default `TutorialTooltipIndicator` and default `TutorialTooltipMessage` 
 so you can test things without getting to much into the details. Of course this small example 
-is not enough for everyday usage, so let's start with some more advanced ones and 
-increase complexity down the road.
+is not enough for everyday usage, so let's start with some more advanced ones.
 
 FYI: In it's current state you can only create and customize TutorialTooltips in code. 
 Styling via theme attributes or xml views may be added at a later stage.
@@ -112,7 +111,8 @@ messageConfiguration = MessageConfiguration(
 ##### Advanced
 ---
 
-There are other builder methods you can use to further customize the look of the message. Just have a look at the `MessageBuilder` class.
+There are other properties you can use to further customize the look of the message.
+Have a look at the `MessageConfiguration` class to see what is available.
 
 A more complex example would look something like this:
 
@@ -138,10 +138,10 @@ custom view. To use a custom view as a message you have to make it:
 1. extend `android.view.View` (at least indirectly like with f.ex. `LinearLayout`)
 2. implement the `TutorialTooltipMessage` interface included in this library
 
-This makes it possible to use the `MessageBuilder` even when using a completely self written 
-`TutorialTooltipMessage` view which hopefully cleans up the code quite a bit.
+This makes it possible to use the `MessageConfiguration` even when using a completely self written 
+`TutorialTooltipMessage` view.
 
-Just add this line to your `MessageBuilder`:
+Just add this line to your `MessageConfiguration`:
 
 ```kotlin
     customView = CardMessageView(activity)
@@ -153,7 +153,7 @@ Just add this line to your `MessageBuilder`:
 ---
 
 The indicator view can be customized in the same way as the message.
-Customize the indicator using the `MessageBuilder` in your `TutorialTooltipBuilder` like so::
+Customize the indicator using the `IndicatorConfiguration` in your `TutorialTooltipBuilder` like so:
 
 ```kotlin
     indicatorConfiguration = IndicatorConfiguration(
@@ -178,7 +178,7 @@ Just like with the message you can further customize the indicator with somethin
         })
 ```
 
-Have a look at the `MessageBuilder` class for a full list of options.
+Have a look at the `IndicatorConfiguration` class for a full list of options.
 
 ##### Geek
 ---
@@ -189,10 +189,10 @@ To use a custom view as an indicator you have to make it:
 1. extend `android.view.View` (at least indirectly like with f.ex. `LinearLayout`)
 2. implement the `TutorialTooltipIndicator` interface included in this library
 
-This makes it possible to use the `IndicatorBuilder` even when using a completely self written 
-`TutorialTooltipIndicator` view which hopefully cleans up the code quite a bit.
+This makes it possible to use the `IndicatorConfiguration` even when using a completely self written 
+`TutorialTooltipIndicator` view.
 
-Just add this line to your  `IndicatorBuilder`:
+Just add this line to your  `IndicatorConfiguration`:
 
 ```kotlin
     customView = WaveIndicatorView(activity)
@@ -253,7 +253,6 @@ TutorialTooltip.show(tutorialTooltipBuilder)
 ---
 
 Always remember to finish your builder with the `.build()` call. This makes sure you don't change your builder after already using it.
-This is necessary for all builders including `TutorialTooltipBuilder`, `MessageBuilder` and `IndicatorBuilder`.
 
 ### Dialogs
 ---
@@ -285,7 +284,7 @@ though and onClick handling works a little different, so you should only use thi
 
 I want to give a big shoutout to Alessandro Crugnola ([sephiroth74](https://github.com/sephiroth74 "sephiroth74 GitHub Profile")) 
 who has built his great [android-target-tooltip](https://github.com/sephiroth74/android-target-tooltip "android-target-tooltip on GitHub") 
-library that adresses the same issue. His work greatly impacted the way I am building this 
+library that addresses the same issue. His work greatly impacted the way I am building this 
 library and really helped me figure out how to do things right.
 
 
