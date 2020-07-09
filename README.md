@@ -226,8 +226,8 @@ val tutorialTooltipBuilder = TutorialTooltipBuilder(
                 }),
         messageConfiguration = MessageConfiguration(
                 customView = cardMessageView,
-                width = IndicatorConfiguration.WRAP_CONTENT,
-                height = IndicatorConfiguration.WRAP_CONTENT,
+                width = MessageConfiguration.WRAP_CONTENT,
+                height = MessageConfiguration.WRAP_CONTENT,
                 offsetX = 0,
                 offsetY = 0,
                 text = "This is a tutorial message!",
