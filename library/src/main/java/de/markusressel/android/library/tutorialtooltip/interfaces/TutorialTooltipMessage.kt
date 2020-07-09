@@ -16,8 +16,8 @@
 
 package de.markusressel.android.library.tutorialtooltip.interfaces
 
-import androidx.annotation.ColorInt
 import android.view.View
+import androidx.annotation.ColorInt
 
 /**
  * Interface that defines methods a custom implementation for TutorialTooltipMessage must implement
@@ -53,6 +53,6 @@ interface TutorialTooltipMessage {
 
      * @param listener
      */
-    fun setOnClickListener(listener: View.OnClickListener)
+    fun setOnClickListener(listener: View.OnClickListener?)
 
 }

@@ -16,10 +16,9 @@
 
 package de.markusressel.android.library.tutorialtooltip.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 
 import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialTooltipMessage
 
@@ -29,7 +28,7 @@ import de.markusressel.android.library.tutorialtooltip.interfaces.TutorialToolti
  *
  * Created by Markus on 24.11.2016.
  */
-class BasicMessageView : TextView, TutorialTooltipMessage {
+class BasicMessageView : AppCompatTextView, TutorialTooltipMessage {
 
     constructor(context: Context) : super(context) {}
 
@@ -38,11 +37,6 @@ class BasicMessageView : TextView, TutorialTooltipMessage {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context,
             attrs,
             defStyleAttr) {
-    }
-
-    @TargetApi(21)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int,
-                defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
     }
 
 }
