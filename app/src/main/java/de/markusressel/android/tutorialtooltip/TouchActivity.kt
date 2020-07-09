@@ -21,11 +21,11 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import de.markusressel.android.library.tutorialtooltip.TutorialTooltip
 import de.markusressel.android.library.tutorialtooltip.builder.IndicatorConfiguration
 import de.markusressel.android.library.tutorialtooltip.builder.MessageConfiguration
@@ -179,7 +179,7 @@ class TouchActivity : AppCompatActivity() {
                 waveIndicatorView.startColor = Color.argb(255, 255, 255, 255)
                 waveIndicatorView.endColor = Color.argb(0, 255, 255, 255)
                 waveIndicatorView.strokeWidth = pxFromDp(activity, 5f)
-                waveIndicatorView.targetDiameter = pxFromDp(activity, 50f)
+                waveIndicatorView.endDiameter = pxFromDp(activity, 50f)
 
                 tutorialTooltipView = TutorialTooltip.make(
                         TutorialTooltipBuilder(

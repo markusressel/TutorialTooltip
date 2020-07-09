@@ -43,12 +43,14 @@ android {
 dependencies {
 //    testImplementation 'junit:junit:4.12'
 
-    api('com.github.markusressel:CircleWaveView:v0.1.2') {
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.annotation:annotation:1.1.0"
+
+    api('com.github.markusressel:CircleWaveView:v1.0.1') {
         exclude module: 'app'
-        transitive = true
     }
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 // build a jar with source files
