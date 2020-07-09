@@ -28,7 +28,7 @@ To use this library just include it in your depencencies using
 in your project build.gradle file and
 
     dependencies {
-        compile 'com.github.markusressel:TutorialTooltip:v0.9.0'
+        compile 'com.github.markusressel:TutorialTooltip:v2.0.0'
     }
 
 in your desired module build.gradle file.
@@ -39,17 +39,19 @@ To create a ```TutorialTooltip``` you can use the builder pattern:
 
 ##### Using an Anchor View
 
-    TutorialTooltipBuilder tutorialTooltipBuilder =
-        new TutorialTooltipBuilder(this)
-            .anchor(button1) // anchor view
-            .build();
+```kotlin
+val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
+    .anchor(button1, TutorialTooltipView.Gravity.CENTER)
+    .build()
+```
 
 ##### Using an Anchor Point
 
-    TutorialTooltipBuilder tutorialTooltipBuilder =
-            new TutorialTooltipBuilder(this)
-                .anchor(new Point(200, 300)) // anchor point
-                .build();
+```kotlin
+val tutorialTooltipBuilder = TutorialTooltipBuilder(activity)
+    .anchor(Point(200, 300))
+    .build()
+```
 
 This is the most basic ```TutorialTooltip``` you can create.
 
@@ -57,23 +59,31 @@ This is the most basic ```TutorialTooltip``` you can create.
 
 If you used the builder to create your ```TutorialTooltip``` you can afterwards show it very easily by calling:
 
-    înt tutorialTooltipId = TutorialTooltip.show(tutorialTooltipBuilder);
+```kotlin
+val tutorialTooltipId = TutorialTooltip.show(tutorialTooltipBuilder)
+```
 
 If you used ```TutorialTooltip.make(tutorialTooltipBuilder)``` you can show it using:
 
-    înt tutorialTooltipId = TutorialTooltip.show(tutorialTooltipView);
+```kotlin
+val tutorialTooltipId = TutorialTooltip.show(tutorialTooltipView)
+```
 
 ## Remove a TutorialTooltip
 
 To remove a ```TutorialTooltip``` either hold a reference to its view and call:
 
-    tutorialTooltipView.remove();
+```kotlin
+tutorialTooltipView.remove()
+```
 
 on the respective view object.
 
 Or (if you attached it to an activity) you can use a static method and remove it by its ID:
 
-    TutorialTooltip.remove(activity, tutorialTooltipId);
+```kotlin
+TutorialTooltip.remove(activity, tutorialTooltipId)
+```
 
 ## Customization
 
@@ -89,10 +99,11 @@ FYI: In it's current state you can only create and customize TutorialTooltips in
 
 The ```TutorialTooltip``` library allows you to customize the message in a fast and easy way using the builder pattern (again). To customize the look of the message use something like this in your ```TutorialTooltipBuilder```:
 
-    .message(new MessageBuilder()
-        .text("This is a tutorial message!")
-        .build()
-    )
+```kotlin
+messageConfiguration = MessageConfiguration(
+    text = "This is a tutorial message!"
+)
+```
 
 ##### Advanced
 ---
@@ -101,20 +112,18 @@ There are other builder methods you can use to further customize the look of the
 
 A more complex example would look something like this:
 
-    .message(new MessageBuilder()
-        .customView(new CardMessageView(activity))
-        .text("This is a tutorial message!")
-        .textColor(Color.BLACK)
-        .backgroundColor(Color.WHITE)
-        .gravity(TutorialTooltipView.Gravity.LEFT) // relative to the indicator
-        .onClick(new OnMessageClickedListener() {
-            @Override
-            public void onMessageClicked(int id, TutorialTooltipMessage message, View messageView) {
-                TutorialTooltip.remove(activity, id);
-            }
-        })
-        .build()
-    )
+```kotlin
+messageConfiguration = MessageConfiguration(
+    customView = CardMessageView(activity),
+    text = "This is a tutorial message!",
+    textColor = Color.BLACK,
+    backgroundColor = Color.WHITE,
+    gravity = TutorialTooltipView.Gravity.LEFT, // relative to the indicator
+    onClick = { id, tutorialTooltipView, message, messageView ->
+        tutorialTooltipView.remove(true)
+    }
+)
+```
 
 ##### Geek
 ---
@@ -128,7 +137,9 @@ This makes it possible to use the ```MessageBuilder``` even when using a complet
 
 Just add this line to your  ```MessageBuilder ```:
 
-    .customView(new CardMessageView(activity))
+```kotlin
+    customView = CardMessageView(activity)
+```
 
 ### Indicator
 
@@ -138,27 +149,28 @@ Just add this line to your  ```MessageBuilder ```:
 The indicator view can be customized in the same way as the message.
 Customize the indicator using the ```MessageBuilder``` in your ```TutorialTooltipBuilder``` like so::
 
-    .indicator(new IndicatorBuilder()
-        .size(100, 100) // size values in pixel
-        .build()
+```kotlin
+    indicatorConfiguration = IndicatorConfiguration(
+        width = 100, // size values in pixel
+        height = 100 // size values in pixel
     )
+```
 
 ##### Advanced
 ---
 
 Just like with the message you can further customize the indicator with something similar to this:
 
-    .indicator(new IndicatorBuilder()
-        .size(100, 100) // size values in pixel
-        .offset(50, 50) // offset values in pixel
-        .onClick(new OnIndicatorClickedListener() {
-            @Override
-            public void onIndicatorClicked(int id, TutorialTooltipIndicator indicator, View indicatorView) {
-                TutorialTooltip.remove(activity, id);
-            }
+```kotlin
+    indicatorConfiguration = IndicatorConfiguration(
+        width = 100, // size values in pixel
+        height = 100, // size values in pixel
+        offsetX = 50, // offset values in pixel
+        offsetY = 50, // offset values in pixel
+        onClick = { id, tutorialTooltipView, indicator, indicatorView ->
+            TutorialTooltip.remove(activity, id)
         })
-        .build()
-    )
+```
 
 Have a look at the ```MessageBuilder``` class for a full list of options.
 
@@ -174,71 +186,58 @@ This makes it possible to use the ```IndicatorBuilder``` even when using a compl
 
 Just add this line to your  ```IndicatorBuilder ```:
 
-     .customView(new WaveIndicatorView(activity))
+```kotlin
+    customView = WaveIndicatorView(activity)
+```
 
 ### Bringing it all together
 
 A fully customized TutorialTooltip can then look something like this:
 
-    // custom message view
-    CardMessageView cardMessageView = new CardMessageView(getActivity());
+```kotlin
+// custom message view
+val cardMessageView = CardMessageView(this)
 
-    // custom indicator view
-    WaveIndicatorView waveIndicatorView = new WaveIndicatorView(getActivity());
-    waveIndicatorView.setStrokeWidth(10); // customization that is not included in the IndicatorBuilder
+// custom indicator view
+val waveIndicatorView = WaveIndicatorView(this)
+waveIndicatorView.strokeWidth = 10F; // customization that is not included in the IndicatorBuilder
 
-    TutorialTooltipBuilder tutorialTooltipBuilder = new TutorialTooltipBuilder(getActivity())
-    .anchor(button)
-    .attachToDialog(getDialog())
-    .message(new MessageBuilder()
-        .customView(cardMessageView)
-        .offset(0, 0)
-        .text("This is a tutorial message!")
-        .textColor(Color.BLACK)
-        .backgroundColor(Color.WHITE)
-        .gravity(TutorialTooltipView.Gravity.TOP) // relative to the indicator
-        .onClick(new OnMessageClickedListener() {
-            @Override
-            public void onMessageClicked(int id, TutorialTooltipView tutorialTooltipView, TutorialTooltipMessage message, View messageView) {
-                // this will intercept touches only for the message view
-                // if you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
-                // just specify an empty OnMessageClickedListener
+val tutorialTooltipBuilder = TutorialTooltipBuilder(
+        context = this,
+        indicatorConfiguration = IndicatorConfiguration(
+                customView = waveIndicatorView,
+                width = 200,
+                height = 200,
+                offsetX = 0,
+                offsetY = 0,
+                color = Color.BLUE,
+                onClick = { id, tutorialTooltipView, indicator, indicatorView ->
+                    // This will intercept touches only for the indicator view.
+                    // If you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
+                    // just specify an empty OnIndicatorClickedListener
+                    tutorialTooltipView.remove(true)
+                }),
+        messageConfiguration = MessageConfiguration(
+                customView = cardMessageView,
+                width = IndicatorConfiguration.WRAP_CONTENT,
+                height = IndicatorConfiguration.WRAP_CONTENT,
+                offsetX = 0,
+                offsetY = 0,
+                text = "This is a tutorial message!",
+                textColor = Color.BLACK,
+                backgroundColor = Color.WHITE,
+                gravity = TutorialTooltipView.Gravity.TOP, // relative to the indicator
+                onClick = { id, tutorialTooltipView, message, messageView ->
+                    // this will intercept touches only for the message view
+                    // if you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
+                    // just specify an empty OnMessageClickedListener
 
-                TutorialTooltip.remove(getDialog(), id);
-            }
-        })
-        .size(MessageBuilder.WRAP_CONTENT, MessageBuilder.WRAP_CONTENT)
+                    tutorialTooltipView.remove(true)
+                }))
         .build()
-    )
-    .indicator(new IndicatorBuilder()
-        .customView(waveIndicatorView)
-        .offset(0, 0)
-        .size(200, 200)
-        .color(Color.BLUE)
-        .onClick(new OnIndicatorClickedListener() {
-            @Override
-            public void onIndicatorClicked(int id, TutorialTooltipView tutorialTooltipView, TutorialTooltipIndicator indicator, View indicatorView) {
-                // this will intercept touches only for the indicator view
-                // if you don't want the main OnTutorialTooltipClickedListener listener to react to touches here
-                // just specify an empty OnIndicatorClickedListener
 
-                TutorialTooltip.remove(getDialog(), id);
-            }
-        })
-        .build())
-    .onClick(new OnTutorialTooltipClickedListener() {
-        @Override
-        public void onTutorialTooltipClicked(int id, TutorialTooltipView tutorialTooltipView) {
-            // this will intercept touches of the complete window
-            // if you don't specify additional listeners for the indicator or
-            // message view they will be included
-
-            TutorialTooltip.remove(getDialog(), id);
-        }
-    })
-    .build();
-
-    TutorialTooltip.show(tutorialTooltipBuilder);
+TutorialTooltip.show(tutorialTooltipBuilder)
+```
 
 ## Troubleshooting
 
@@ -253,7 +252,9 @@ This is necessary for all builders including ```TutorialTooltipBuilder```, ```Me
 
 If the ```TutorialTooltip``` is used in a ```Dialog``` (f.ex. ```DialogFragment```) you have to additionally call:
 
+```kotlin
     .attachToDialog(getDialog())
+```
 
 in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` to the ```DecorView``` of the ```Dialog``` instead of the ```Activity```.
 
@@ -262,14 +263,12 @@ in the ```TutorialTooltipBuilder```. This will attach the ```TutorialTooltip``` 
 
 If somehow the ```TutorialTooltip``` is still not rendered above the content you want it to, you can attach it to the ```Window``` instead of the ```Activity``` using:
 
+```kotlin
     .attachToWindow()
+```
 
 This will create a dedicated ```Window``` just for the ```TutorialTooltip``` and (should) always render above other content.
 When using this method you can only show one ```TutorialTooltip``` at a time though and onClick handling works a little different, so you should only use this as a last resort.
-
----
----
----
 
 # Attributions
 
